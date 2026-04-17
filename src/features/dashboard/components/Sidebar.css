@@ -1,0 +1,159 @@
+/* Sidebar.css - Estilos CSS puros para el sidebar */
+
+/* Animación de entrada para elementos del menú */
+.sidebar-menu-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.sidebar-menu-item:hover::before {
+  left: 100%;
+}
+
+/* Efecto de brillo para elementos activos */
+.sidebar-menu-item.active {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05));
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+.sidebar-menu-item.active::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  border-radius: 2px 0 0 2px;
+  animation: pulse 2s infinite;
+}
+
+/* Animación de pulso para elementos activos */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Efecto de escala sutil en hover */
+.sidebar-menu-item:hover {
+  transform: scale(1.02);
+}
+
+/* Transición suave para el dropdown */
+.dropdown-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.dropdown-submenu.open {
+  max-height: 200px;
+}
+
+/* Efecto de rotación para el chevron */
+.chevron-rotate {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chevron-rotate.rotated {
+  transform: rotate(180deg);
+}
+
+/* Efecto de gradiente animado para el avatar */
+.avatar-glow {
+  background: linear-gradient(45deg, #22c55e, #16a34a, #15803d);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efecto de sombra animada */
+.sidebar-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.sidebar-shadow:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Animación de entrada deslizante */
+.slide-in-animation {
+  animation: slideInFromLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Efecto de ripple para botones */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple-effect:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Cursor pointer para todos los botones interactivos */
+.sidebar-menu-item,
+.dropdown-submenu a,
+.ripple-effect {
+  cursor: pointer !important;
+}
+
+/* Asegurar cursor pointer en elementos hover */
+.sidebar-menu-item:hover,
+.dropdown-submenu a:hover,
+.ripple-effect:hover {
+  cursor: pointer !important;
+}

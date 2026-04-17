@@ -1,0 +1,200 @@
+/* TaskTabs.css - Estilos CSS puros para las pestañas de tareas */
+
+/* Pestañas principales con gradiente animado */
+.task-main-tabs .tab-trigger {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-main-tabs .tab-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.15);
+}
+
+.task-main-tabs .tab-trigger[data-state="active"] {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+}
+
+.task-main-tabs .tab-trigger[data-state="active"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Sub-pestañas con efecto de vidrio */
+.task-sub-tabs .tab-trigger {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-sub-tabs .tab-trigger:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.02);
+}
+
+.task-sub-tabs .tab-trigger[data-state="active"] {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-color: #22c55e;
+}
+
+.task-sub-tabs .tab-trigger[data-state="active"]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 1px;
+}
+
+/* Efecto de pulso para pestañas activas */
+.tab-pulse {
+  animation: tabPulse 2s infinite;
+}
+
+@keyframes tabPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0);
+  }
+}
+
+/* Transición suave para el contenido de las pestañas */
+.tab-content {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efecto de borde animado para categorías */
+.categories-placeholder {
+  position: relative;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 2px dashed #22c55e;
+  transition: all 0.3s ease;
+}
+
+.categories-placeholder:hover {
+  border-color: #16a34a;
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+}
+
+.categories-placeholder::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #22c55e, #16a34a, #15803d, #22c55e);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  animation: borderGlow 3s ease infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.categories-placeholder:hover::before {
+  opacity: 0.3;
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Iconos animados */
+.tab-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-trigger:hover .tab-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.tab-trigger[data-state="active"] .tab-icon {
+  transform: scale(1.05);
+  color: #16a34a;
+}
+
+/* Efecto de typing para el texto de placeholder */
+.typing-effect {
+  overflow: hidden;
+  border-right: 2px solid #22c55e;
+  white-space: nowrap;
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #22c55e; }
+}
+
+/* Cursor pointer para pestañas */
+.task-main-tabs .tab-trigger,
+.task-sub-tabs .tab-trigger {
+  cursor: pointer !important;
+}
+
+.task-main-tabs .tab-trigger:hover,
+.task-sub-tabs .tab-trigger:hover {
+  cursor: pointer !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .task-main-tabs .tab-trigger {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .task-sub-tabs .tab-trigger {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
