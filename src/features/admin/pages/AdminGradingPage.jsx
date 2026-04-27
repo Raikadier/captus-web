@@ -36,10 +36,18 @@ export default function AdminGradingPage() {
   const openEdit = (scale) => {
     setEditing(scale);
     setForm({
-      name: scale.name,
+      name:      scale.name,
       min_score: scale.min_score,
       max_score: scale.max_score,
-      levels: scale.levels?.length ? scale.levels : EMPTY_FORM.levels,
+      // API returns { min_value, max_value }; normalise to { min, max } for the form
+      levels: scale.levels?.length
+        ? scale.levels.map(l => ({
+            label: l.label,
+            min:   l.min   ?? l.min_value,
+            max:   l.max   ?? l.max_value,
+            color: l.color ?? '#22c55e',
+          }))
+        : EMPTY_FORM.levels,
     });
     setOpen(true);
   };
@@ -143,7 +151,7 @@ export default function AdminGradingPage() {
                       className="px-2 py-0.5 rounded-full text-xs font-medium text-white"
                       style={{ backgroundColor: l.color || '#6b7280' }}
                     >
-                      {l.label} ({l.min}–{l.max})
+                      {l.label} ({l.min_value ?? l.min}–{l.max_value ?? l.max})
                     </span>
                   ))}
                 </div>
