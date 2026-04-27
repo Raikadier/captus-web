@@ -43,11 +43,12 @@ const LoginForm = () => {
       } else {
         result = await login(email, password);
         if (result.success) {
-          // Check if user is a teacher
           const { data: { user } } = await supabase.auth.getUser();
-          const isTeacher = user?.email === 'teacher@gmail.com' || user?.user_metadata?.role === 'teacher';
+          const role = user?.user_metadata?.role || user?.app_metadata?.role;
 
-          if (isTeacher) {
+          if (role === 'admin') {
+            navigate('/admin');
+          } else if (role === 'teacher' || user?.email === 'teacher@gmail.com') {
             navigate('/teacher/home');
           } else {
             navigate('/home');

@@ -34,6 +34,14 @@ import Loading from './ui/loading';
 import { Toaster } from 'sonner';
 import AchievementNotification from './components/shared/AchievementNotification';
 import { useAchievementNotifications } from './hooks/useAchievementNotifications';
+import AdminLayout from './features/admin/components/AdminLayout';
+import AdminDashboardPage from './features/admin/pages/AdminDashboardPage';
+import AdminUsersPage from './features/admin/pages/AdminUsersPage';
+import AdminCoursesPage from './features/admin/pages/AdminCoursesPage';
+import AdminGradingPage from './features/admin/pages/AdminGradingPage';
+import AdminPeriodsPage from './features/admin/pages/AdminPeriodsPage';
+import AdminReportsPage from './features/admin/pages/AdminReportsPage';
+import AdminInstitutionPage from './features/admin/pages/AdminInstitutionPage';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -49,6 +57,20 @@ const ProtectedRoute = ({ children }) => {
   }
 
   return isAuthenticated ? children : <Navigate to="/" />;
+};
+
+// Admin Route component
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <Loading message="Verificando permisos..." />;
+  }
+
+  const role = user?.user_metadata?.role || user?.app_metadata?.role;
+  const isAdmin = role === 'admin';
+
+  return isAdmin ? children : <Navigate to="/home" />;
 };
 
 // Teacher Route component
@@ -329,6 +351,91 @@ function AppContent() {
                     <TeacherCalendarPage />
                   </MainLayout>
                 </TeacherRoute>
+              </ProtectedRoute>
+            }
+          />
+          {/* Rutas admin */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminDashboardPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminUsersPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/courses"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminCoursesPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/grading"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminGradingPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/periods"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminPeriodsPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/reports"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminReportsPage />
+                  </AdminLayout>
+                </AdminRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/institution"
+            element={
+              <ProtectedRoute>
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminInstitutionPage />
+                  </AdminLayout>
+                </AdminRoute>
               </ProtectedRoute>
             }
           />
