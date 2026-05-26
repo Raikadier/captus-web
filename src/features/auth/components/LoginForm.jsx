@@ -48,7 +48,7 @@ const LoginForm = () => {
 
           if (role === 'admin') {
             navigate('/admin');
-          } else if (role === 'teacher' || user?.email === 'teacher@gmail.com') {
+          } else if (role === 'teacher') {
             navigate('/teacher/home');
           } else {
             navigate('/home');

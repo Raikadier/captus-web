@@ -62,67 +62,38 @@ const TaskForm = ({ task, categories, priorities, onSubmit, onCancel, isModal = 
   };
 
   const handleInputChange = (field, value) => {
-    console.log('📅 FORM INPUT CHANGE - Field:', field, 'Value:', value);
-
     if (field === 'due_date') {
-      // Validate date is not in the past
       const selectedDate = new Date(value);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-
-      console.log('📅 DATE VALIDATION - Selected:', selectedDate.toISOString(), 'Today:', today.toISOString());
-      console.log('📅 DATE VALIDATION - Selected < Today:', selectedDate < today);
-
       if (selectedDate < today) {
-        console.log('📅 DATE VALIDATION - BLOCKED: Date is in the past');
         setError('La fecha límite no puede ser anterior a hoy. Selecciona una fecha actual o futura.');
       } else {
-        console.log('📅 DATE VALIDATION - ALLOWED: Date is valid');
-        setError(''); // Clear error if date is valid
+        setError('');
       }
     }
 
-    if (field === 'category_id') {
-      console.log('🏷️ CATEGORY CHANGE - New category_id:', value, 'Type:', typeof value);
-    }
-
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-
-    console.log('📝 FORM DATA UPDATED - New formData:', JSON.stringify({
-      ...formData,
-      [field]: value
-    }, null, 2));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log('📤 FORM SUBMIT - Raw formData:', JSON.stringify(formData, null, 2));
-
     if (!formData.title.trim()) {
-      console.log('❌ FORM SUBMIT - BLOCKED: Title is empty');
       alert('El título es obligatorio');
       return;
     }
 
     if (error) {
-      console.log('❌ FORM SUBMIT - BLOCKED: Validation error');
       alert(error);
       return;
     }
 
-    // Ensure priority_id and category_id are valid numbers - ALL tasks must have valid IDs
     const submitData = {
       ...formData,
-      priority_id: formData.priority_id && formData.priority_id !== '' ? parseInt(formData.priority_id) : 1, // Default to "Baja" (1)
-      category_id: formData.category_id && formData.category_id !== '' ? parseInt(formData.category_id) : 6, // Default to existing category (Personal = 6)
+      priority_id: formData.priority_id && formData.priority_id !== '' ? parseInt(formData.priority_id) : 1,
+      category_id: formData.category_id && formData.category_id !== '' ? parseInt(formData.category_id) : 6,
     };
-
-    console.log('📤 FORM SUBMIT - Processed submitData:', JSON.stringify(submitData, null, 2));
-    console.log('📤 FORM SUBMIT - Calling onSubmit with data');
 
     onSubmit(submitData);
   };

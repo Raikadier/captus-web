@@ -106,7 +106,6 @@ const ChatBotPage = () => {
 
       // Check for tool action
       if (responseData.actionPerformed) {
-        console.log('AI Performed action:', responseData.actionPerformed);
         // Infer domain and dispatch targeted event so other components can react (tasks/calendar/notes)
         const action = responseData.actionPerformed;
         if (action.includes('task')) {
