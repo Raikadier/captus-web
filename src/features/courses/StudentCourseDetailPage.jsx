@@ -321,7 +321,7 @@ export default function StudentCourseDetailPage() {
                 <div
                   key={item.id}
                   className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors cursor-pointer"
-                  onClick={() => console.log('[v0] Open content', item.id)}
+                  onClick={() => {}}
                 >
                   <div className="flex items-center gap-3">
                     {getTypeIcon(item.type)}

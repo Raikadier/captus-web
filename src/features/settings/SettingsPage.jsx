@@ -295,16 +295,12 @@ export default function SettingsPage() {
         bio: formData.bio
       }
 
-      console.log('Updating profile:', updateData)
-
       // Make API call to update profile using apiClient
       const userId = sessionData.session.user.id
       const response = await apiClient.put(`/users/${userId}`, updateData)
 
       // apiClient.put returns { data: responseData }
       // Assuming backend response shape. If success, it returns JSON.
-      console.log('Profile updated successfully:', response.data)
-
       // Update local state
       setUserData(prev => ({
         ...prev,
@@ -452,8 +448,6 @@ export default function SettingsPage() {
       // Llamar al endpoint de eliminación de cuenta usando apiClient
       const response = await apiClient.delete('/users/account')
 
-      console.log('Account deleted successfully:', response.data)
-
       toast.success('Cuenta eliminada exitosamente. Redirigiendo...')
 
       // Cerrar sesión en Supabase
@@ -486,17 +480,13 @@ export default function SettingsPage() {
     setLoading(true)
 
     try {
-      console.log('Fetching user profile from settings...')
-
       // apiClient will handle token injection
       const response = await apiClient.get('/users/profile')
 
-      console.log('Response data:', response.data)
       const userDataResponse = response.data
 
       if (userDataResponse.success && userDataResponse.data) {
         const user = userDataResponse.data
-        console.log('User object:', user)
 
         // Split full name into first and last name
         const nameParts = user.name ? user.name.split(' ') : ['', '']
@@ -512,7 +502,6 @@ export default function SettingsPage() {
           avatar_url: user.avatar_url
         }
 
-        console.log('Setting user data:', userWithSplitName)
         setUserData(userWithSplitName)
         setFormData({
           firstName,

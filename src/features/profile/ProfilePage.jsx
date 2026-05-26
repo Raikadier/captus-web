@@ -26,15 +26,12 @@ const ProfilePage = () => {
 
   const fetchUserProfile = async () => {
     try {
-      console.log('Fetching user profile...');
       const response = await apiClient.get('/users/profile');
 
       const userData = response.data;
-      console.log('User data received:', userData);
 
       if (userData.success && userData.data) {
         const user = userData.data;
-        console.log('User object:', user);
 
         // Split full name into first and last name
         const nameParts = user.name ? user.name.split(' ') : ['', ''];
@@ -48,7 +45,6 @@ const ProfilePage = () => {
           fullName: user.name
         };
 
-        console.log('Setting user data:', userWithSplitName);
         setUser(userWithSplitName);
         setFormData({
           firstName,
@@ -88,7 +84,6 @@ const ProfilePage = () => {
       };
 
       // Implement update profile API using apiClient
-      console.log('Updating profile:', updateData);
       // Assuming we can update via PUT /users/profile or /users/:id.
       // Using SettingsPage logic reference: PUT /users/:id. But we need ID.
       // Or if there is a /users/profile PUT endpoint.

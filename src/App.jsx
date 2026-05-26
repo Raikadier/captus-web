@@ -81,7 +81,7 @@ const TeacherRoute = ({ children }) => {
     return <Loading message="Verificando permisos..." />;
   }
 
-  const isTeacher = user?.user_metadata?.role === 'teacher' || user?.email === 'teacher@gmail.com';
+  const isTeacher = user?.user_metadata?.role === 'teacher';
 
   return isTeacher ? children : <Navigate to="/home" />;
 };
