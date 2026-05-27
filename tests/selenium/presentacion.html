@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Selenium — Captus Web Testing</title>
+<style>
+  /* ── Reset y base ────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0f1117;
+    --surface:  #1a1d27;
+    --border:   #2a2d3e;
+    --accent:   #6366f1;
+    --accent2:  #22d3ee;
+    --text:     #e2e8f0;
+    --muted:    #64748b;
+    --green:    #22c55e;
+    --red:      #ef4444;
+    --yellow:   #f59e0b;
+    --code-bg:  #0d1117;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── Contenedor de slides ────────────────────────────────── */
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    text-align: center;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Tipografía ──────────────────────────────────────────── */
+  .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.1; }
+  h2 { font-size: clamp(1.6rem, 3.5vw, 2.5rem); font-weight: 700; margin-bottom: 28px; }
+  h3 { font-size: 1.1rem; font-weight: 600; color: var(--accent2); margin-bottom: 10px; }
+  p, li { font-size: clamp(0.95rem, 1.8vw, 1.15rem); line-height: 1.7; color: var(--text); }
+  .sub { font-size: 1.15rem; color: var(--muted); margin-top: 12px; }
+
+  /* ── Cards / listas ─────────────────────────────────────── */
+  .cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 280px;
+    text-align: left;
+  }
+  .card .icon { font-size: 2rem; margin-bottom: 12px; }
+  .card h3 { color: var(--accent2); margin-bottom: 6px; }
+  .card p { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
+
+  .list {
+    text-align: left;
+    max-width: 680px;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .list li {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 1rem;
+  }
+  .list li:last-child { border-bottom: none; }
+  .list .num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── Código ──────────────────────────────────────────────── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-size: clamp(0.72rem, 1.3vw, 0.9rem);
+    line-height: 1.65;
+    text-align: left;
+    overflow-x: auto;
+    max-width: 820px;
+    width: 100%;
+    margin-top: 20px;
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  }
+  .kw   { color: #c792ea; }
+  .fn   { color: #82aaff; }
+  .str  { color: #c3e88d; }
+  .cmt  { color: #546e7a; font-style: italic; }
+  .cls  { color: #ffcb6b; }
+  .num  { color: #f78c6c; }
+
+  /* ── Flujo / diagrama ────────────────────────────────────── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 28px;
+  }
+  .flow-box {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+  .flow-arrow { color: var(--muted); font-size: 1.4rem; }
+
+  /* ── Resultado pass/fail ─────────────────────────────────── */
+  .results { max-width: 700px; width: 100%; margin-top: 20px; text-align: left; }
+  .result-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  .pass { background: #14532d; color: var(--green); }
+  .fail { background: #450a0a; color: var(--red);   }
+  .time { margin-left: auto; color: var(--muted); font-size: 0.82rem; }
+
+  /* ── Accent pill ─────────────────────────────────────────── */
+  .pill {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin: 0 4px 8px 4px;
+  }
+  .pill2 { background: #0e7490; }
+
+  /* ── Footer de navegación ────────────────────────────────── */
+  .nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
+  }
+  .nav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1.1rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: var(--border); }
+  .nav-counter { font-size: 0.82rem; color: var(--muted); }
+
+  /* ── Slide 1: portada ────────────────────────────────────── */
+  .portada-accent {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 1 — PORTADA               ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide active">
+    <div class="label">Testing automatizado · 2026</div>
+    <h1><span class="portada-accent">Selenium</span></h1>
+    <p class="sub">Automatización y pruebas de aplicaciones web</p>
+    <div style="margin-top:40px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <span class="pill">Python</span>
+      <span class="pill">WebDriver</span>
+      <span class="pill">Chrome</span>
+      <span class="pill2 pill">Captus Web</span>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 2 — ¿QUÉ ES SELENIUM?     ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>¿Qué es Selenium?</h2>
+    <div class="list">
+      <ul style="list-style:none;">
+        <li><span class="num">1</span> Herramienta <strong>open source</strong> para automatizar navegadores web</li>
+        <li><span class="num">2</span> Creado en <strong>2004</strong> por Jason Huggins en ThoughtWorks</li>
+        <li><span class="num">3</span> Permite controlar Chrome, Firefox, Edge y Safari <strong>desde código</strong></li>
+        <li><span class="num">4</span> Soporta Python, Java, JavaScript, C#, Ruby</li>
+        <li><span class="num">5</span> Estándar de la industria para <strong>pruebas end-to-end</strong></li>
+      </ul>
+    </div>
+    <p class="sub" style="margin-top:24px;">
+      "Si un usuario puede hacerlo en el browser, Selenium también puede hacerlo."
+    </p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 3 — ECOSISTEMA            ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>El ecosistema Selenium</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h3>WebDriver</h3>
+        <p>Controla el navegador directamente. Es el componente principal que usamos en código.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎬</div>
+        <h3>IDE</h3>
+        <p>Plugin para Chrome y Firefox. Graba y reproduce acciones sin escribir código.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌐</div>
+        <h3>Grid</h3>
+        <p>Ejecuta tests en paralelo en múltiples máquinas y browsers a la vez.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 4 — CÓMO FUNCIONA         ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>¿Cómo funciona?</h2>
+    <div class="flow">
+      <div class="flow-box">🐍 Tu código<br/><small style="color:var(--muted)">Python</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">⚙️ ChromeDriver<br/><small style="color:var(--muted)">puente</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">🌐 Chrome<br/><small style="color:var(--muted)">browser real</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">📄 Tu app web<br/><small style="color:var(--muted)">Captus</small></div>
+    </div>
+    <div class="list" style="margin-top:28px;">
+      <ul style="list-style:none;">
+        <li><span class="num">✓</span> El WebDriver abre un browser real, no un simulador</li>
+        <li><span class="num">✓</span> Habla con el browser a través del protocolo W3C WebDriver</li>
+        <li><span class="num">✓</span> Selenium Manager descarga ChromeDriver automáticamente (v4.6+)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 5 — ACCIONES PRINCIPALES  ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>Acciones principales</h2>
+    <pre>
+<span class="kw">from</span> <span class="cls">selenium</span> <span class="kw">import</span> <span class="fn">webdriver</span>
+<span class="kw">from</span> <span class="cls">selenium.webdriver.common.by</span> <span class="kw">import</span> <span class="cls">By</span>
+<span class="kw">from</span> <span class="cls">selenium.webdriver.support.ui</span> <span class="kw">import</span> <span class="cls">WebDriverWait</span>
+<span class="kw">from</span> <span class="cls">selenium.webdriver.support</span> <span class="kw">import</span> expected_conditions <span class="kw">as</span> EC
+
+driver = webdriver.<span class="fn">Chrome</span>()            <span class="cmt"># abre el navegador</span>
+driver.<span class="fn">get</span>(<span class="str">"http://localhost:5173"</span>)     <span class="cmt"># navega a una URL</span>
+
+campo = driver.<span class="fn">find_element</span>(<span class="cls">By</span>.ID, <span class="str">"email"</span>)  <span class="cmt"># encuentra elemento</span>
+campo.<span class="fn">send_keys</span>(<span class="str">"usuario@test.com"</span>)           <span class="cmt"># escribe texto</span>
+campo.<span class="fn">click</span>()                                   <span class="cmt"># hace click</span>
+
+<span class="cmt"># Esperar a que aparezca un elemento (máx 10 seg)</span>
+<span class="cls">WebDriverWait</span>(driver, <span class="num">10</span>).<span class="fn">until</span>(
+    EC.<span class="fn">visibility_of_element_located</span>((<span class="cls">By</span>.CSS_SELECTOR, <span class="str">".text-red-600"</span>))
+)
+driver.<span class="fn">quit</span>()                               <span class="cmt"># cierra el navegador</span></pre>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 6 — LOCALIZADORES         ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>Cómo encontrar elementos</h2>
+    <pre>
+<span class="cmt"># Por ID  →  la forma más rápida y recomendada</span>
+driver.<span class="fn">find_element</span>(<span class="cls">By</span>.ID, <span class="str">"email"</span>)
+
+<span class="cmt"># Por selector CSS  →  muy potente y expresivo</span>
+driver.<span class="fn">find_element</span>(<span class="cls">By</span>.CSS_SELECTOR, <span class="str">"button[type='submit']"</span>)
+
+<span class="cmt"># Por XPath  →  para estructuras complejas</span>
+driver.<span class="fn">find_element</span>(<span class="cls">By</span>.XPATH, <span class="str">"//button[contains(text(), '¿No tienes cuenta?')]"</span>)
+
+<span class="cmt"># Por NAME, CLASS_NAME, TAG_NAME también existen</span>
+driver.<span class="fn">find_element</span>(<span class="cls">By</span>.NAME, <span class="str">"password"</span>)</pre>
+    <p class="sub" style="margin-top:18px;">
+      Regla de oro: prefiere <strong>ID</strong> → CSS → XPath
+    </p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 7 — CAPTUS WEB            ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>La aplicación: Captus Web</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">⚛️</div>
+        <h3>Frontend</h3>
+        <p>React 18 + Vite + Tailwind CSS. Rutas con React Router v7.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🗄️</div>
+        <h3>Backend</h3>
+        <p>Supabase (PostgreSQL + Auth). 3 roles: Estudiante, Profesor, Admin.</p>
+      </div>
+      <div class="card">
+        <div class="icon">📚</div>
+        <h3>Funciones</h3>
+        <p>Cursos, tareas, notas, calendario, chatbot IA, estadísticas.</p>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:22px;">
+      La ruta <code style="color:var(--accent2)">/</code> es el formulario de <strong>Login / Registro</strong> — el punto de entrada testeado.
+    </p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 8 — LOS 6 TESTS           ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>Los 6 tests creados</h2>
+    <div class="list">
+      <ul style="list-style:none;">
+        <li><span class="num">1</span> <strong>Carga de página</strong> — los campos email y password son visibles</li>
+        <li><span class="num">2</span> <strong>Entrada de texto</strong> — los inputs aceptan y conservan valores</li>
+        <li><span class="num">3</span> <strong>Botón submit</strong> — está presente, visible y habilitado</li>
+        <li><span class="num">4</span> <strong>Toggle de registro</strong> — clic en el link muestra el campo Nombre</li>
+        <li><span class="num">5</span> <strong>Error por credenciales inválidas</strong> — aparece mensaje de error rojo</li>
+        <li><span class="num">6</span> <strong>Visibilidad de contraseña</strong> — el ícono del ojo alterna tipo password/text</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 9 — CÓDIGO EJEMPLO        ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>Test 5 — Credenciales inválidas</h2>
+    <pre>
+<span class="kw">def</span> <span class="fn">test_05_error_con_credenciales_invalidas</span>(<span class="cls">self</span>):
+    <span class="cmt"># 1. Escribir email y contraseña incorrectos</span>
+    <span class="cls">self</span>.driver.<span class="fn">find_element</span>(<span class="cls">By</span>.ID, <span class="str">"email"</span>).<span class="fn">send_keys</span>(<span class="str">"nadie@noexiste.xyz"</span>)
+    <span class="cls">self</span>.driver.<span class="fn">find_element</span>(<span class="cls">By</span>.ID, <span class="str">"password"</span>).<span class="fn">send_keys</span>(<span class="str">"claveInvalida999"</span>)
+
+    <span class="cmt"># 2. Hacer click en el botón de enviar</span>
+    <span class="cls">self</span>.driver.<span class="fn">find_element</span>(<span class="cls">By</span>.CSS_SELECTOR, <span class="str">"button[type='submit']"</span>).<span class="fn">click</span>()
+
+    <span class="cmt"># 3. Esperar hasta que aparezca el mensaje de error</span>
+    error = <span class="cls">self</span>.wait.<span class="fn">until</span>(
+        EC.<span class="fn">visibility_of_element_located</span>((<span class="cls">By</span>.CSS_SELECTOR, <span class="str">".text-red-600"</span>))
+    )
+
+    <span class="cmt"># 4. Afirmar que el error está visible</span>
+    <span class="cls">self</span>.<span class="fn">assertTrue</span>(error.<span class="fn">is_displayed</span>())</pre>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 10 — RESULTADOS           ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>Resultados de los tests</h2>
+    <div class="results">
+      <div class="result-row"><span class="badge pass">PASS</span> test_01 · Página de login carga correctamente <span class="time">0.8 s</span></div>
+      <div class="result-row"><span class="badge pass">PASS</span> test_02 · Campos aceptan texto <span class="time">0.4 s</span></div>
+      <div class="result-row"><span class="badge pass">PASS</span> test_03 · Botón submit visible y habilitado <span class="time">0.3 s</span></div>
+      <div class="result-row"><span class="badge pass">PASS</span> test_04 · Toggle de registro muestra campo Nombre <span class="time">1.1 s</span></div>
+      <div class="result-row"><span class="badge pass">PASS</span> test_05 · Error con credenciales inválidas <span class="time">3.2 s</span></div>
+      <div class="result-row"><span class="badge pass">PASS</span> test_06 · Toggle visibilidad de contraseña <span class="time">0.5 s</span></div>
+    </div>
+    <p class="sub" style="margin-top:20px;">
+      <strong style="color:var(--green)">6 / 6 tests pasaron</strong> &nbsp;·&nbsp; Tiempo total: ~6.3 s
+    </p>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 11 — CÓMO EJECUTAR        ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>¿Cómo ejecutar los tests?</h2>
+    <pre>
+<span class="cmt"># 1. Instalar Selenium</span>
+pip install selenium
+
+<span class="cmt"># 2. Correr la app (en otra terminal)</span>
+npm run dev        <span class="cmt"># inicia en http://localhost:5173</span>
+
+<span class="cmt"># 3. Ejecutar los tests</span>
+python -m unittest tests/selenium/test_captus.py -v
+
+<span class="cmt"># Resultado esperado:</span>
+<span class="cmt"># test_01_pagina_login_carga_correctamente ... ok</span>
+<span class="cmt"># test_02_campos_aceptan_texto .............. ok</span>
+<span class="cmt"># test_03_boton_submit_visible_y_habilitado . ok</span>
+<span class="cmt"># test_04_toggle_modo_registro .............. ok</span>
+<span class="cmt"># test_05_error_con_credenciales_invalidas .. ok</span>
+<span class="cmt"># test_06_toggle_visibilidad_contrasena ..... ok</span></pre>
+  </div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SLIDE 12 — CUÁNDO USAR SELENIUM ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="slide">
+    <h2>¿Cuándo usar Selenium?</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">✅</div>
+        <h3>Úsalo para…</h3>
+        <p>Flujos completos de usuario: login, registrar, navegar.<br/>Verificar que nada se rompe tras un cambio.<br/>Formularios y validaciones visuales.</p>
+      </div>
+      <div class="card">
+        <div class="icon">❌</div>
+        <h3>No lo uses para…</h3>
+        <p>Lógica interna de funciones (usa unit tests).<br/>Pruebas de APIs (usa Postman o pytest + requests).<br/>Código que cambia muy rápido.</p>
+      </div>
+    </div>
+    <p class="sub" style="margin-top:24px;">
+      Selenium es la última línea de defensa: prueba lo que el usuario <em>realmente</em> ve.
+    </p>
+  </div>
+
+</div><!-- /.deck -->
+
+<!-- ── Navegación ─────────────────────────────────────────── -->
+<nav class="nav">
+  <button class="nav-btn" id="prev" title="Anterior (←)">‹</button>
+  <span class="nav-counter" id="counter">1 / 12</span>
+  <button class="nav-btn" id="next" title="Siguiente (→)">›</button>
+</nav>
+
+<script>
+  const slides  = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  let current   = 0;
+
+  function go(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    counter.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    go(current - 1);
+  });
+</script>
+</body>
+</html>
