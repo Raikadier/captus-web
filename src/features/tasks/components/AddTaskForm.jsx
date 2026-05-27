@@ -200,7 +200,6 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
       <div className="bg-card rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header with logo and close button */}
         <div className="bg-primary/10 p-4 rounded-t-lg flex items-center justify-between">
-        <div className="bg-primary/10 p-4 rounded-t-lg flex items-center justify-between">
           <img src="/LogoCaptusAddTask.png" alt="Captus Logo" className="h-12" />
           <button
             onClick={onClose}
