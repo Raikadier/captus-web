@@ -51,10 +51,22 @@ export interface TaskFilter {
   searchText?: string;
 }
 
+/**
+ * SubTask — uses the legacy backend field names as returned by the API.
+ * NOTE: The API returns `id_SubTask`, `state`, `endDate`, `id_Category`,
+ * `id_Priority` — NOT the modern `id` / `completed` / `due_date` shape.
+ * Do not rename these fields; `useSubTasks.js` and `SubTasksModal.jsx`
+ * depend on the legacy names.
+ */
 export interface SubTask {
-  id: number;
+  id_SubTask: number;
   title: string;
-  completed: boolean;
+  description?: string | null;
+  /** true = completed */
+  state: boolean;
+  endDate?: string | null;        // ISO date string
+  id_Category?: number | null;
+  id_Priority?: number | null;
   parent_task_id: number;
   user_id: string;
   created_at: string;

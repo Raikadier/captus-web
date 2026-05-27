@@ -65,7 +65,7 @@ export default defineConfig({
           // Data fetching
           'vendor-query': ['@tanstack/react-query'],
           // Diagram engines — very large, only used on diagram pages
-          'vendor-diagrams': ['mermaid', 'cytoscape', '@monaco-editor/react'],
+          'vendor-diagrams': ['mermaid', '@monaco-editor/react'],
         },
       },
     },

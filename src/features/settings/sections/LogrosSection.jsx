@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Filter, Trophy, CheckCircle } from 'lucide-react'
 import { Button } from '../../../ui/button'
 import { Card } from '../../../ui/card'
@@ -16,6 +16,7 @@ export default function LogrosSection() {
   const { userAchievements, loading: achievementsLoading, error: achievementsError, refreshAchievements } = useAchievementsContext()
   const [statusFilter, setStatusFilter] = useState('all')
   const [difficultyFilter, setDifficultyFilter] = useState('all')
+  const hasShownInitialToast = useRef(false)
 
   // Combine config with user data
   const achievements = Object.keys(achievementsConfig).map(achievementId => {
@@ -47,10 +48,11 @@ export default function LogrosSection() {
   const unlockedAchievements = achievements.filter(a => a.userAchievement?.isCompleted).length
 
   useEffect(() => {
-    if (!achievementsLoading && achievementsError === null && userAchievements.length > 0) {
-      toast.success(`Logros actualizados: ${unlockedAchievements}/${totalAchievements} completados`, { duration: 3000 })
+    if (!achievementsLoading && achievementsError === null && userAchievements.length > 0 && !hasShownInitialToast.current) {
+      hasShownInitialToast.current = true
+      toast.success(`Logros cargados: ${unlockedAchievements}/${totalAchievements} completados`, { duration: 3000 })
     }
-  }, [achievementsLoading, achievementsError, userAchievements.length, unlockedAchievements, totalAchievements])
+  }, [achievementsLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-white'} rounded-xl shadow-sm`}>

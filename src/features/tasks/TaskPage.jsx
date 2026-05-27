@@ -397,7 +397,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={(taskId) => toggleTaskCompletion(taskId)}
+                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />
@@ -417,7 +417,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={(taskId) => toggleTaskCompletion(taskId)}
+                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                         onRefreshTasks={refetch}
@@ -440,7 +440,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={(taskId) => toggleTaskCompletion(taskId)}
+                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />
@@ -459,7 +459,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={(taskId) => toggleTaskCompletion(taskId)}
+                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />
