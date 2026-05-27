@@ -5,7 +5,7 @@ import { Progress } from '../../../ui/progress';
 import { useSubTasks } from '../../../hooks/useSubTasks';
 import SubTasksModal from './SubTasksModal';
 
-const TaskCard = ({
+const TaskCard = React.memo(({
   task,
   categories = [],
   priorities = [],
@@ -120,6 +120,16 @@ const TaskCard = ({
       />
     </div>
   );
-};
+}, (prev, next) =>
+  prev.task.id === next.task.id &&
+  prev.task.completed === next.task.completed &&
+  prev.task.title === next.task.title &&
+  prev.task.updated_at === next.task.updated_at &&
+  prev.categories === next.categories &&
+  prev.priorities === next.priorities &&
+  prev.showActions === next.showActions
+);
+
+TaskCard.displayName = 'TaskCard';
 
 export default TaskCard;

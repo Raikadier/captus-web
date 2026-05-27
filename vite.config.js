@@ -33,8 +33,45 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Core React runtime — loaded first, cached indefinitely
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          // Radix UI primitives — large but stable
+          'vendor-radix': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-select',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-alert-dialog',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-label',
+            '@radix-ui/react-scroll-area',
+            '@radix-ui/react-switch',
+            '@radix-ui/react-progress',
+            '@radix-ui/react-avatar',
+          ],
+          // Charts — heavy, only used on stats/calendar pages
+          'vendor-charts': ['recharts'],
+          // Animation — loaded after first paint
+          'vendor-motion': ['framer-motion'],
+          // Supabase client
+          'vendor-supabase': ['@supabase/supabase-js'],
+          // Data fetching
+          'vendor-query': ['@tanstack/react-query'],
+          // Diagram engines — very large, only used on diagram pages
+          'vendor-diagrams': ['mermaid', 'cytoscape', '@monaco-editor/react'],
+        },
+      },
+    },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-dialog', 'mermaid'],
+    entries: ['index.html'],
+    include: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
   },
 });

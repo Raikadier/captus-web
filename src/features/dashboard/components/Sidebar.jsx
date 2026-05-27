@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import {
@@ -17,7 +17,7 @@ import {
   GitBranch,
 } from 'lucide-react'
 
-const Sidebar = ({ onCollapseChange }) => {
+const Sidebar = memo(({ onCollapseChange }) => {
   const location = useLocation()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -137,6 +137,8 @@ const Sidebar = ({ onCollapseChange }) => {
       </div>
     </div>
   );
-};
+});
+
+Sidebar.displayName = 'Sidebar';
 
 export default Sidebar;
