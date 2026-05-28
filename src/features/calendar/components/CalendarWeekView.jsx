@@ -1,7 +1,6 @@
 import React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTheme } from '../../../context/themeContext'
-import { getEventsForDate, getTasksForDate } from '../helpers/calendarUtils'
 
 const HOUR_HEIGHT = 60
 const HOURS = Array.from({ length: 15 }, (_, i) => i + 7)
