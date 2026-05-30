@@ -23,7 +23,7 @@ export default function CalendarDayView({ selectedDate, tasks, events, onTaskCli
               </div>
               <div className="flex-1 pl-4 pb-4 space-y-2 border-l border-transparent group-hover:border-border/50 -ml-[1px]">
                 {hourEvents.map(event => (
-                  <div key={`event-${event.id}`} className={`p-2 rounded-lg border cursor-pointer hover:opacity-80 ${getEventColor(event.type)}`} onClick={() => onEventClick(event)}>
+                  <div key={`event-${event.id}`} className={`p-2 rounded-lg border cursor-pointer hover:opacity-80 ${getEventColor(event.type)}`} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onEventClick(event)}>
                     <div className="p-2 bg-card/50 rounded-xl backdrop-blur-sm"><Clock size={16} /></div>
                     <div>
                       <h4 className="text-sm font-semibold">{event.title}</h4>
@@ -50,7 +50,7 @@ export default function CalendarDayView({ selectedDate, tasks, events, onTaskCli
             {dayTasks.map(task => (
               <div key={`task-${task.id}`}
                 className={`p-3 rounded-xl border transition-all hover:shadow-md cursor-pointer flex items-start justify-between gap-3 ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'opacity-60 grayscale' : ''}`}
-                onClick={() => onTaskClick(task)}>
+                role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onTaskClick(task)}>
                 <div className="flex-1 min-w-0">
                   <h4 className={`font-semibold text-sm truncate ${task.state ? 'line-through' : ''}`}>{task.title}</h4>
                   {task.description && <p className="text-xs opacity-80 mt-1 line-clamp-1">{task.description}</p>}

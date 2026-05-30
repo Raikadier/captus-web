@@ -321,7 +321,7 @@ export default function StudentCourseDetailPage() {
                 <div
                   key={item.id}
                   className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors cursor-pointer"
-                  onClick={() => {}}
+                  role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => {}}
                 >
                   <div className="flex items-center gap-3">
                     {getTypeIcon(item.type)}

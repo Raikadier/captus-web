@@ -32,7 +32,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
             {dayTasks.map(task => (
               <div key={`task-${task.id}`}
                 className={`p-4 rounded-xl border-2 ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'opacity-60' : ''} cursor-pointer`}
-                onClick={() => onTaskClick(task)}>
+                role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onTaskClick(task)}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">📋</span>
@@ -48,7 +48,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
               </div>
             ))}
             {dayEvents.map(event => (
-              <div key={`event-${event.id}`} className="p-4 rounded-xl border-2 border-blue-200 bg-blue-50 cursor-pointer" onClick={() => onEventClick(event)}>
+              <div key={`event-${event.id}`} className="p-4 rounded-xl border-2 border-blue-200 bg-blue-50 cursor-pointer" role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onEventClick(event)}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">📅</span>

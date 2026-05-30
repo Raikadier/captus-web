@@ -203,7 +203,7 @@ export default function AdminCoursesPage() {
               <Label>Emails de estudiantes</Label>
               <textarea
                 className="w-full border border-border rounded-md p-2 text-sm bg-background min-h-28 resize-none focus:outline-none focus:ring-2 focus:ring-ring"
-                placeholder="uno@ejemplo.com&#10;dos@ejemplo.com&#10;…"
+                aria-label="uno@ejemplo.com&#10;dos@ejemplo.com&#10;…" placeholder="uno@ejemplo.com&#10;dos@ejemplo.com&#10;…"
                 value={enrollEmails}
                 onChange={e => setEnrollEmails(e.target.value)}
               />

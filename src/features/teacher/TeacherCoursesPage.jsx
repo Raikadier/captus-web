@@ -82,7 +82,7 @@ export default function TeacherCoursesPage() {
           <div
             key={course.id}
             className="p-6 bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-all cursor-pointer"
-            onClick={() => navigate(`/teacher/courses/${course.id}`)}
+            role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => navigate(`/teacher/courses/${course.id}`)}
           >
             <div className="flex items-start justify-between mb-4">
               <div>

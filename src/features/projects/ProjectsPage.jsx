@@ -105,7 +105,7 @@ export default function ProjectsPage() {
                         <div
                             key={project.id}
                             className="bg-card rounded-xl shadow-sm border border-border hover:shadow-md transition-all cursor-pointer group"
-                            onClick={() => navigate(`/projects/${project.id}`)}
+                            role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => navigate(`/projects/${project.id}`)}
                         >
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-4">

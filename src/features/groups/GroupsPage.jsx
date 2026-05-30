@@ -316,7 +316,7 @@ export default function GroupsPage() {
                         {suggestedStudents.map((student) => (
                           <div
                             key={student.id}
-                            onClick={() => addStudent(student)}
+                            role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => addStudent(student)}
                             className="px-4 py-2 hover:bg-accent cursor-pointer text-sm"
                           >
                             <div className="font-medium">{student.name}</div>

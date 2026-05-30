@@ -71,7 +71,7 @@ export default function CalendarWeekView({
                 const isToday = day.toDateString() === new Date().toDateString()
                 const isSelected = day.toDateString() === selectedDate.toDateString()
                 return (
-                  <div key={i} className={`flex-1 text-center py-2 border-r border-border last:border-r-0 cursor-pointer active:scale-[0.97] active:opacity-90 transition-transform transition-colors ${isSelected ? 'bg-primary/5' : ''}`} onClick={() => setSelectedDate(day)}>
+                  <div key={i} className={`flex-1 text-center py-2 border-r border-border last:border-r-0 cursor-pointer active:scale-[0.97] active:opacity-90 transition-transform transition-colors ${isSelected ? 'bg-primary/5' : ''}`} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => setSelectedDate(day)}>
                     <div className="text-xs font-medium text-muted-foreground">{DAY_NAMES[day.getDay()]}</div>
                     <div className={`text-2xl font-medium mt-1 ${isToday ? 'w-10 h-10 mx-auto rounded-full bg-primary text-primary-foreground flex items-center justify-center' : 'text-foreground'}`}>
                       {day.getDate()}
@@ -112,7 +112,7 @@ export default function CalendarWeekView({
                       <div key={item.isTask ? `task-${item.id}` : `event-${item.id}`}
                         className={`absolute left-1 right-1 rounded-xl px-2 py-1 cursor-pointer transition-all shadow-sm overflow-hidden ${item.color.bg} ${item.color.hover} ${item.color.text}`}
                         style={{ top: `${item.top}px`, height: `${item.height}px`, minHeight: '24px', zIndex: 10 + itemIndex }}
-                        onClick={(e) => { e.stopPropagation(); item.isTask ? onTaskClick(item) : onEventClick(item) }}>
+                        role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={(e) => { e.stopPropagation(); item.isTask ? onTaskClick(item) : onEventClick(item) }}>
                         <div className="text-xs font-semibold truncate">{item.title}</div>
                         {item.height > 35 && (
                           <div className="text-xs opacity-90 truncate">{item.displayTime}{item.type && !item.isTask ? ` • ${item.type}` : ''}</div>

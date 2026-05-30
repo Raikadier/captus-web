@@ -173,7 +173,7 @@ export default function CalendarPage() {
                   className={`min-h-32 p-3 border-2 rounded-xl hover:shadow-md cursor-pointer transition-all duration-200 ${
                     isSelected ? 'ring-2 ring-primary bg-primary/10 border-primary/20' : 'border-border hover:border-primary/20 bg-card'
                   }`}
-                  onClick={() => { setSelectedDate(date); setView('day') }}>
+                  role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => { setSelectedDate(date); setView('day') }}>
                   <div className={`text-sm font-semibold mb-2 ${isToday ? 'w-7 h-7 bg-primary text-primary-foreground rounded-full flex items-center justify-center' : 'text-foreground'}`}>
                     {date.getDate()}
                   </div>
@@ -182,7 +182,7 @@ export default function CalendarPage() {
                       <div key={`task-${task.id}`}
                         className={`text-xs p-1.5 rounded-lg border ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'line-through opacity-60' : ''} cursor-pointer hover:opacity-80`}
                         title={task.title}
-                        onClick={(e) => { e.stopPropagation(); setShowTaskDetails(task) }}>
+                        role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={(e) => { e.stopPropagation(); setShowTaskDetails(task) }}>
                         📋 {task.title.length > 8 ? `${task.title.substring(0, 8)}...` : task.title}
                       </div>
                     ))}

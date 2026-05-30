@@ -156,7 +156,7 @@ const TaskListView = () => {
                     <div
                       key={task.id}
                       className={`p-4 hover:bg-muted transition-colors cursor-pointer border-l-4 ${getPriorityColor(task.priority?.name)}`}
-                      onClick={() => handleTaskComplete(task.id)}
+                      role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => handleTaskComplete(task.id)}
                     >
                       <div className="flex items-start space-x-4">
                         {/* Checkbox */}

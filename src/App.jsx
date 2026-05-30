@@ -9,6 +9,7 @@ import Loading from './ui/loading';
 import { Toaster } from 'sonner';
 import AchievementNotification from './components/shared/AchievementNotification';
 import { useAchievementNotifications } from './hooks/useAchievementNotifications';
+import ErrorBoundary from './components/shared/ErrorBoundary';
 // Layouts are always needed once authenticated — keep eager
 import MainLayout from './features/dashboard/components/MainLayout';
 import AdminLayout from './features/admin/components/AdminLayout';
@@ -148,15 +149,17 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider>
-          <AchievementProvider>
-            <AppContent />
-          </AchievementProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemeProvider>
+            <AchievementProvider>
+              <AppContent />
+            </AchievementProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
