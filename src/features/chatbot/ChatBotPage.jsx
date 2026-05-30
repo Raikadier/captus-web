@@ -186,11 +186,11 @@ const ChatBotPage = () => {
                 <button
                   key={conv.id}
                   onClick={() => setActiveConversation(conv.id)}
-                  className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-200 ${activeConversation === conv.id ? 'bg-white shadow-sm' : 'hover:bg-gray-100'
+                  className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-200 ${activeConversation === conv.id ? 'bg-white shadow-sm' : 'hover:bg-muted'
                     }`}
                 >
-                  <p className="font-medium text-gray-900 text-sm truncate">{conv.title || 'Nueva conversación'}</p>
-                  <p className="text-xs text-gray-500 truncate mt-1">
+                  <p className="font-medium text-foreground text-sm truncate">{conv.title || 'Nueva conversación'}</p>
+                  <p className="text-xs text-muted-foreground truncate mt-1">
                     {new Date(conv.updatedAt).toLocaleDateString()}
                   </p>
                 </button>
@@ -254,7 +254,7 @@ const ChatBotPage = () => {
                         : 'bg-card border-l-4 border-primary/50'
                         } rounded-xl p-4 shadow-sm`}
                     >
-                      <p className="text-gray-900 text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                      <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
 
                       {message.action && (
                         <div className="mt-3 flex items-center gap-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md border border-green-100 w-fit">
@@ -263,7 +263,7 @@ const ChatBotPage = () => {
                         </div>
                       )}
 
-                      <p className="text-xs text-gray-400 mt-2">
+                      <p className="text-xs text-slate-400 mt-2">
                         {message.timestamp.toLocaleTimeString('es-ES', {
                           hour: '2-digit',
                           minute: '2-digit',

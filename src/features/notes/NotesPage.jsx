@@ -74,7 +74,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-3">
               <div className={`w-12 h-12 ${getColorClass(note.color).split(' ')[0]} rounded-lg flex items-center justify-center`}>
-                <FileText size={24} className="text-gray-700" />
+                <FileText size={24} className="text-foreground" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-foreground">Detalle de Nota</h2>
@@ -283,7 +283,7 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
           <Pin size={14} className={note.pinned ? 'text-primary' : 'text-muted-foreground'} />
         </button>
         <div className="flex justify-between items-start mb-3 pr-8">
-          <h3 className="font-semibold text-gray-900 text-base flex-1">{note.title}</h3>
+          <h3 className="font-semibold text-foreground text-base flex-1">{note.title}</h3>
         </div>
         <p className="text-muted-foreground text-sm mb-3 line-clamp-3">{note.content}</p>
         <div className="flex justify-between items-center">
@@ -293,7 +293,7 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
             </Badge>
           ) : (<div></div>)}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-muted-foreground mt-2">
           Editado:{' '}
           {note.lastEdited.includes('-') ?
             new Date(note.lastEdited).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })

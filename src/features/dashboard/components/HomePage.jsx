@@ -187,10 +187,10 @@ const HomePage = () => {
             <div className="relative">
               <Button
                 variant="outline"
-                className="border-gray-300 relative bg-transparent"
+                className="border-slate-300 relative bg-transparent"
                 onClick={handleToggleDropdown}
               >
-                <Bell size={18} className="text-gray-500" />
+                <Bell size={18} className="text-muted-foreground" />
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
@@ -228,7 +228,7 @@ const HomePage = () => {
               {loading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Cargando tareas...</p>
+                  <p className="mt-2 text-muted-foreground">Cargando tareas...</p>
                 </div>
               ) : pendingTasks.length === 0 ? (
                 <div className="text-center py-8">

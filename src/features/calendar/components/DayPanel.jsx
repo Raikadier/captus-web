@@ -41,7 +41,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
                       {task.description && <p className="text-sm text-muted-foreground mt-1">{task.description}</p>}
                     </div>
                   </div>
-                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'}`}>
                     {task.state ? 'Completada' : 'Pendiente'}
                   </span>
                 </div>

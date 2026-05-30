@@ -171,7 +171,7 @@ const CategoryManagement = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Tag className="text-primary" size={24} />
             Gestión de Categorías
           </h2>
@@ -279,7 +279,7 @@ const CategoryManagement = () => {
                           variant={getCategoryStats(category.id_Category).completionRate === 100 ? "default" : "outline"}
                           className={`text-xs ${getCategoryStats(category.id_Category).completionRate === 100
                               ? "bg-green-100 text-green-800 border-green-200"
-                              : "text-gray-600 border-gray-200"
+                              : "text-muted-foreground border-border"
                             }`}
                         >
                           {getCategoryStats(category.id_Category).completionRate}% completado
@@ -310,7 +310,7 @@ const CategoryManagement = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleEdit(category)}
-                    className="text-gray-600 hover:text-primary"
+                    className="text-muted-foreground hover:text-primary"
                   >
                     <Edit2 size={16} />
                   </Button>
@@ -368,7 +368,7 @@ const CategoryManagement = () => {
                     <li>• Las estadísticas relacionadas se actualizarán automáticamente</li>
                   </ul>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock size={16} />
                   <span>El botón de confirmación estará disponible en {deleteCountdown} segundos</span>
                 </div>

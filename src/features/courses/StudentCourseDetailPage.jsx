@@ -142,7 +142,7 @@ export default function StudentCourseDetailPage() {
       case 'PDF': return <FilePdf className="w-4 h-4 text-red-600" />
       case 'Apunte': return <Bookmark className="w-4 h-4 text-primary" />
       case 'Quiz': return <CheckCircle2 className="w-4 h-4 text-purple-600" />
-      default: return <FileText className="w-4 h-4 text-gray-600" />
+      default: return <FileText className="w-4 h-4 text-muted-foreground" />
     }
   }
 
@@ -349,7 +349,7 @@ export default function StudentCourseDetailPage() {
         <TabsContent value="assignments">
           <Card className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Tareas del Curso</h2>
+              <h2 className="text-xl font-semibold text-foreground">Tareas del Curso</h2>
             </div>
 
             <div className="space-y-3">

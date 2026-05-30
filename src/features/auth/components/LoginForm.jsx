@@ -115,7 +115,7 @@ const LoginForm = () => {
                     onClick={() => setUserRole('student')}
                     className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${userRole === 'student'
                       ? 'border-primary bg-primary/10'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      : 'border-border bg-white hover:border-slate-300'
                       }`}
                   >
                     <GraduationCap className={`h-6 w-6 ${userRole === 'student' ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -128,7 +128,7 @@ const LoginForm = () => {
                     onClick={() => setUserRole('teacher')}
                     className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${userRole === 'teacher'
                       ? 'border-primary bg-primary/10'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      : 'border-border bg-white hover:border-slate-300'
                       }`}
                   >
                     <User className={`h-6 w-6 ${userRole === 'teacher' ? 'text-primary' : 'text-muted-foreground'}`} />

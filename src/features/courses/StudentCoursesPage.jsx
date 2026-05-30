@@ -71,15 +71,15 @@ export default function StudentCoursesPage() {
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-24">
 
         <FadeIn>
-          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-white border-gray-200'}`}>
+          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-white border-border'}`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>
-                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Mis Cursos</h1>
-                  <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Gestiona tu aprendizaje y progreso académico</p>
+                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-foreground'}`}>Mis Cursos</h1>
+                  <p className={`${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>Gestiona tu aprendizaje y progreso académico</p>
                 </div>
               </div>
 
@@ -125,10 +125,10 @@ export default function StudentCoursesPage() {
           {courses.length === 0 ? (
             <div className="col-span-full">
               <FadeIn>
-                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-gray-900/50' : 'border-gray-200 bg-white/50'}`}>
-                  <GraduationCap className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-gray-700' : 'text-gray-300'}`} />
-                  <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>No estás inscrito en cursos</h3>
-                  <p className={`mb-6 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-white/50'}`}>
+                  <GraduationCap className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-foreground' : 'text-slate-300'}`} />
+                  <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-foreground'}`}>No estás inscrito en cursos</h3>
+                  <p className={`mb-6 ${darkMode ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                     Únete a un curso usando un código de invitación para comenzar.
                   </p>
                   <Button onClick={() => setIsJoinDialogOpen(true)}>
@@ -142,7 +142,7 @@ export default function StudentCoursesPage() {
             courses.map((course) => (
               <StaggerItem key={course.id}>
                 <Card
-                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group flex flex-col ${darkMode ? 'bg-card hover:bg-gray-800' : 'bg-white hover:shadow-lg'
+                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group flex flex-col ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-white hover:shadow-lg'
                     }`}
                   onClick={() => navigate(`/courses/${course.id}`)}
                 >
@@ -166,18 +166,18 @@ export default function StudentCoursesPage() {
                     <div className="space-y-4 mb-6 flex-1">
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className={`flex items-center gap-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                          <span className={`flex items-center gap-1 ${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>
                             <BarChart3 className="w-4 h-4" />
                             Progreso
                           </span>
-                          <span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          <span className={`font-semibold ${darkMode ? 'text-white' : 'text-foreground'}`}>
                             {course.progress}%
                           </span>
                         </div>
                         <Progress value={course.progress} className="h-2" />
                       </div>
 
-                      <div className={`flex items-center gap-2 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <div className={`flex items-center gap-2 text-xs ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`}>
                         <Calendar className="w-3 h-3" />
                         <span>Inscrito: {new Date(course.enrolled_at).toLocaleDateString()}</span>
                       </div>
@@ -185,7 +185,7 @@ export default function StudentCoursesPage() {
 
                     <div className="pt-4 border-t border-border mt-auto">
                       <Button
-                        className={`w-full justify-between group-hover:bg-primary group-hover:text-white transition-colors ${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-50 text-gray-700 hover:bg-primary'
+                        className={`w-full justify-between group-hover:bg-primary group-hover:text-white transition-colors ${darkMode ? 'bg-slate-800 text-slate-300' : 'bg-background text-foreground hover:bg-primary'
                           }`}
                         variant="ghost"
                       >

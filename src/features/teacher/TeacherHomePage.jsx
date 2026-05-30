@@ -111,24 +111,24 @@ export default function TeacherHomePage() {
           </CardHeader>
           <CardContent>
             {courses.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No tienes cursos activos. ¡Crea uno nuevo!
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {courses.map((course) => (
-                  <div key={course.id} className="p-4 border border-gray-200 rounded-xl hover:shadow-md transition-all">
+                  <div key={course.id} className="p-4 border border-border rounded-xl hover:shadow-md transition-all">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">{course.name}</h3>
-                        <p className="text-sm text-gray-600">{course.students} estudiantes</p>
+                        <h3 className="text-lg font-semibold text-foreground">{course.name}</h3>
+                        <p className="text-sm text-muted-foreground">{course.students} estudiantes</p>
                       </div>
                       <Button variant="ghost" size="sm" onClick={() => navigate(`/teacher/courses/${course.id}`)}>
                         Ver curso
                       </Button>
                     </div>
                     {/* Pending tasks count is currently 0 from backend, we can hide it or calculate it if we fetch reviews differently */}
-                    {/* <div className="mt-3 text-sm text-gray-600">Tareas pendientes: {course.pendingTasks}</div> */}
+                    {/* <div className="mt-3 text-sm text-muted-foreground">Tareas pendientes: {course.pendingTasks}</div> */}
                   </div>
                 ))}
               </div>
@@ -145,15 +145,15 @@ export default function TeacherHomePage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {upcomingEvents.length === 0 ? (
-              <div className="text-center py-4 text-gray-500">
+              <div className="text-center py-4 text-muted-foreground">
                 No hay eventos próximos.
               </div>
             ) : (
               upcomingEvents.map((event) => (
-                <div key={event.id} className="p-3 border border-gray-200 rounded-lg flex items-center justify-between">
+                <div key={event.id} className="p-3 border border-border rounded-lg flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">{event.title}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-medium text-foreground">{event.title}</p>
+                    <p className="text-sm text-muted-foreground">
                       {new Date(event.start_date).toLocaleDateString()} • {new Date(event.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -175,15 +175,15 @@ export default function TeacherHomePage() {
           </CardHeader>
           <CardContent className="space-y-3">
             {pendingReviews.length === 0 ? (
-              <div className="text-center py-4 text-gray-500">
+              <div className="text-center py-4 text-muted-foreground">
                 No hay revisiones pendientes.
               </div>
             ) : (
               pendingReviews.map((review) => (
-                <div key={review.id} className="p-3 border border-gray-200 rounded-lg flex items-center justify-between">
+                <div key={review.id} className="p-3 border border-border rounded-lg flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">{review.student?.name || 'Estudiante'}</p>
-                    <p className="text-sm text-gray-600">{review.assignment?.title} • {review.assignment?.course?.name}</p>
+                    <p className="font-medium text-foreground">{review.student?.name || 'Estudiante'}</p>
+                    <p className="text-sm text-muted-foreground">{review.assignment?.title} • {review.assignment?.course?.name}</p>
                   </div>
                   <Button variant="outline" size="sm" onClick={() => navigate(`/teacher/courses/${review.assignment?.course_id}/assignments/${review.assignment_id}/submissions`)}>
                     Revisar

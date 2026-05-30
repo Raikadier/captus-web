@@ -54,7 +54,7 @@ export default function AparienciaSection() {
               <button key={color.name} onClick={() => changeAccentColor(color.name)}
                 className={`w-10 h-10 rounded-full ${color.bg} flex items-center justify-center transition-all ${
                   accentColor === color.name
-                    ? `border-2 ${darkMode ? 'border-white' : 'border-gray-900'} ring-2 ${darkMode ? 'ring-gray-700' : 'ring-gray-200'}`
+                    ? `border-2 ${darkMode ? 'border-white' : 'border-gray-900'} ring-2 ${darkMode ? 'ring-gray-700' : 'ring-border'}`
                     : 'hover:scale-110'
                 }`}>
                 {accentColor === color.name && <Check size={20} className="text-white" />}

@@ -59,8 +59,8 @@ export default function NotificationsPage() {
         <FadeIn>
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
-              <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Notificaciones</h1>
-              <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-1`}>
+              <h1 className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-foreground'}`}>Notificaciones</h1>
+              <p className={`${darkMode ? 'text-slate-400' : 'text-muted-foreground'} mt-1`}>
                 Mantente al día con tus actividades académicas y personales
               </p>
             </div>
@@ -68,7 +68,7 @@ export default function NotificationsPage() {
               <Button
                 variant="outline"
                 onClick={handleMarkAllAsRead}
-                className={`${darkMode ? 'bg-card border-gray-700 hover:bg-gray-800 text-gray-300' : 'bg-white hover:bg-gray-50'}`}
+                className={`${darkMode ? 'bg-card border-gray-700 hover:bg-slate-800 text-slate-300' : 'bg-white hover:bg-background'}`}
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Marcar todas como leídas
@@ -91,7 +91,7 @@ export default function NotificationsPage() {
                 onClick={() => setFilter(f.id)}
                 className={`rounded-full px-6 ${filter === f.id
                   ? 'bg-primary text-primary-foreground shadow-md'
-                  : `${darkMode ? 'text-gray-400 hover:bg-gray-800' : 'text-gray-600 hover:bg-white hover:shadow-sm'}`
+                  : `${darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-muted-foreground hover:bg-white hover:shadow-sm'}`
                   }`}
               >
                 {f.label}
@@ -103,12 +103,12 @@ export default function NotificationsPage() {
         <StaggerContainer className="space-y-4">
           {filteredNotifications.length === 0 ? (
             <FadeIn>
-              <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-gray-900/50' : 'border-gray-200 bg-white/50'}`}>
-                <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${darkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
-                  <Bell className={`h-8 w-8 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} />
+              <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-white/50'}`}>
+                <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${darkMode ? 'bg-slate-800' : 'bg-muted'}`}>
+                  <Bell className={`h-8 w-8 ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`} />
                 </div>
-                <h3 className={`text-lg font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Sin notificaciones</h3>
-                <p className={`${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                <h3 className={`text-lg font-medium ${darkMode ? 'text-white' : 'text-foreground'}`}>Sin notificaciones</h3>
+                <p className={`${darkMode ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
                   No tienes notificaciones {filter !== 'all' ? 'en esta categoría' : ''}
                 </p>
               </div>
@@ -122,14 +122,14 @@ export default function NotificationsPage() {
                       ? 'bg-blue-900/10 border-l-4 border-l-blue-500 shadow-lg'
                       : 'bg-white border-l-4 border-l-blue-500 shadow-md'
                     : darkMode
-                      ? 'bg-card hover:bg-gray-800/80'
+                      ? 'bg-card hover:bg-slate-800/80'
                       : 'bg-white hover:shadow-md'
                     }`}
                 >
                   <div className="flex items-start gap-4">
                     <div className={`p-3 rounded-xl flex-shrink-0 ${!notification.read
                       ? darkMode ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-50 text-blue-600'
-                      : darkMode ? 'bg-gray-800 text-gray-500' : 'bg-gray-100 text-gray-500'
+                      : darkMode ? 'bg-slate-800 text-muted-foreground' : 'bg-muted text-muted-foreground'
                       }`}>
                       <Bell size={20} />
                     </div>
@@ -137,18 +137,18 @@ export default function NotificationsPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start gap-4">
                         <h3 className={`font-semibold text-lg leading-tight ${!notification.read
-                          ? darkMode ? 'text-white' : 'text-gray-900'
-                          : darkMode ? 'text-gray-300' : 'text-gray-700'
+                          ? darkMode ? 'text-white' : 'text-foreground'
+                          : darkMode ? 'text-slate-300' : 'text-foreground'
                           }`}>
                           {notification.title}
                         </h3>
-                        <span className={`text-xs flex items-center gap-1 whitespace-nowrap ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                        <span className={`text-xs flex items-center gap-1 whitespace-nowrap ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`}>
                           <Clock size={12} />
                           {new Date(notification.created_at).toLocaleString()}
                         </span>
                       </div>
 
-                      <p className={`mt-2 leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <p className={`mt-2 leading-relaxed ${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>
                         {notification.body}
                       </p>
 
@@ -156,7 +156,7 @@ export default function NotificationsPage() {
                         <div className="mt-3 flex items-center gap-2">
                           <Badge
                             variant="secondary"
-                            className={`text-xs font-medium px-2.5 py-0.5 rounded-md ${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'
+                            className={`text-xs font-medium px-2.5 py-0.5 rounded-md ${darkMode ? 'bg-slate-800 text-slate-300' : 'bg-muted text-muted-foreground'
                               }`}
                           >
                             {notification.event_type.replace('_', ' ')}
@@ -172,7 +172,7 @@ export default function NotificationsPage() {
                           variant="ghost"
                           onClick={() => handleMarkAsRead(notification.id)}
                           title="Marcar como leída"
-                          className={`h-8 w-8 ${darkMode ? 'text-gray-400 hover:text-blue-400 hover:bg-blue-900/20' : 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'}`}
+                          className={`h-8 w-8 ${darkMode ? 'text-slate-400 hover:text-blue-400 hover:bg-blue-900/20' : 'text-slate-400 hover:text-blue-600 hover:bg-blue-50'}`}
                         >
                           <CheckCircle size={18} />
                         </Button>

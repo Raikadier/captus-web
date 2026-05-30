@@ -32,10 +32,10 @@ function SettingsMenuItem({ icon, label, active, onClick }) {
     <button onClick={onClick} type="button"
       className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
         active ? 'bg-primary/10 text-primary'
-          : darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-50'
+          : darkMode ? 'text-slate-300 hover:bg-gray-700' : 'text-foreground hover:bg-background'
       }`}>
       <div className="flex items-center space-x-3">
-        <span className={active ? 'text-primary' : darkMode ? 'text-gray-400' : 'text-gray-500'}>{icon}</span>
+        <span className={active ? 'text-primary' : darkMode ? 'text-slate-400' : 'text-muted-foreground'}>{icon}</span>
         <span className="font-medium text-sm">{label}</span>
       </div>
     </button>

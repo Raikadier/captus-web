@@ -47,10 +47,10 @@ export default function TeacherCalendarPage() {
             </div>
           )}
           {events.map((e) => (
-            <div key={e.id || e.id_Event} className="p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors flex items-start justify-between group">
+            <div key={e.id || e.id_Event} className="p-4 border border-border rounded-xl hover:bg-background transition-colors flex items-start justify-between group">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">{e.title}</h3>
-                <div className="flex items-center gap-4 text-sm text-gray-500">
+                <h3 className="font-semibold text-foreground mb-1">{e.title}</h3>
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <CalendarIcon className="w-3 h-3" />
                     {new Date(e.date).toLocaleDateString()}
@@ -69,7 +69,7 @@ export default function TeacherCalendarPage() {
                   )}
                 </div>
                 {e.description && (
-                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">{e.description}</p>
+                  <p className="text-sm text-muted-foreground mt-2 line-clamp-2">{e.description}</p>
                 )}
               </div>
               <div className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium">

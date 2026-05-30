@@ -55,7 +55,7 @@ export default function CalendarDayView({ selectedDate, tasks, events, onTaskCli
                   <h4 className={`font-semibold text-sm truncate ${task.state ? 'line-through' : ''}`}>{task.title}</h4>
                   {task.description && <p className="text-xs opacity-80 mt-1 line-clamp-1">{task.description}</p>}
                 </div>
-                <span className={`px-2 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                <span className={`px-2 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'}`}>
                   {task.state ? 'Listo' : 'Pendiente'}
                 </span>
               </div>

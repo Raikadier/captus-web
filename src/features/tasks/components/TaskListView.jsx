@@ -97,7 +97,7 @@ const TaskListView = () => {
                 onClick={() => setViewMode('list')}
                 className={`px-4 py-2 rounded-md transition-colors ${viewMode === 'list'
                   ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:bg-gray-200'
+                  : 'text-muted-foreground hover:bg-slate-200'
                   }`}
               >
                 <List size={18} className="inline mr-2" />
@@ -107,7 +107,7 @@ const TaskListView = () => {
                 onClick={() => setViewMode('calendar')}
                 className={`px-4 py-2 rounded-md transition-colors ${viewMode === 'calendar'
                   ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:bg-gray-200'
+                  : 'text-muted-foreground hover:bg-slate-200'
                   }`}
               >
                 <Calendar size={18} className="inline mr-2" />

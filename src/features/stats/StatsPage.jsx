@@ -314,8 +314,8 @@ function StatsPageContent() {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Overall Completion Rate Pie Chart */}
-          <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Estado General de Tareas</h2>
+          <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Estado General de Tareas</h2>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -344,7 +344,7 @@ function StatsPageContent() {
               {completionRateData.map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: item.color }}></div>
-                  <span className="text-sm text-gray-600">{item.name} ({item.percentage}%)</span>
+                  <span className="text-sm text-muted-foreground">{item.name} ({item.percentage}%)</span>
                 </div>
               ))}
             </div>
@@ -399,8 +399,8 @@ function StatsPageContent() {
           </Card>
 
           {/* Priority Distribution */}
-          <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Distribución por Prioridad</h2>
+          <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Distribución por Prioridad</h2>
             <div className="h-64 w-full">
               {priorityDistribution.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -429,7 +429,7 @@ function StatsPageContent() {
                 {priorityDistribution.map((item, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: item.color }}></div>
-                    <span className="text-sm text-gray-600">{item.name} ({item.value})</span>
+                    <span className="text-sm text-muted-foreground">{item.name} ({item.value})</span>
                   </div>
                 ))}
               </div>

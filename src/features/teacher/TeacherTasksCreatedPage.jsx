@@ -42,18 +42,18 @@ export default function TeacherTasksCreatedPage() {
 
       <div className="space-y-3">
         {tasks.length === 0 && (
-          <div className="text-center py-10 bg-white rounded-xl border border-dashed border-gray-300">
-            <p className="text-gray-500">No has creado ninguna tarea aún.</p>
+          <div className="text-center py-10 bg-white rounded-xl border border-dashed border-slate-300">
+            <p className="text-muted-foreground">No has creado ninguna tarea aún.</p>
             <Button variant="link" onClick={() => navigate('/teacher/courses')}>Ir a mis cursos</Button>
           </div>
         )}
         {tasks.map((task) => (
-          <div key={task.id || task.id_Task} className="p-4 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow">
+          <div key={task.id || task.id_Task} className="p-4 bg-white rounded-xl shadow-sm border border-border flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">{task.title}</h3>
-              <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+              <h3 className="text-lg font-semibold text-foreground mb-1">{task.title}</h3>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                 {task.Category && (
-                  <span className="bg-gray-100 px-2 py-0.5 rounded text-xs">{task.Category.name}</span>
+                  <span className="bg-muted px-2 py-0.5 rounded text-xs">{task.Category.name}</span>
                 )}
                 <span className="flex items-center gap-1">
                   <Calendar className="w-3 h-3" />

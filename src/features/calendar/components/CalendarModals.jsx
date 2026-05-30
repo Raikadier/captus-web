@@ -27,7 +27,7 @@ export function TaskDetailsModal({ task, onClose }) {
               {task.description && <p className="text-muted-foreground mt-2">{task.description}</p>}
             </div>
             <div className="flex items-center gap-2">
-              <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+              <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'}`}>
                 {task.state ? 'Completada' : 'Pendiente'}
               </span>
               {task.id_Priority && (

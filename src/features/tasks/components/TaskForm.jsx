@@ -103,7 +103,7 @@ const TaskForm = ({ task, categories, priorities, onSubmit, onCancel, isModal = 
       case 1: return 'border-primary bg-primary/10';  // Baja
       case 2: return 'border-orange-500 bg-orange-50'; // Media - Naranja
       case 3: return 'border-red-500 bg-red-50';      // Alta - Roja
-      default: return 'border-gray-500 bg-gray-50';
+      default: return 'border-gray-500 bg-background';
     }
   };
 
@@ -111,12 +111,12 @@ const TaskForm = ({ task, categories, priorities, onSubmit, onCancel, isModal = 
     <div className={isModal ? "" : "bg-white rounded-lg shadow-sm border p-6"}>
       {!isModal && (
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-foreground">
             {task ? 'Editar Tarea' : 'Nueva Tarea'}
           </h3>
           <button
             onClick={onCancel}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-slate-400 hover:text-muted-foreground"
           >
             <X size={20} />
           </button>

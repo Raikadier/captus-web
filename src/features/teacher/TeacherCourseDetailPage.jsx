@@ -104,8 +104,8 @@ export default function TeacherCourseDetailPage() {
             <BookOpen className="text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{course.title}</h1>
-            <p className="text-gray-600 mt-2">{course.description}</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground">{course.title}</h1>
+            <p className="text-muted-foreground mt-2">{course.description}</p>
             <div className="mt-4 inline-flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full border border-green-200">
               <span className="text-sm font-medium text-green-800">Código de Invitación:</span>
               <span className="font-mono font-bold text-green-900">{course.invite_code}</span>
@@ -139,9 +139,9 @@ export default function TeacherCourseDetailPage() {
                   </Button>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-500 mb-2">{assign.description}</p>
+                  <p className="text-sm text-muted-foreground mb-2">{assign.description}</p>
                   <div className="flex items-center gap-4 text-sm">
-                    <span className="bg-gray-100 px-2 py-1 rounded">Vence: {assign.due_date ? new Date(assign.due_date).toLocaleDateString() : 'Sin fecha'}</span>
+                    <span className="bg-muted px-2 py-1 rounded">Vence: {assign.due_date ? new Date(assign.due_date).toLocaleDateString() : 'Sin fecha'}</span>
                     <span className="text-blue-600 font-medium flex items-center gap-1">
                       <ClipboardList className="w-4 h-4" />
                       Revisar Entregas
@@ -150,7 +150,7 @@ export default function TeacherCourseDetailPage() {
                 </CardContent>
               </Card>
             ))}
-            {displayedAssignments.length === 0 && <p className="text-gray-500 p-4">No hay tareas creadas.</p>}
+            {displayedAssignments.length === 0 && <p className="text-muted-foreground p-4">No hay tareas creadas.</p>}
           </TabsContent>
 
           <TabsContent value="students" className="mt-6 space-y-3">
@@ -188,20 +188,20 @@ export default function TeacherCourseDetailPage() {
               </Dialog>
             </div>
             {displayedStudents.map((s) => (
-              <div key={s.id} className="p-3 border border-gray-200 rounded-lg bg-white">
-                <p className="font-medium text-gray-900">{s.name}</p>
-                <p className="text-sm text-gray-600">{s.email}</p>
-                {s.is_mock && <span className="text-xs text-gray-400">(Mock Data)</span>}
+              <div key={s.id} className="p-3 border border-border rounded-lg bg-white">
+                <p className="font-medium text-foreground">{s.name}</p>
+                <p className="text-sm text-muted-foreground">{s.email}</p>
+                {s.is_mock && <span className="text-xs text-slate-400">(Mock Data)</span>}
               </div>
             ))}
-            {displayedStudents.length === 0 && <p className="text-gray-500">No hay estudiantes inscritos.</p>}
+            {displayedStudents.length === 0 && <p className="text-muted-foreground">No hay estudiantes inscritos.</p>}
           </TabsContent>
 
           <TabsContent value="announcements" className="mt-6 space-y-3">
             {mockAnnouncements.map((a) => (
-              <div key={a.id} className="p-3 border border-gray-200 rounded-lg bg-white">
-                <p className="font-medium text-gray-900">{a.title}</p>
-                <p className="text-sm text-gray-600">{a.body}</p>
+              <div key={a.id} className="p-3 border border-border rounded-lg bg-white">
+                <p className="font-medium text-foreground">{a.title}</p>
+                <p className="text-sm text-muted-foreground">{a.body}</p>
                 <span className="text-xs px-2 py-1 rounded-full bg-red-50 text-red-700 inline-block mt-2">{a.type}</span>
               </div>
             ))}
