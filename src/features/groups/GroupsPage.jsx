@@ -153,7 +153,7 @@ export default function GroupsPage() {
               </div>
               <Button
                 onClick={() => setShowCreateForm(true)}
-                className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+                className="bg-primary hover:bg-primary/90 text-white shadow-brand-sm shadow-primary/20"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 Nuevo Grupo

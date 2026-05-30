@@ -441,7 +441,7 @@ function StatsPageContent() {
       {/* Floating AI Chat Button */}
       <Link to="/chatbot" title="Hablar con Captus">
         <Button
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-brand-sm hover:shadow-xl transition-all"
           size="icon"
         >
           <MessageSquare size={24} />

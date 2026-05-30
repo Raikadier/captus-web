@@ -85,7 +85,7 @@ export default function StudentCoursesPage() {
 
               <Dialog open={isJoinDialogOpen} onOpenChange={setIsJoinDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white shadow-brand-sm shadow-primary/20">
                     <Plus className="w-4 h-4 mr-2" />
                     Unirse a un curso
                   </Button>

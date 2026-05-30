@@ -56,7 +56,7 @@ export default function HeroSection() {
                 <div className="grid grid-cols-3 gap-4 h-full">
                   <Card className="col-span-1 bg-card/80 backdrop-blur">
                     <CardHeader className="pb-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                      <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
                         <CheckCircle2 className="w-4 h-4 text-primary" />
                       </div>
                       <CardTitle className="text-sm">Tareas Completadas</CardTitle>
