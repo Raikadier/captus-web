@@ -189,7 +189,7 @@ export default function AdminGradingPage() {
                 <button onClick={addLevel} className="text-xs text-primary hover:underline">+ Añadir nivel</button>
               </div>
               {form.levels.map((level, i) => (
-                <div key={i} className="flex items-center gap-2 bg-muted/40 rounded-lg p-2">
+                <div key={i} className="flex items-center gap-2 bg-muted/40 rounded-xl p-2">
                   <Input
                     className="flex-1 h-7 text-xs"
                     placeholder="Etiqueta (ej: Excelente)"

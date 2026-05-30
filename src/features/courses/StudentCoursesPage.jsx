@@ -71,7 +71,7 @@ export default function StudentCoursesPage() {
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-24">
 
         <FadeIn>
-          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-white border-border'}`}>
+          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-card border-border'}`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
@@ -125,7 +125,7 @@ export default function StudentCoursesPage() {
           {courses.length === 0 ? (
             <div className="col-span-full">
               <FadeIn>
-                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-white/50'}`}>
+                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-card/50'}`}>
                   <GraduationCap className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-foreground' : 'text-slate-300'}`} />
                   <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-foreground'}`}>No estás inscrito en cursos</h3>
                   <p className={`mb-6 ${darkMode ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
@@ -142,7 +142,7 @@ export default function StudentCoursesPage() {
             courses.map((course) => (
               <StaggerItem key={course.id}>
                 <Card
-                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group flex flex-col ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-white hover:shadow-lg'
+                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group flex flex-col ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-card hover:shadow-lg'
                     }`}
                   onClick={() => navigate(`/courses/${course.id}`)}
                 >

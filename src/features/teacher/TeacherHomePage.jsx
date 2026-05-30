@@ -150,7 +150,7 @@ export default function TeacherHomePage() {
               </div>
             ) : (
               upcomingEvents.map((event) => (
-                <div key={event.id} className="p-3 border border-border rounded-lg flex items-center justify-between">
+                <div key={event.id} className="p-3 border border-border rounded-xl flex items-center justify-between">
                   <div>
                     <p className="font-medium text-foreground">{event.title}</p>
                     <p className="text-sm text-muted-foreground">
@@ -180,7 +180,7 @@ export default function TeacherHomePage() {
               </div>
             ) : (
               pendingReviews.map((review) => (
-                <div key={review.id} className="p-3 border border-border rounded-lg flex items-center justify-between">
+                <div key={review.id} className="p-3 border border-border rounded-xl flex items-center justify-between">
                   <div>
                     <p className="font-medium text-foreground">{review.student?.name || 'Estudiante'}</p>
                     <p className="text-sm text-muted-foreground">{review.assignment?.title} • {review.assignment?.course?.name}</p>

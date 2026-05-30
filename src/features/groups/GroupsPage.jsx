@@ -140,7 +140,7 @@ export default function GroupsPage() {
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-24">
 
         <FadeIn>
-          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-white border-border'}`}>
+          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-card border-border'}`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
@@ -172,7 +172,7 @@ export default function GroupsPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`pl-12 py-6 text-lg rounded-xl border-0 shadow-sm ${darkMode
                 ? 'bg-card text-white placeholder-gray-500 focus:ring-primary/50'
-                : 'bg-white text-foreground placeholder-gray-400 focus:ring-primary/20'
+                : 'bg-card text-foreground placeholder-gray-400 focus:ring-primary/20'
                 }`}
             />
           </div>
@@ -182,7 +182,7 @@ export default function GroupsPage() {
           {filteredGroups.length === 0 ? (
             <div className="col-span-full">
               <FadeIn>
-                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-white/50'}`}>
+                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-card/50'}`}>
                   <Users className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-foreground' : 'text-slate-300'}`} />
                   <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-foreground'}`}>No hay grupos</h3>
                   <p className={`mb-6 ${darkMode ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
@@ -201,14 +201,14 @@ export default function GroupsPage() {
             filteredGroups.map((group) => (
               <StaggerItem key={group.id}>
                 <Card
-                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-white hover:shadow-lg'
+                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-card hover:shadow-lg'
                     }`}
                   onClick={() => setSelectedGroup(group)}
                 >
                   <div className={`h-2 w-full bg-gradient-to-r from-primary to-purple-500`} />
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-slate-800 text-slate-400' : 'bg-muted text-muted-foreground'}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-slate-800 text-slate-400' : 'bg-muted text-muted-foreground'}`}>
                         <Users className="w-5 h-5" />
                       </div>
                       <Badge variant="secondary" className={`${darkMode ? 'bg-slate-800 text-slate-300' : 'bg-muted text-muted-foreground'}`}>

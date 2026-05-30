@@ -320,7 +320,7 @@ export default function StudentCourseDetailPage() {
               {contentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                  className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors cursor-pointer"
                   onClick={() => {}}
                 >
                   <div className="flex items-center gap-3">
@@ -356,7 +356,7 @@ export default function StudentCourseDetailPage() {
               {displayedAssignments.map((assignment) => (
                 <div
                   key={assignment.id}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors"
+                  className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors"
                 >
                   <div className="flex-1">
                     <p className="font-medium text-foreground">{assignment.name}</p>

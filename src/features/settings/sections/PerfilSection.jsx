@@ -195,7 +195,7 @@ export default function PerfilSection() {
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
                 <span className={`text-sm font-medium ${darkMode ? 'text-primary/80' : 'text-primary'}`}>Miembro desde</span>
               </div>
-              <div className={`px-3 py-1 rounded-lg ${darkMode ? 'bg-slate-800/50' : 'bg-white/70'} border border-primary/20`}>
+              <div className={`px-3 py-1 rounded-xl ${darkMode ? 'bg-slate-800/50' : 'bg-card/70'} border border-primary/20`}>
                 <span className={`font-bold ${darkMode ? 'text-white' : 'text-foreground'}`}>
                   {new Date(userData.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>

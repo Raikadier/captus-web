@@ -24,7 +24,7 @@ export default function CalendarDayView({ selectedDate, tasks, events, onTaskCli
               <div className="flex-1 pl-4 pb-4 space-y-2 border-l border-transparent group-hover:border-border/50 -ml-[1px]">
                 {hourEvents.map(event => (
                   <div key={`event-${event.id}`} className={`p-2 rounded-lg border cursor-pointer hover:opacity-80 ${getEventColor(event.type)}`} onClick={() => onEventClick(event)}>
-                    <div className="p-2 bg-card/50 rounded-lg backdrop-blur-sm"><Clock size={16} /></div>
+                    <div className="p-2 bg-card/50 rounded-xl backdrop-blur-sm"><Clock size={16} /></div>
                     <div>
                       <h4 className="text-sm font-semibold">{event.title}</h4>
                       <p className="text-xs opacity-80">

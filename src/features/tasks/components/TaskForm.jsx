@@ -108,7 +108,7 @@ const TaskForm = ({ task, categories, priorities, onSubmit, onCancel, isModal = 
   };
 
   return (
-    <div className={isModal ? "" : "bg-white rounded-lg shadow-sm border p-6"}>
+    <div className={isModal ? "" : "bg-card rounded-xl shadow-sm border p-6"}>
       {!isModal && (
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-foreground">

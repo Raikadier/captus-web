@@ -55,7 +55,7 @@ export default function LogrosSection() {
   }, [achievementsLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-white'} rounded-xl shadow-sm`}>
+    <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-card'} rounded-xl shadow-sm`}>
       <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-foreground'} ${compactView ? 'mb-4' : 'mb-6'}`}>🏆 Mis Logros</h2>
 
       {achievementsLoading ? (
@@ -85,7 +85,7 @@ export default function LogrosSection() {
                 </div>
               </div>
               <Button onClick={() => refreshAchievements(true)} disabled={achievementsLoading}
-                variant="outline" size="sm" className="bg-white/70 hover:bg-white border-yellow-300 text-yellow-700 hover:text-yellow-800">
+                variant="outline" size="sm" className="bg-card/70 hover:bg-card border-yellow-300 text-yellow-700 hover:text-yellow-800">
                 {achievementsLoading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full animate-spin"></div>Actualizando...
@@ -93,11 +93,11 @@ export default function LogrosSection() {
                 ) : <div className="flex items-center gap-2">🔄 Actualizar</div>}
               </Button>
               <div className="flex gap-4">
-                <div className="bg-white/70 rounded-lg px-4 py-2 border border-yellow-200 text-center">
+                <div className="bg-card/70 rounded-xl px-4 py-2 border border-yellow-200 text-center">
                   <div className="text-lg font-bold text-yellow-600">{unlockedAchievements}</div>
                   <div className="text-xs text-muted-foreground">Completados</div>
                 </div>
-                <div className="bg-white/70 rounded-lg px-4 py-2 border border-yellow-200 text-center">
+                <div className="bg-card/70 rounded-xl px-4 py-2 border border-yellow-200 text-center">
                   <div className="text-lg font-bold text-orange-600">{totalAchievements}</div>
                   <div className="text-xs text-muted-foreground">Por Descubrir</div>
                 </div>

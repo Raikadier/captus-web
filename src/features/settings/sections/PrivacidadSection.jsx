@@ -102,7 +102,7 @@ export default function PrivacidadSection() {
                     <p className="text-sm text-muted-foreground mt-2">No podrás recuperar ningún dato después de esto.</p>
                   </div>
                   {countdownActive && (
-                    <div className="text-center p-3 rounded-lg bg-muted">
+                    <div className="text-center p-3 rounded-xl bg-muted">
                       <p className="text-sm text-muted-foreground">
                         El botón se habilitará en: <span className="font-bold text-red-500">{countdown}s</span>
                       </p>

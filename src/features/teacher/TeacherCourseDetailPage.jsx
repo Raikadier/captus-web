@@ -98,7 +98,7 @@ export default function TeacherCourseDetailPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      <div className="bg-card rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-start md:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
             <BookOpen className="text-primary" />
@@ -188,7 +188,7 @@ export default function TeacherCourseDetailPage() {
               </Dialog>
             </div>
             {displayedStudents.map((s) => (
-              <div key={s.id} className="p-3 border border-border rounded-lg bg-white">
+              <div key={s.id} className="p-3 border border-border rounded-xl bg-card">
                 <p className="font-medium text-foreground">{s.name}</p>
                 <p className="text-sm text-muted-foreground">{s.email}</p>
                 {s.is_mock && <span className="text-xs text-slate-400">(Mock Data)</span>}
@@ -199,7 +199,7 @@ export default function TeacherCourseDetailPage() {
 
           <TabsContent value="announcements" className="mt-6 space-y-3">
             {mockAnnouncements.map((a) => (
-              <div key={a.id} className="p-3 border border-border rounded-lg bg-white">
+              <div key={a.id} className="p-3 border border-border rounded-xl bg-card">
                 <p className="font-medium text-foreground">{a.title}</p>
                 <p className="text-sm text-muted-foreground">{a.body}</p>
                 <span className="text-xs px-2 py-1 rounded-full bg-red-50 text-red-700 inline-block mt-2">{a.type}</span>

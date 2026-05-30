@@ -87,7 +87,7 @@ export default function NotificacionesSection() {
   }
 
   return (
-    <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-white'} rounded-xl shadow-sm`}>
+    <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-card'} rounded-xl shadow-sm`}>
       <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-foreground'} ${compactView ? 'mb-4' : 'mb-6'}`}>Notificaciones</h2>
 
       <div className={compactView ? 'space-y-4' : 'space-y-6'}>
@@ -126,7 +126,7 @@ export default function NotificacionesSection() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className={`p-4 rounded-lg border-2 border-dashed ${darkMode ? 'border-gray-600 bg-slate-800' : 'border-slate-300 bg-background'}`}>
+                  <div className={`p-4 rounded-xl border-2 border-dashed ${darkMode ? 'border-gray-600 bg-slate-800' : 'border-slate-300 bg-background'}`}>
                     <p className={`text-center text-sm mb-2 ${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>Envía este código al bot de Telegram:</p>
                     <div className={`text-3xl font-mono font-bold text-center tracking-wider ${darkMode ? 'text-white' : 'text-foreground'}`}>{telegramCode.code}</div>
                     <p className={`text-center text-xs mt-2 ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`}>Expira en 15 minutos</p>
@@ -145,7 +145,7 @@ export default function NotificacionesSection() {
         </div>
 
         {/* Email */}
-        <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-white border-border'}`}>
+        <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-card border-border'}`}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-lg ${darkMode ? 'bg-purple-900/30 text-purple-400' : 'bg-purple-100 text-purple-600'}`}>
@@ -174,7 +174,7 @@ export default function NotificacionesSection() {
         </div>
 
         {/* WhatsApp */}
-        <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-white border-border'}`}>
+        <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-card border-border'}`}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className={`p-2 rounded-lg ${darkMode ? 'bg-green-900/30 text-green-400' : 'bg-green-100 text-green-600'}`}>

@@ -126,7 +126,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
           </div>
 
           {/* Progress Overview */}
-          <div className="mb-6 p-4 bg-muted rounded-lg">
+          <div className="mb-6 p-4 bg-muted rounded-xl">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium">Progreso</span>
               <span className="text-sm text-muted-foreground">
@@ -155,7 +155,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
 
           {/* Create/Edit Form */}
           {showCreateForm && (
-            <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-lg bg-muted/50">
+            <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-xl bg-muted/50">
               <div className="space-y-4">
                 <div>
                   <Label>Título *</Label>

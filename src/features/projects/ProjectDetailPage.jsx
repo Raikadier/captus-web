@@ -81,7 +81,7 @@ export default function ProjectDetailPage() {
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden">
                 {/* Pending Column */}
                 <div className="bg-background/50 rounded-xl border border-border flex flex-col h-full">
-                    <div className="p-4 border-b border-border bg-white/50 rounded-t-xl flex items-center justify-between">
+                    <div className="p-4 border-b border-border bg-card/50 rounded-t-xl flex items-center justify-between">
                         <h3 className="font-semibold text-foreground flex items-center gap-2">
                             <Circle className="w-4 h-4" /> Pendientes
                         </h3>
@@ -91,7 +91,7 @@ export default function ProjectDetailPage() {
                     </div>
                     <div className="p-4 flex-1 overflow-y-auto space-y-3">
                         {pendingTasks.map(task => (
-                            <div key={task.id} className="bg-white p-4 rounded-lg shadow-sm border border-border hover:shadow-md transition-all group">
+                            <div key={task.id} className="bg-card p-4 rounded-xl shadow-sm border border-border hover:shadow-md transition-all group">
                                 <h4 className="font-medium text-foreground mb-1">{task.title}</h4>
                                 <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{task.description}</p>
                                 <div className="flex items-center justify-between">
@@ -120,7 +120,7 @@ export default function ProjectDetailPage() {
 
                 {/* Completed Column */}
                 <div className="bg-background/50 rounded-xl border border-border flex flex-col h-full">
-                    <div className="p-4 border-b border-border bg-white/50 rounded-t-xl flex items-center justify-between">
+                    <div className="p-4 border-b border-border bg-card/50 rounded-t-xl flex items-center justify-between">
                         <h3 className="font-semibold text-green-700 flex items-center gap-2">
                             <CheckCircle className="w-4 h-4" /> Completadas
                         </h3>
@@ -130,7 +130,7 @@ export default function ProjectDetailPage() {
                     </div>
                     <div className="p-4 flex-1 overflow-y-auto space-y-3">
                         {completedTasks.map(task => (
-                            <div key={task.id} className="bg-white p-4 rounded-lg shadow-sm border border-border opacity-75 hover:opacity-100 transition-all group">
+                            <div key={task.id} className="bg-card p-4 rounded-xl shadow-sm border border-border opacity-75 hover:opacity-100 transition-all group">
                                 <h4 className="font-medium text-foreground mb-1 line-through text-muted-foreground">{task.title}</h4>
                                 <div className="flex items-center justify-end mt-2">
                                     <Button

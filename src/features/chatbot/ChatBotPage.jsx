@@ -186,7 +186,7 @@ const ChatBotPage = () => {
                 <button
                   key={conv.id}
                   onClick={() => setActiveConversation(conv.id)}
-                  className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-200 ${activeConversation === conv.id ? 'bg-white shadow-sm' : 'hover:bg-muted'
+                  className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-200 ${activeConversation === conv.id ? 'bg-card shadow-sm' : 'hover:bg-muted'
                     }`}
                 >
                   <p className="font-medium text-foreground text-sm truncate">{conv.title || 'Nueva conversación'}</p>

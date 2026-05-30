@@ -94,7 +94,7 @@ function EventFormModal({ onClose, onSubmit, loading, title, setTitle, descripti
             </div>
             <div>
               <Label>Tipo</Label>
-              <select value={type} onChange={(e) => setType(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-lg border border-border bg-background text-foreground">
+              <select value={type} onChange={(e) => setType(e.target.value)} className="w-full mt-1 px-3 py-2 rounded-xl border border-border bg-background text-foreground">
                 {EVENT_TYPES.map(t => <option key={t}>{t}</option>)}
               </select>
             </div>

@@ -50,7 +50,7 @@ function TaskItem({ task, onClick }) {
 
   return (
     <StaggerItem
-      className="p-4 border rounded-lg transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md border-border hover:border-primary bg-card"
+      className="p-4 border rounded-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md border-border hover:border-primary bg-card"
       onClick={onClick}
     >
       <div className="flex items-center gap-3 mb-1">

@@ -68,7 +68,7 @@ export default function NotificationsPage() {
               <Button
                 variant="outline"
                 onClick={handleMarkAllAsRead}
-                className={`${darkMode ? 'bg-card border-gray-700 hover:bg-slate-800 text-slate-300' : 'bg-white hover:bg-background'}`}
+                className={`${darkMode ? 'bg-card border-gray-700 hover:bg-slate-800 text-slate-300' : 'bg-card hover:bg-background'}`}
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Marcar todas como leídas
@@ -91,7 +91,7 @@ export default function NotificationsPage() {
                 onClick={() => setFilter(f.id)}
                 className={`rounded-full px-6 ${filter === f.id
                   ? 'bg-primary text-primary-foreground shadow-md'
-                  : `${darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-muted-foreground hover:bg-white hover:shadow-sm'}`
+                  : `${darkMode ? 'text-slate-400 hover:bg-slate-800' : 'text-muted-foreground hover:bg-card hover:shadow-sm'}`
                   }`}
               >
                 {f.label}
@@ -103,7 +103,7 @@ export default function NotificationsPage() {
         <StaggerContainer className="space-y-4">
           {filteredNotifications.length === 0 ? (
             <FadeIn>
-              <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-white/50'}`}>
+              <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-card/50'}`}>
                 <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${darkMode ? 'bg-slate-800' : 'bg-muted'}`}>
                   <Bell className={`h-8 w-8 ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`} />
                 </div>
@@ -120,10 +120,10 @@ export default function NotificationsPage() {
                   className={`p-5 transition-all duration-200 group relative overflow-hidden border-0 ${!notification.read
                     ? darkMode
                       ? 'bg-blue-900/10 border-l-4 border-l-blue-500 shadow-lg'
-                      : 'bg-white border-l-4 border-l-blue-500 shadow-md'
+                      : 'bg-card border-l-4 border-l-blue-500 shadow-md'
                     : darkMode
                       ? 'bg-card hover:bg-slate-800/80'
-                      : 'bg-white hover:shadow-md'
+                      : 'bg-card hover:shadow-md'
                     }`}
                 >
                   <div className="flex items-start gap-4">

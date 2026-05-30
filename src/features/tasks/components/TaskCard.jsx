@@ -23,7 +23,7 @@ const TaskCard = React.memo(({
   const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
 
   return (
-    <div className={`bg-card border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow ${isOverdue ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-border'
+    <div className={`bg-card border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow ${isOverdue ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-border'
       }`}>
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-3 flex-1">

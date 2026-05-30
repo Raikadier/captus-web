@@ -49,7 +49,7 @@ export default function SettingsPage() {
   return (
     <div className="bg-background">
       <div className={`max-w-7xl mx-auto ${compactView ? 'p-4 pb-24' : 'p-8 pb-8'}`}>
-        <FadeIn className={`sticky top-0 ${darkMode ? 'bg-card' : 'bg-white'} rounded-xl shadow-sm ${compactView ? 'p-4' : 'p-6'} mb-6 z-10`}>
+        <FadeIn className={`sticky top-0 ${darkMode ? 'bg-card' : 'bg-card'} rounded-xl shadow-sm ${compactView ? 'p-4' : 'p-6'} mb-6 z-10`}>
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-foreground">⚙️ Configuración</h1>
@@ -60,7 +60,7 @@ export default function SettingsPage() {
 
         <div className={`grid grid-cols-1 lg:grid-cols-3 ${compactView ? 'gap-4' : 'gap-6'}`}>
           <FadeIn delay={0.2} className="lg:col-span-1">
-            <Card className={`${compactView ? 'p-3' : 'p-4'} ${darkMode ? 'bg-card border-gray-700' : 'bg-white'} rounded-xl shadow-sm`}>
+            <Card className={`${compactView ? 'p-3' : 'p-4'} ${darkMode ? 'bg-card border-gray-700' : 'bg-card'} rounded-xl shadow-sm`}>
               <nav className={compactView ? 'space-y-1' : 'space-y-2'}>
                 {NAV_ITEMS.map(item => (
                   <SettingsMenuItem key={item.id} icon={item.icon} label={item.label}

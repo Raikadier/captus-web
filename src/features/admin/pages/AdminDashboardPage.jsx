@@ -61,7 +61,7 @@ export default function AdminDashboardPage() {
             <a
               key={href}
               href={href}
-              className="flex items-center justify-center text-center text-sm font-medium border border-border rounded-lg px-4 py-3 hover:bg-accent transition-colors"
+              className="flex items-center justify-center text-center text-sm font-medium border border-border rounded-xl px-4 py-3 hover:bg-accent transition-colors"
             >
               {label}
             </a>

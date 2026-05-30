@@ -98,7 +98,7 @@ export default function NotificationsDropdown({ isOpen, onClose, onUnreadChange 
             {notifications.map((notification) => (
               <div
                 key={notification.id}
-                className={`flex items-start gap-3 p-3 rounded-lg transition-colors cursor-pointer group ${notification.read ? 'bg-card hover:bg-muted' : 'bg-primary/10 hover:bg-primary/20'}`}
+                className={`flex items-start gap-3 p-3 rounded-xl transition-colors cursor-pointer active:scale-[0.97] active:opacity-90 transition-transform group ${notification.read ? 'bg-card hover:bg-muted' : 'bg-primary/10 hover:bg-primary/20'}`}
               >
                 {/* Unread indicator */}
                 <div className="flex-shrink-0 mt-1">

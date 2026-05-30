@@ -218,7 +218,7 @@ const StreakWidget = () => {
       </div>
 
       {/* Motivational Message */}
-      <div className="bg-white/50 dark:bg-black/20 rounded-lg p-4 mb-6">
+      <div className="bg-card/50 dark:bg-black/20 rounded-xl p-4 mb-6">
         <div className="flex items-start space-x-3">
           <CheckCircle className="text-green-500 mt-0.5 flex-shrink-0" size={20} />
           <div>
@@ -280,7 +280,7 @@ export const MiniStreakWidget = () => {
 
   if (loading || !streakData) {
     return (
-      <div className="bg-card rounded-lg p-4 border">
+      <div className="bg-card rounded-xl p-4 border">
         <div className="animate-pulse">
           <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -305,7 +305,7 @@ export const MiniStreakWidget = () => {
         </div>
       </div>
       {streakData.motivationalMessage && (
-        <div className="mt-3 p-2 bg-white/50 dark:bg-black/20 rounded text-xs text-muted-foreground italic">
+        <div className="mt-3 p-2 bg-card/50 dark:bg-black/20 rounded text-xs text-muted-foreground italic">
           "{streakData.motivationalMessage}"
         </div>
       )}
@@ -338,7 +338,7 @@ export const FavoriteCategoryWidget = () => {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-lg p-6 border">
+      <div className="bg-card rounded-xl p-6 border">
         <div className="animate-pulse">
           <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
           <div className="h-6 bg-muted rounded w-1/2 mb-4"></div>
@@ -353,9 +353,9 @@ export const FavoriteCategoryWidget = () => {
 
   if (!favoriteCategory) {
     return (
-      <div className="bg-card rounded-lg p-6 border">
+      <div className="bg-card rounded-xl p-6 border">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-muted rounded-xl flex items-center justify-center">
             <Star className="text-muted-foreground" size={20} />
           </div>
           <div>
@@ -368,7 +368,7 @@ export const FavoriteCategoryWidget = () => {
   }
 
   return (
-    <div className="bg-card rounded-lg p-6 border">
+    <div className="bg-card rounded-xl p-6 border">
       <div className="flex items-center space-x-3 mb-4">
         <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
           <Star className="text-white" size={20} />

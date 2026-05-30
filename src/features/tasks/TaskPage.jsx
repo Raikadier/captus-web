@@ -234,7 +234,7 @@ const TaskPage = () => {
                       <select
                         value={filters.categoryId}
                         onChange={(e) => handleFilterChange('categoryId', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todas las categorías</option>
                         {categories.map((category) => (
@@ -252,7 +252,7 @@ const TaskPage = () => {
                       <select
                         value={filters.priorityId}
                         onChange={(e) => handleFilterChange('priorityId', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todas las prioridades</option>
                         {priorities.map((priority) => (
@@ -270,7 +270,7 @@ const TaskPage = () => {
                       <select
                         value={filters.completed}
                         onChange={(e) => handleFilterChange('completed', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todos</option>
                         <option value="false">Pendientes</option>
@@ -336,13 +336,13 @@ const TaskPage = () => {
         <TabsList className="task-main-tabs bg-card mb-6 rounded-xl p-1 shadow-sm">
           <TabsTrigger
             value="tasks"
-            className="tab-trigger px-6 py-2.5 rounded-lg font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
+            className="tab-trigger px-6 py-2.5 rounded-xl font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
           >
             <span className="tab-icon">📝</span> Mis Tareas
           </TabsTrigger>
           <TabsTrigger
             value="categories"
-            className="tab-trigger px-6 py-2.5 rounded-lg font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
+            className="tab-trigger px-6 py-2.5 rounded-xl font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
           >
             <span className="tab-icon">🏷️</span> Categorías
           </TabsTrigger>
@@ -352,7 +352,7 @@ const TaskPage = () => {
         <TabsContent value="tasks" className="tab-content space-y-6">
           {/* Sub-tabs for task status */}
           <Tabs defaultValue="todas" className="w-full">
-            <TabsList className="task-sub-tabs bg-muted mb-4 rounded-lg p-1">
+            <TabsList className="task-sub-tabs bg-muted mb-4 rounded-xl p-1">
               <TabsTrigger
                 value="todas"
                 className="tab-trigger px-4 py-2 rounded-md text-sm font-medium"

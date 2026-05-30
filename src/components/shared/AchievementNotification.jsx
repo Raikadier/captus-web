@@ -118,7 +118,7 @@ const AchievementNotification = ({ achievementId, onClose, autoClose = true }) =
 
         {/* Main card */}
         <div className={`
-          relative bg-white rounded-2xl p-6 shadow-2xl border-2 border-white/20
+          relative bg-card rounded-2xl p-6 shadow-2xl border-2 border-white/20
           ${styles.bg} ${styles.glow} shadow-2xl
           transform transition-all duration-300
           ${isAnimating ? 'rotate-0' : 'rotate-2'}
@@ -126,7 +126,7 @@ const AchievementNotification = ({ achievementId, onClose, autoClose = true }) =
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute top-3 right-3 p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="absolute top-3 right-3 p-1 rounded-full bg-card/20 hover:bg-card/30 transition-colors"
           >
             <X className="w-4 h-4 text-white" />
           </button>
@@ -135,7 +135,7 @@ const AchievementNotification = ({ achievementId, onClose, autoClose = true }) =
           <div className="text-center">
             {/* Trophy icon with bounce animation */}
             <div className={`
-              inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 mb-4
+              inline-flex items-center justify-center w-20 h-20 rounded-full bg-card/20 mb-4
               transform transition-all duration-500
               ${isAnimating ? 'animate-bounce' : ''}
             `}>
@@ -162,7 +162,7 @@ const AchievementNotification = ({ achievementId, onClose, autoClose = true }) =
             </p>
 
             {/* Difficulty badge */}
-            <div className="mt-4 inline-flex items-center space-x-1 bg-white/20 rounded-full px-3 py-1">
+            <div className="mt-4 inline-flex items-center space-x-1 bg-card/20 rounded-full px-3 py-1">
               {getDifficultyIcon(achievement.difficulty)}
               <span className="text-white font-medium text-sm capitalize">
                 {achievement.difficulty === 'easy' ? 'Fácil' :

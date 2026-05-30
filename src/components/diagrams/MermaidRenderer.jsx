@@ -172,7 +172,7 @@ export default function MermaidRenderer({ code, allowExport = false }) {
       ) : (
         <div
           ref={containerRef}
-          className="mermaid-container w-full overflow-auto bg-card rounded-lg min-h-[100px] flex items-center justify-center p-4"
+          className="mermaid-container w-full overflow-auto bg-card rounded-xl min-h-[100px] flex items-center justify-center p-4"
           // We use innerHTML manually in useEffect, but keeping a stable container
         />
       )}

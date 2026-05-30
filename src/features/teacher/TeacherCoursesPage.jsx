@@ -91,7 +91,7 @@ export default function TeacherCoursesPage() {
               </div>
             </div>
 
-            <div className="bg-muted rounded-lg p-3 mb-4">
+            <div className="bg-muted rounded-xl p-3 mb-4">
                 <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Código de Invitación</span>
                 <div className="text-lg font-mono font-semibold text-green-700 tracking-widest">{course.invite_code}</div>
             </div>

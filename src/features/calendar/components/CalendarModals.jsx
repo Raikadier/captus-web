@@ -75,7 +75,7 @@ export function EventDetailsModal({ event, onClose, onEdit, onDelete }) {
                 </span>
               </div>
               {event.description && (
-                <div className="mt-4 p-3 bg-muted/50 rounded-lg text-sm text-foreground/80 leading-relaxed">{event.description}</div>
+                <div className="mt-4 p-3 bg-muted/50 rounded-xl text-sm text-foreground/80 leading-relaxed">{event.description}</div>
               )}
             </div>
             {event.notify && (
