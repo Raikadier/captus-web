@@ -78,7 +78,7 @@ const TaskListView = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-red-600">Error: {error}</div>
+        <div className="text-xl text-destructive">Error: {error}</div>
       </div>
     );
   }
@@ -197,7 +197,7 @@ const TaskListView = () => {
                               </span>
                             )}
                             {task.priority && (
-                              <span className={`px-2 py-1 rounded text-xs text-white ${task.priority.name === 'Alta' ? 'bg-red-500' :
+                              <span className={`px-2 py-1 rounded text-xs text-white ${task.priority.name === 'Alta' ? 'bg-destructive/100' :
                                 task.priority.name === 'Media' ? 'bg-orange-500' : 'bg-primary'
                                 }`}>
                                 {task.priority.name}

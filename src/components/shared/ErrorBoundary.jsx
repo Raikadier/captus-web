@@ -28,13 +28,13 @@ class ErrorBoundary extends React.Component {
         <div
           role="alert"
           aria-live="assertive"
-          className="p-8 bg-red-50 border border-red-200 rounded-xl text-center max-w-md mx-auto mt-12"
+          className="p-8 bg-destructive/10 border border-destructive/30 rounded-xl text-center max-w-md mx-auto mt-12"
         >
           <div className="text-4xl mb-4" aria-hidden="true">⚠️</div>
-          <h2 className="text-lg font-semibold text-red-700 mb-2">
+          <h2 className="text-lg font-semibold text-destructive mb-2">
             Algo salió mal
           </h2>
-          <p className="text-sm text-red-600 mb-6">
+          <p className="text-sm text-destructive mb-6">
             Ha ocurrido un error inesperado. Por favor intenta de nuevo o
             recarga la página.
           </p>
@@ -55,7 +55,7 @@ class ErrorBoundary extends React.Component {
           {import.meta.env.DEV && this.state.error && (
             <details className="mt-4 text-left text-xs text-red-500">
               <summary className="cursor-pointer mb-1">Detalles del error</summary>
-              <pre className="overflow-auto p-2 bg-red-100 rounded">
+              <pre className="overflow-auto p-2 bg-destructive/10 rounded">
                 {this.state.error.toString()}
               </pre>
             </details>

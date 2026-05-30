@@ -27,7 +27,7 @@ export function TaskDetailsModal({ task, onClose }) {
               {task.description && <p className="text-muted-foreground mt-2">{task.description}</p>}
             </div>
             <div className="flex items-center gap-2">
-              <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'}`}>
+              <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
                 {task.state ? 'Completada' : 'Pendiente'}
               </span>
               {task.id_Priority && (
@@ -79,7 +79,7 @@ export function EventDetailsModal({ event, onClose, onEdit, onDelete }) {
               )}
             </div>
             {event.notify && (
-              <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-2 rounded-lg border border-green-100">
+              <div className="flex items-center gap-2 text-sm text-primary bg-brand-50 p-2 rounded-lg border border-green-100">
                 <Bell size={14} /><span className="font-medium">Notificaciones activadas</span>
               </div>
             )}
@@ -87,7 +87,7 @@ export function EventDetailsModal({ event, onClose, onEdit, onDelete }) {
               <Button variant="outline" onClick={() => onEdit(event)} className="flex-1">
                 <Edit size={16} className="mr-2" />Editar
               </Button>
-              <Button variant="ghost" onClick={() => onDelete(event.id)} className="flex-1 text-red-600 hover:bg-red-50 hover:text-red-700">
+              <Button variant="ghost" onClick={() => onDelete(event.id)} className="flex-1 text-destructive hover:bg-destructive/10 hover:text-destructive">
                 <Trash2 size={16} className="mr-2" />Eliminar
               </Button>
             </div>
@@ -105,7 +105,7 @@ export function DeleteEventModal({ eventTitle, onConfirm, onCancel }) {
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center"><Trash2 size={24} className="text-red-600" /></div>
+              <div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center"><Trash2 size={24} className="text-destructive" /></div>
               <div>
                 <h2 className="text-xl font-bold text-foreground">Eliminar Evento</h2>
                 <p className="text-sm text-muted-foreground">Esta acción no se puede deshacer</p>

@@ -164,8 +164,8 @@ export default function MermaidRenderer({ code, allowExport = false }) {
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       {error ? (
-        <div className="w-full bg-red-50 border border-red-200 rounded-lg min-h-[100px] flex items-center justify-center p-4">
-          <span className="text-sm text-red-600 text-center">
+        <div className="w-full bg-destructive/10 border border-destructive/30 rounded-lg min-h-[100px] flex items-center justify-center p-4">
+          <span className="text-sm text-destructive text-center">
             {error}
           </span>
         </div>

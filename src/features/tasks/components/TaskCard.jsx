@@ -23,7 +23,7 @@ const TaskCard = React.memo(({
   const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
 
   return (
-    <div className={`bg-card border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow ${isOverdue ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-border'
+    <div className={`bg-card border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow ${isOverdue ? 'border-red-500 bg-destructive/10 dark:bg-red-900/20' : 'border-border'
       }`}>
       <div className="flex items-start justify-between">
         <div className="flex items-start space-x-3 flex-1">
@@ -59,7 +59,7 @@ const TaskCard = React.memo(({
 
               {task.due_date && (
                 <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${isOverdue
-                  ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                  ? 'bg-destructive/10 text-destructive dark:bg-red-900/30 dark:text-red-300'
                   : 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary'
                   }`}>
                   <Calendar size={12} className="mr-1" />
@@ -68,7 +68,7 @@ const TaskCard = React.memo(({
               )}
 
               {priority && (
-                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${priority.name === 'Alta' ? 'bg-red-100 text-red-800' :
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${priority.name === 'Alta' ? 'bg-destructive/10 text-destructive' :
                   priority.name === 'Media' ? 'bg-yellow-100 text-yellow-800' :
                     'bg-primary/10 text-primary'
                   }`}>

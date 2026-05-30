@@ -102,7 +102,7 @@ const TaskForm = ({ task, categories, priorities, onSubmit, onCancel, isModal = 
     switch (priorityId) {
       case 1: return 'border-primary bg-primary/10';  // Baja
       case 2: return 'border-orange-500 bg-orange-50'; // Media - Naranja
-      case 3: return 'border-red-500 bg-red-50';      // Alta - Roja
+      case 3: return 'border-red-500 bg-destructive/10';      // Alta - Roja
       default: return 'border-gray-500 bg-background';
     }
   };

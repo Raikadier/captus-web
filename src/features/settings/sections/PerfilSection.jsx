@@ -110,7 +110,7 @@ export default function PerfilSection() {
   if (error) return (
     <Card className={`${compactView ? 'p-4' : 'p-6'} bg-card rounded-xl shadow-sm`}>
       <div className="text-center py-8">
-        <div className="text-red-600 text-lg mb-4">Error: {error}</div>
+        <div className="text-destructive text-lg mb-4">Error: {error}</div>
         <Button onClick={fetchUserProfile} variant="outline">Reintentar</Button>
       </div>
     </Card>

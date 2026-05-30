@@ -139,7 +139,7 @@ export default function StudentCourseDetailPage() {
   const getTypeIcon = (type) => {
     switch (type) {
       case 'Video': return <PlayCircle className="w-4 h-4 text-blue-600" />
-      case 'PDF': return <FilePdf className="w-4 h-4 text-red-600" />
+      case 'PDF': return <FilePdf className="w-4 h-4 text-destructive" />
       case 'Apunte': return <Bookmark className="w-4 h-4 text-primary" />
       case 'Quiz': return <CheckCircle2 className="w-4 h-4 text-purple-600" />
       default: return <FileText className="w-4 h-4 text-muted-foreground" />
@@ -184,7 +184,7 @@ export default function StudentCourseDetailPage() {
       case 'pendiente':
         return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">Pendiente</Badge>
       case 'atrasada':
-        return <Badge className="bg-red-100 text-red-700 hover:bg-red-100">Atrasada</Badge>
+        return <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/10">Atrasada</Badge>
       default:
         return <Badge variant="outline">{status}</Badge>
     }
@@ -193,7 +193,7 @@ export default function StudentCourseDetailPage() {
   const getAnnouncementBadge = (type) => {
     switch (type) {
       case 'Urgente':
-        return <Badge className="bg-red-100 text-red-700 hover:bg-red-100">Urgente</Badge>
+        return <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/10">Urgente</Badge>
       case 'Recordatorio':
         return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">Recordatorio</Badge>
       case 'General':
@@ -304,7 +304,7 @@ export default function StudentCourseDetailPage() {
             <div className="bg-card rounded-xl shadow-sm p-6">
               <h3 className="font-semibold text-foreground mb-4">Tareas Pendientes</h3>
               <div className="space-y-3">
-                <div className="p-3 bg-red-50 rounded-lg">
+                <div className="p-3 bg-destructive/10 rounded-lg">
                   <p className="text-sm font-medium text-foreground">Taller 3</p>
                   <p className="text-xs text-muted-foreground">Vence en 2 días</p>
                 </div>

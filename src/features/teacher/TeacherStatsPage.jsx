@@ -35,7 +35,7 @@ export default function TeacherStatsPage() {
 
   const statCards = [
     { label: 'Cursos Activos', value: activeCourses, icon: BookOpen, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Tareas Revisadas', value: tasksReviewed, icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Tareas Revisadas', value: tasksReviewed, icon: CheckCircle, color: 'text-primary', bg: 'bg-brand-50' },
     { label: 'Promedio General', value: `${stats?.averageGrade || 0}/10`, icon: BarChart3, color: 'text-purple-600', bg: 'bg-purple-50' },
   ]
 

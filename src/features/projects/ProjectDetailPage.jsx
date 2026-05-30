@@ -121,10 +121,10 @@ export default function ProjectDetailPage() {
                 {/* Completed Column */}
                 <div className="bg-background/50 rounded-xl border border-border flex flex-col h-full">
                     <div className="p-4 border-b border-border bg-card/50 rounded-t-xl flex items-center justify-between">
-                        <h3 className="font-semibold text-green-700 flex items-center gap-2">
+                        <h3 className="font-semibold text-brand-700 flex items-center gap-2">
                             <CheckCircle className="w-4 h-4" /> Completadas
                         </h3>
-                        <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                        <span className="bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full text-xs font-medium">
                             {completedTasks.length}
                         </span>
                     </div>

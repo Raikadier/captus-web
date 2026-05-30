@@ -177,7 +177,7 @@ export default function NotificacionesSection() {
         <div className={`p-4 rounded-xl border ${darkMode ? 'bg-slate-800/50 border-gray-700' : 'bg-card border-border'}`}>
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg ${darkMode ? 'bg-green-900/30 text-green-400' : 'bg-green-100 text-green-600'}`}>
+              <div className={`p-2 rounded-lg ${darkMode ? 'bg-green-900/30 text-green-400' : 'bg-brand-100 text-primary'}`}>
                 <Phone size={24} />
               </div>
               <div>

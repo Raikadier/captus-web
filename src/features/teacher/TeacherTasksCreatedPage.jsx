@@ -59,7 +59,7 @@ export default function TeacherTasksCreatedPage() {
                   <Calendar className="w-3 h-3" />
                   {new Date(task.due_date || task.endDate).toLocaleDateString()}
                 </span>
-                <span className={`flex items-center gap-1 ${task.state ? 'text-green-600' : 'text-orange-600'}`}>
+                <span className={`flex items-center gap-1 ${task.state ? 'text-primary' : 'text-orange-600'}`}>
                   <CheckCircle2 className="w-3 h-3" />
                   {task.state ? 'Completada' : 'Pendiente'}
                 </span>

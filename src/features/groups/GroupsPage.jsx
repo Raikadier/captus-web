@@ -378,11 +378,11 @@ export default function GroupsPage() {
                     <div className={`text-2xl font-bold ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>{selectedGroup.tasks || 0}</div>
                     <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-purple-600/60'}`}>Tareas</div>
                   </div>
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-slate-800' : 'bg-green-50'}`}>
-                    <div className={`text-lg font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
+                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-slate-800' : 'bg-brand-50'}`}>
+                    <div className={`text-lg font-bold ${darkMode ? 'text-green-400' : 'text-primary'}`}>
                       {new Date(selectedGroup.created_at).toLocaleDateString()}
                     </div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-green-600/60'}`}>Creado</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-primary/60'}`}>Creado</div>
                   </div>
                 </div>
 

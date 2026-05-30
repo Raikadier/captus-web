@@ -104,8 +104,8 @@ export default function CalendarWeekView({
                     ))}
                     {isToday && (
                       <div className="absolute w-full flex items-center z-20" style={{ top: `${((now.getHours() - 7) * HOUR_HEIGHT) + ((now.getMinutes() / 60) * HOUR_HEIGHT)}px` }}>
-                        <div className="w-2 h-2 rounded-full bg-red-500 -ml-1"></div>
-                        <div className="flex-1 h-0.5 bg-red-500"></div>
+                        <div className="w-2 h-2 rounded-full bg-destructive/100 -ml-1"></div>
+                        <div className="flex-1 h-0.5 bg-destructive/100"></div>
                       </div>
                     )}
                     {items.map((item, itemIndex) => (

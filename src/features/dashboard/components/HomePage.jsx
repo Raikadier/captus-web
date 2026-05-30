@@ -57,7 +57,7 @@ function TaskItem({ task, onClick }) {
         <h3 className="text-base font-semibold text-foreground">
           {task.title}
         </h3>
-        <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-500">
+        <span className="text-xs px-2 py-0.5 rounded-full bg-destructive/100/10 text-red-500">
           {task.Priority?.name || 'Sin prioridad'}
         </span>
         <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
@@ -255,10 +255,10 @@ const HomePage = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <StatCard
-                icon={<CheckSquare className="text-green-600" size={24} />}
+                icon={<CheckSquare className="text-primary" size={24} />}
                 label="Total de Tareas"
                 value={loading ? "..." : stats.totalTasks.toString()}
-                bgColor="bg-green-50"
+                bgColor="bg-brand-50"
               />
               <StatCard
                 icon={<CalendarIcon className="text-blue-600" size={24} />}

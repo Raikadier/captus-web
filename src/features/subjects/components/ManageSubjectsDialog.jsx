@@ -19,7 +19,7 @@ import { BookOpen, Plus, Loader2, Trash2 } from 'lucide-react';
 
 const COLORS = [
   { name: 'Blue', value: 'blue', class: 'bg-blue-600' },
-  { name: 'Green', value: 'green', class: 'bg-green-600' },
+  { name: 'Green', value: 'green', class: 'bg-primary' },
   { name: 'Purple', value: 'purple', class: 'bg-purple-600' },
   { name: 'Orange', value: 'orange', class: 'bg-orange-600' },
   { name: 'Red', value: 'red', class: 'bg-red-600' },

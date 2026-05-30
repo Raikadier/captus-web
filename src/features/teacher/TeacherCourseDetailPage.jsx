@@ -106,8 +106,8 @@ export default function TeacherCourseDetailPage() {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-foreground">{course.title}</h1>
             <p className="text-muted-foreground mt-2">{course.description}</p>
-            <div className="mt-4 inline-flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full border border-green-200">
-              <span className="text-sm font-medium text-green-800">Código de Invitación:</span>
+            <div className="mt-4 inline-flex items-center gap-2 bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
+              <span className="text-sm font-medium text-brand-700">Código de Invitación:</span>
               <span className="font-mono font-bold text-green-900">{course.invite_code}</span>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function TeacherCourseDetailPage() {
               <div key={a.id} className="p-3 border border-border rounded-xl bg-card">
                 <p className="font-medium text-foreground">{a.title}</p>
                 <p className="text-sm text-muted-foreground">{a.body}</p>
-                <span className="text-xs px-2 py-1 rounded-full bg-red-50 text-red-700 inline-block mt-2">{a.type}</span>
+                <span className="text-xs px-2 py-1 rounded-full bg-destructive/10 text-destructive inline-block mt-2">{a.type}</span>
               </div>
             ))}
           </TabsContent>

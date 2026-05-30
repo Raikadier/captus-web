@@ -3,7 +3,10 @@ import { useAuth } from '../../hooks/useAuth';
 import { aiTaskService } from '../../services/aiTaskService';
 import { aiEventsService } from '../../services/aiEventsService';
 import { AnimatePresence, motion as Motion } from 'framer-motion';
-import { Send, Sparkles, User, Plus, Menu, CheckCircle } from 'lucide-react';
+import {
+  Send, Sparkles, User, Plus, Menu, CheckCircle,
+  MessageSquare, ChevronLeft,
+} from 'lucide-react';
 
 const ChatBotPage = () => {
   const { user } = useAuth();
@@ -15,53 +18,39 @@ const ChatBotPage = () => {
   const [showSidebar, setShowSidebar] = useState(true);
   const messagesEndRef = useRef(null);
 
-  // Use the events hook to trigger refreshes if needed,
-  // although this hook state is local to this component instance.
-  // Ideally, if the Calendar page is separate, it will refresh on its own when visited.
-  // But if we want to confirm action here, we don't strictly need the hook unless we want to display the new event here.
-  // The prompt says "El chat debe mostrar un mensaje de confirmación".
-  // The response from backend "result" field will serve as this confirmation.
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  useEffect(() => { scrollToBottom(); }, [messages]);
 
   const fetchConversations = async () => {
     try {
       const data = await aiTaskService.getConversations();
       setConversations(data);
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
+    } catch (err) {
+      console.error('Error fetching conversations:', err);
     }
   };
 
   const fetchMessages = async (conversationId) => {
     try {
       const data = await aiTaskService.getMessages(conversationId);
-      const formattedMessages = data.map(msg => ({
+      setMessages(data.map(msg => ({
         id: msg.id,
         type: msg.role,
         content: msg.content,
-        timestamp: new Date(msg.createdAt)
-      }));
-      setMessages(formattedMessages);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
+        timestamp: new Date(msg.createdAt),
+      })));
+    } catch (err) {
+      console.error('Error fetching messages:', err);
     }
   };
 
-  // Fetch conversations on mount
   useEffect(() => {
-    if (user) {
-      fetchConversations();
-    }
+    if (user) fetchConversations();
   }, [user]);
 
-  // Fetch messages when active conversation changes
   useEffect(() => {
     if (activeConversation) {
       fetchMessages(activeConversation);
@@ -72,14 +61,13 @@ const ChatBotPage = () => {
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
+
     if (!user) {
-      const errorMessage = {
-        id: Date.now() + 1,
-        type: 'bot',
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1, type: 'bot',
         content: 'Error: No se ha identificado al usuario. Por favor inicia sesión nuevamente.',
         timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      }]);
       return;
     }
 
@@ -90,52 +78,44 @@ const ChatBotPage = () => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
 
     try {
-      // Use the new service that wraps the AI endpoint
-      const responseData = await aiEventsService.sendMessage(userMessage.content, activeConversation);
+      const responseData = await aiEventsService.sendMessage(
+        userMessage.content, activeConversation
+      );
 
-      // If we started a new conversation, update the state
       if (!activeConversation && responseData.conversationId) {
         setActiveConversation(responseData.conversationId);
         fetchConversations();
       }
 
-      // Check for tool action
       if (responseData.actionPerformed) {
-        // Infer domain and dispatch targeted event so other components can react (tasks/calendar/notes)
         const action = responseData.actionPerformed;
-        if (action.includes('task')) {
-          window.dispatchEvent(new CustomEvent('task-update', { detail: { action } }));
-        } else if (action.includes('event')) {
-          window.dispatchEvent(new CustomEvent('event-update', { detail: { action } }));
-        } else if (action.includes('note')) {
-          window.dispatchEvent(new CustomEvent('note-update', { detail: { action } }));
+        const eventName = action.includes('task') ? 'task-update'
+          : action.includes('event') ? 'event-update'
+          : action.includes('note') ? 'note-update' : null;
+        if (eventName) {
+          window.dispatchEvent(new CustomEvent(eventName, { detail: { action } }));
         }
       }
 
-      // Backend returns the AI result. We add it to the list.
-      const botResponse = {
+      setMessages(prev => [...prev, {
         id: 'temp-bot-' + Date.now(),
         type: 'bot',
         content: responseData.result,
         timestamp: new Date(),
-        action: responseData.actionPerformed // Store action for UI
-      };
-      setMessages((prev) => [...prev, botResponse]);
-
-    } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage = {
-        id: Date.now() + 1,
-        type: 'bot',
-        content: 'Lo siento, hubo un error al procesar tu mensaje. Por favor, intenta de nuevo.',
+        action: responseData.actionPerformed,
+      }]);
+    } catch (err) {
+      console.error('Error sending message:', err);
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1, type: 'bot',
+        content: 'Lo siento, hubo un error al procesar tu mensaje. Intenta de nuevo.',
         timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -150,194 +130,273 @@ const ChatBotPage = () => {
 
   const handleNewConversation = () => {
     setActiveConversation(null);
-    setMessages([
-      {
-        id: Date.now(),
-        type: 'bot',
-        content: '¡Hola! Soy Captus AI, tu asistente personal de productividad académica. ¿En qué puedo ayudarte hoy?',
-        timestamp: new Date(),
-      },
-    ]);
+    setMessages([{
+      id: Date.now(),
+      type: 'bot',
+      content: '¡Hola! Soy Captus AI, tu asistente personal de productividad académica. ¿En qué puedo ayudarte hoy?',
+      timestamp: new Date(),
+    }]);
   };
+
+  const hasConversation = activeConversation !== null || messages.length > 0;
 
   return (
     <div className="h-screen flex bg-background text-foreground overflow-hidden">
+
+      {/* ── Sidebar ──────────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {showSidebar && (
-          <Motion.div
+          <Motion.aside
+            aria-label="Historial de conversaciones"
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 260, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="bg-secondary border-r border-border flex flex-col overflow-hidden"
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="bg-card border-r border-border flex flex-col overflow-hidden flex-shrink-0"
           >
-            <div className="p-4 border-b border-border">
+            {/* Sidebar header */}
+            <div className="p-4 border-b border-border flex items-center gap-2">
+              <div className="w-7 h-7 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-semibold text-foreground text-sm">Captus AI</span>
               <button
-                onClick={handleNewConversation}
-                className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-brand-sm hover:shadow-md"
+                onClick={() => setShowSidebar(false)}
+                aria-label="Ocultar panel de conversaciones"
+                className="ml-auto p-1 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
               >
-                <Plus size={18} />
-                <span className="font-medium">Nueva conversación</span>
+                <ChevronLeft size={16} />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-2">
-              {conversations.map((conv) => (
-                <button
-                  key={conv.id}
-                  onClick={() => setActiveConversation(conv.id)}
-                  className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-200 ${activeConversation === conv.id ? 'bg-card shadow-sm' : 'hover:bg-muted'
-                    }`}
-                >
-                  <p className="font-medium text-foreground text-sm truncate">{conv.title || 'Nueva conversación'}</p>
-                  <p className="text-xs text-muted-foreground truncate mt-1">
-                    {new Date(conv.updatedAt).toLocaleDateString()}
-                  </p>
-                </button>
-              ))}
+            {/* New conversation button */}
+            <div className="p-3 border-b border-border">
+              <button
+                onClick={handleNewConversation}
+                aria-label="Iniciar nueva conversación con Captus AI"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all text-sm font-medium shadow-brand-sm"
+              >
+                <Plus size={16} aria-hidden="true" />
+                Nueva conversación
+              </button>
             </div>
-          </Motion.div>
+
+            {/* Conversations list */}
+            <nav
+              aria-label="Lista de conversaciones"
+              className="flex-1 overflow-y-auto p-2"
+            >
+              {conversations.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-6 px-4 leading-relaxed">
+                  Tus conversaciones aparecerán aquí
+                </p>
+              ) : (
+                conversations.map((conv) => (
+                  <button
+                    key={conv.id}
+                    onClick={() => setActiveConversation(conv.id)}
+                    aria-pressed={activeConversation === conv.id}
+                    aria-label={`Conversación: ${conv.title || 'Nueva conversación'}`}
+                    className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-150 ${
+                      activeConversation === conv.id
+                        ? 'bg-primary/10 border border-primary/20 shadow-sm'
+                        : 'hover:bg-muted border border-transparent'
+                    }`}
+                  >
+                    <p className="font-medium text-foreground text-sm truncate">
+                      {conv.title || 'Nueva conversación'}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate mt-0.5">
+                      {new Date(conv.updatedAt).toLocaleDateString('es-ES', {
+                        day: 'numeric', month: 'short',
+                      })}
+                    </p>
+                  </button>
+                ))
+              )}
+            </nav>
+          </Motion.aside>
         )}
       </AnimatePresence>
 
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="h-16 border-b border-border flex items-center justify-between px-6">
-          <div className="flex items-center space-x-3">
+      {/* ── Main area ─────────────────────────────────────────────────────────── */}
+      <div className="flex-1 flex flex-col min-w-0">
+
+        {/* Top bar */}
+        <header className="h-14 border-b border-border flex items-center gap-3 px-4 flex-shrink-0">
+          {!showSidebar && (
             <button
-              onClick={() => setShowSidebar(!showSidebar)}
-              className="p-2 hover:bg-accent rounded-lg transition-colors"
+              onClick={() => setShowSidebar(true)}
+              aria-label="Mostrar historial de conversaciones"
+              className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground"
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary/70 to-primary rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="font-semibold text-foreground">Captus AI</h1>
-                <p className="text-xs text-muted-foreground">Tu asistente académico</p>
-              </div>
-            </div>
+          )}
+          <div className="w-7 h-7 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" aria-hidden="true" />
           </div>
-        </div>
+          <div>
+            <h1 className="font-semibold text-foreground text-sm leading-tight">Captus AI</h1>
+            <p className="text-xs text-muted-foreground">Tu asistente académico</p>
+          </div>
+        </header>
 
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-3xl mx-auto px-4 py-8">
-            <AnimatePresence>
-              {messages.map((message) => (
-                <Motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={`flex items-start space-x-4 mb-6 ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+        {/* Messages area */}
+        <main
+          className="flex-1 overflow-y-auto"
+          aria-label="Mensajes de conversación"
+          aria-live="polite"
+        >
+          {!hasConversation ? (
+            /* ── Empty state — shown ONLY when there's no active conversation ── */
+            <div className="h-full flex flex-col items-center justify-center px-6 text-center">
+              <div className="w-16 h-16 bg-brand-50 dark:bg-brand-900/20 rounded-2xl flex items-center justify-center mb-5">
+                <MessageSquare className="w-8 h-8 text-brand-500" aria-hidden="true" />
+              </div>
+              <h2 className="text-lg font-semibold text-foreground mb-2">
+                Sin conversaciones aún
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed mb-6">
+                Inicia un chat con Captus AI y tus conversaciones aparecerán aquí.
+              </p>
+              <button
+                onClick={handleNewConversation}
+                className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all font-medium shadow-brand-sm text-sm"
+              >
+                <Plus size={16} aria-hidden="true" />
+                Iniciar conversación
+              </button>
+            </div>
+          ) : (
+            <div className="max-w-2xl mx-auto px-4 py-6">
+              <AnimatePresence initial={false}>
+                {messages.map((message) => (
+                  <Motion.div
+                    key={message.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className={`flex items-start gap-3 mb-5 ${
+                      message.type === 'user' ? 'flex-row-reverse' : ''
                     }`}
-                >
-                  {/* Avatar */}
-                  <div
-                    className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${message.type === 'bot' ? 'bg-gradient-to-br from-primary/70 to-primary' : 'bg-primary'
-                      }`}
+                    role="article"
+                    aria-label={message.type === 'user' ? 'Tu mensaje' : 'Respuesta de Captus AI'}
                   >
-                    {message.type === 'bot' ? (
-                      <Sparkles className="w-5 h-5 text-white" />
-                    ) : (
-                      <User className="w-5 h-5 text-white" />
-                    )}
-                  </div>
-
-                  {/* Message content */}
-                  <div className={`flex-1 ${message.type === 'user' ? 'flex justify-end' : ''}`}>
+                    {/* Avatar */}
                     <div
-                      className={`inline-block max-w-[85%] ${message.type === 'user'
-                        ? 'bg-primary/10 border-l-4 border-primary'
-                        : 'bg-card border-l-4 border-primary/50'
-                        } rounded-xl p-4 shadow-sm`}
+                      aria-hidden="true"
+                      className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                        message.type === 'bot'
+                          ? 'bg-gradient-to-br from-brand-400 to-brand-600'
+                          : 'bg-primary'
+                      }`}
                     >
-                      <p className="text-foreground text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                      {message.type === 'bot'
+                        ? <Sparkles className="w-4 h-4 text-white" />
+                        : <User className="w-4 h-4 text-white" />}
+                    </div>
 
-                      {message.action && (
-                        <div className="mt-3 flex items-center gap-2 text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md border border-green-100 w-fit">
-                          <CheckCircle size={12} />
-                          <span>Acción completada: {message.action.replace('_', ' ')}</span>
-                        </div>
-                      )}
+                    {/* Bubble */}
+                    <div className={`flex-1 ${message.type === 'user' ? 'flex justify-end' : ''}`}>
+                      <div
+                        className={`inline-block max-w-[84%] rounded-xl px-4 py-3 shadow-xs ${
+                          message.type === 'user'
+                            ? 'bg-primary/10 border-l-[3px] border-primary'
+                            : 'bg-card border border-border'
+                        }`}
+                      >
+                        <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                          {message.content}
+                        </p>
 
-                      <p className="text-xs text-slate-400 mt-2">
-                        {message.timestamp.toLocaleTimeString('es-ES', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </p>
+                        {message.action && (
+                          <div className="mt-2.5 flex items-center gap-1.5 text-xs font-medium text-brand-700 bg-brand-50 px-2.5 py-1 rounded-lg w-fit border border-brand-200">
+                            <CheckCircle size={11} aria-hidden="true" />
+                            Acción: {message.action.replace(/_/g, ' ')}
+                          </div>
+                        )}
+
+                        <time
+                          dateTime={message.timestamp.toISOString()}
+                          className="block text-xs text-muted-foreground mt-1.5"
+                        >
+                          {message.timestamp.toLocaleTimeString('es-ES', {
+                            hour: '2-digit', minute: '2-digit',
+                          })}
+                        </time>
+                      </div>
+                    </div>
+                  </Motion.div>
+                ))}
+              </AnimatePresence>
+
+              {/* Typing indicator */}
+              {isLoading && (
+                <Motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-start gap-3 mb-5"
+                  aria-label="Captus AI está escribiendo..."
+                  aria-live="polite"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-4 h-4 text-white" aria-hidden="true" />
+                  </div>
+                  <div className="bg-card border border-border rounded-xl px-4 py-3 shadow-xs">
+                    <div className="flex gap-1.5 items-center h-4">
+                      {[0, 0.15, 0.3].map((delay, i) => (
+                        <Motion.div
+                          key={i}
+                          animate={{ scale: [1, 1.3, 1] }}
+                          transition={{ duration: 0.6, repeat: Infinity, delay }}
+                          className="w-1.5 h-1.5 bg-primary rounded-full"
+                        />
+                      ))}
                     </div>
                   </div>
                 </Motion.div>
-              ))}
-            </AnimatePresence>
+              )}
 
-            {isLoading && (
-              <Motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-start space-x-4 mb-6"
-              >
-                <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-primary/70 to-primary flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <div className="bg-card border-l-4 border-primary/50 rounded-xl p-4 shadow-sm">
-                  <div className="flex space-x-2">
-                    <Motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.6, repeat: Number.POSITIVE_INFINITY }}
-                      className="w-2 h-2 bg-primary rounded-full"
-                    />
-                    <Motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.6, repeat: Number.POSITIVE_INFINITY, delay: 0.2 }}
-                      className="w-2 h-2 bg-primary rounded-full"
-                    />
-                    <Motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 0.6, repeat: Number.POSITIVE_INFINITY, delay: 0.4 }}
-                      className="w-2 h-2 bg-primary rounded-full"
-                    />
-                  </div>
-                </div>
-              </Motion.div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-        </div>
-
-        <div className="border-t border-border p-4 bg-background">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-end space-x-3">
-              <div className="flex-1 relative">
-                <textarea
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Escribe tu mensaje..."
-                  className="w-full bg-background px-4 py-3 pr-12 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none shadow-sm transition-all duration-200"
-                  rows="1"
-                  disabled={isLoading}
-                  style={{ minHeight: '48px', maxHeight: '200px' }}
-                />
-              </div>
-              <button
-                onClick={handleSendMessage}
-                disabled={!inputMessage.trim() || isLoading}
-                className="p-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-brand-sm hover:shadow-md"
-              >
-                <Send className="w-5 h-5" />
-              </button>
+              <div ref={messagesEndRef} />
             </div>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              Captus AI puede cometer errores. Verifica la información importante.
-            </p>
-          </div>
-        </div>
+          )}
+        </main>
+
+        {/* Input bar — only shown when a conversation is active */}
+        {hasConversation && (
+          <footer className="border-t border-border px-4 py-3 bg-background flex-shrink-0">
+            <div className="max-w-2xl mx-auto">
+              <div className="flex items-end gap-2">
+                <div className="flex-1 relative">
+                  <textarea
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Escribe tu mensaje..."
+                    aria-label="Escribe tu mensaje para Captus AI"
+                    aria-multiline="true"
+                    className="w-full bg-muted px-4 py-3 pr-4 border border-border rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary resize-none transition-all text-sm text-foreground placeholder:text-muted-foreground"
+                    rows={1}
+                    disabled={isLoading}
+                    style={{ minHeight: '44px', maxHeight: '160px' }}
+                  />
+                </div>
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputMessage.trim() || isLoading}
+                  aria-label="Enviar mensaje"
+                  className="flex-shrink-0 p-3 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-brand-sm"
+                >
+                  <Send className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1.5 text-center">
+                Captus AI puede cometer errores. Verifica la información importante.
+              </p>
+            </div>
+          </footer>
+        )}
       </div>
     </div>
   );

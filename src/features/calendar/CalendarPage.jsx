@@ -97,7 +97,7 @@ export default function CalendarPage() {
     return (
       <div className="p-6">
         <div className="rounded-xl shadow-sm p-6 bg-card border border-border flex flex-col items-center py-12">
-          <div className="text-red-600 mb-4">Error: {tasksError || eventsError}</div>
+          <div className="text-destructive mb-4">Error: {tasksError || eventsError}</div>
           <button onClick={loadData} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">Reintentar</button>
         </div>
       </div>

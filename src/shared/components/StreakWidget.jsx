@@ -233,7 +233,7 @@ const StreakWidget = () => {
       {/* Streak status */}
       <div className="text-center">
         {isStreakActive ? (
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-medium">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-brand-100 text-brand-700 text-sm font-medium">
             <Flame size={16} className="mr-2" />
             ¡Racha activa! 🔥
           </div>
@@ -394,7 +394,7 @@ export const FavoriteCategoryWidget = () => {
           </div>
           <div>
             <p className="text-muted-foreground">Completadas</p>
-            <p className="font-semibold text-green-600">{favoriteCategory.stats.completedTasks}</p>
+            <p className="font-semibold text-primary">{favoriteCategory.stats.completedTasks}</p>
           </div>
         </div>
 
@@ -491,7 +491,7 @@ export const ProjectsOverviewWidget = () => {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm text-muted-foreground">Completados</span>
-          <span className="font-medium text-green-600">{projectsData.totalProjects - projectsData.activeProjects}</span>
+          <span className="font-medium text-primary">{projectsData.totalProjects - projectsData.activeProjects}</span>
         </div>
       </div>
     </Card>

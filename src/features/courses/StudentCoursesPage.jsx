@@ -58,8 +58,8 @@ export default function StudentCoursesPage() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center p-8 bg-red-50 rounded-xl">
-          <p className="text-red-600 mb-4">Error al cargar los cursos: {error}</p>
+        <div className="text-center p-8 bg-destructive/10 rounded-xl">
+          <p className="text-destructive mb-4">Error al cargar los cursos: {error}</p>
           <Button onClick={refresh}>Reintentar</Button>
         </div>
       </div>

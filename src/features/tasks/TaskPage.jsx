@@ -325,8 +325,8 @@ const TaskPage = () => {
       {/* Error Message */}
       {
         tasksError && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="text-red-800">{tasksError}</div>
+          <div className="mb-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+            <div className="text-destructive">{tasksError}</div>
           </div>
         )
       }
@@ -480,14 +480,14 @@ const TaskPage = () => {
       <Dialog open={deleteDialog.isOpen} onOpenChange={(open) => !open && cancelDeleteTask()}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-600">
+            <DialogTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle className="h-5 w-5" />
               Confirmar Eliminación
             </DialogTitle>
             <DialogDescription className="text-left">
               ¿Estás seguro de que quieres eliminar la tarea <strong>"{deleteDialog.task?.title}"</strong>?
               <br /><br />
-              <span className="text-red-600 font-medium">
+              <span className="text-destructive font-medium">
                 ⚠️ Esta acción no se puede deshacer y la tarea será removida permanentemente de tu lista.
               </span>
             </DialogDescription>

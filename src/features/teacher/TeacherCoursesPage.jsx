@@ -93,14 +93,14 @@ export default function TeacherCoursesPage() {
 
             <div className="bg-muted rounded-xl p-3 mb-4">
                 <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Código de Invitación</span>
-                <div className="text-lg font-mono font-semibold text-green-700 tracking-widest">{course.invite_code}</div>
+                <div className="text-lg font-mono font-semibold text-brand-700 tracking-widest">{course.invite_code}</div>
             </div>
 
             <div className="flex items-center justify-between text-sm text-muted-foreground pt-4 border-t border-border">
                <span className="flex items-center gap-1">
                    <Users className="w-4 h-4" /> Gestor de Clase
                </span>
-               <span className="text-green-600 font-medium">Entrar &rarr;</span>
+               <span className="text-primary font-medium">Entrar &rarr;</span>
             </div>
           </div>
         ))}

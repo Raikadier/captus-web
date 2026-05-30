@@ -62,7 +62,7 @@ export default function LogrosSection() {
         <div className="text-center py-8"><Loading message="Cargando logros..." fullScreen={false} /></div>
       ) : achievementsError ? (
         <div className="text-center py-8">
-          <div className="text-red-600 text-lg mb-4">Error: {achievementsError}</div>
+          <div className="text-destructive text-lg mb-4">Error: {achievementsError}</div>
           <Button onClick={() => window.location.reload()} variant="outline">Reintentar</Button>
         </div>
       ) : (
@@ -161,7 +161,7 @@ export default function LogrosSection() {
                       const progress = achievement.userAchievement?.progress || 0
                       const progressPercent = Math.min((progress / (config?.targetValue || 1)) * 100, 100)
                       return (
-                        <Card key={achievement.achievementId} className={`p-4 hover:shadow-md transition-shadow relative overflow-hidden ${isCompleted ? 'border-green-300 bg-gradient-to-br from-green-50 to-emerald-50' : 'border-border'}`}>
+                        <Card key={achievement.achievementId} className={`p-4 hover:shadow-md transition-shadow relative overflow-hidden ${isCompleted ? 'border-brand-200 bg-gradient-to-br from-green-50 to-emerald-50' : 'border-border'}`}>
                           {!isCompleted && (
                             <div className="absolute top-0 left-0 right-0 h-3/4 bg-gradient-to-b from-black/60 via-black/40 to-transparent flex items-start justify-center pt-6 rounded-t-lg">
                               <div className="bg-slate-800/95 text-white px-3 py-1 rounded-full font-semibold text-xs shadow-lg">🔒 Bloqueado</div>
@@ -171,18 +171,18 @@ export default function LogrosSection() {
                             <div className={`text-3xl ${isCompleted ? '' : 'opacity-70'}`}>{config?.icon || '🏆'}</div>
                             <div className="flex-1">
                               <div className="flex items-center justify-between mb-2">
-                                <h3 className={`font-semibold text-lg ${isCompleted ? 'text-green-800' : 'text-foreground'}`}>
+                                <h3 className={`font-semibold text-lg ${isCompleted ? 'text-brand-700' : 'text-foreground'}`}>
                                   {config?.name || achievement.achievementId}
                                 </h3>
-                                {isCompleted && <CheckCircle className="text-green-600" size={24} />}
+                                {isCompleted && <CheckCircle className="text-primary" size={24} />}
                               </div>
-                              <p className={`text-sm mb-3 ${isCompleted ? 'text-green-700' : 'text-muted-foreground'}`}>
+                              <p className={`text-sm mb-3 ${isCompleted ? 'text-brand-700' : 'text-muted-foreground'}`}>
                                 {config?.description || 'Descripción no disponible'}
                               </p>
                               <div className="space-y-2">
                                 <div className="flex justify-between text-xs">
-                                  <span className={isCompleted ? 'text-green-700' : 'text-muted-foreground'}>Progreso</span>
-                                  <span className={`font-medium ${isCompleted ? 'text-green-800' : 'text-foreground'}`}>{progress}/{config?.targetValue || 1}</span>
+                                  <span className={isCompleted ? 'text-brand-700' : 'text-muted-foreground'}>Progreso</span>
+                                  <span className={`font-medium ${isCompleted ? 'text-brand-700' : 'text-foreground'}`}>{progress}/{config?.targetValue || 1}</span>
                                 </div>
                                 <Progress value={progressPercent} className={`h-2 ${isCompleted ? 'bg-green-200' : 'bg-slate-200'}`} />
                               </div>

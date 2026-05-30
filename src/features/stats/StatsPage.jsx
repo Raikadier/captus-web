@@ -49,7 +49,7 @@ function SubjectProgress({ subject }) {
     const colors = {
       blue: 'bg-blue-600',
       purple: 'bg-purple-600',
-      green: 'bg-green-600',
+      green: 'bg-primary',
       orange: 'bg-orange-600',
       red: 'bg-red-600',
       yellow: 'bg-yellow-600',
@@ -244,10 +244,10 @@ function StatsPageContent() {
             bgColor="bg-blue-50"
           />
           <StatCard
-            icon={<CheckCircle2 className="text-green-600" size={24} />}
+            icon={<CheckCircle2 className="text-primary" size={24} />}
             label="Tareas Completadas Hoy"
             value={taskStats.tasksCompletedToday}
-            bgColor="bg-green-50"
+            bgColor="bg-brand-50"
           />
           <StatCard
             icon={<ListChecks className="text-purple-600" size={24} />}
@@ -275,10 +275,10 @@ function StatsPageContent() {
         {/* Key Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <StatCard
-            icon={<TrendingUp className="text-green-600" size={28} />}
+            icon={<TrendingUp className="text-primary" size={28} />}
             label="Promedio General"
             value={stats.averageGrade.toFixed(2)}
-            bgColor="bg-green-50"
+            bgColor="bg-brand-50"
           />
           <StatCard
             icon={<CheckSquare className="text-blue-600" size={28} />}

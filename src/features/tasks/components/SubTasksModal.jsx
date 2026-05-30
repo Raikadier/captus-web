@@ -217,8 +217,8 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
               subTasks.map((subTask) => (
                 <div
                   key={subTask.id_SubTask}
-                  className={`p-4 border rounded-lg transition-all ${subTask.state ? 'bg-green-50 border-green-200 dark:bg-green-900/20' :
-                    (subTask.endDate && new Date(subTask.endDate) < new Date()) ? 'bg-red-50 border-red-200 dark:bg-red-900/20' : 'bg-card border-border'
+                  className={`p-4 border rounded-lg transition-all ${subTask.state ? 'bg-brand-50 border-brand-200 dark:bg-green-900/20' :
+                    (subTask.endDate && new Date(subTask.endDate) < new Date()) ? 'bg-destructive/10 border-destructive/30 dark:bg-red-900/20' : 'bg-card border-border'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -264,7 +264,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
                         </button>
                         <button
                           onClick={() => handleDelete(subTask.id_SubTask)}
-                          className="text-red-600 hover:text-red-900 text-sm"
+                          className="text-destructive hover:text-red-900 text-sm"
                           title="Eliminar subtarea"
                         >
                           <Trash2 size={16} />

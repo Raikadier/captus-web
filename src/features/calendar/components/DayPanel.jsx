@@ -25,7 +25,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
           <div className="text-center py-12">
             <Calendar className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
             <p className="text-muted-foreground">No hay elementos para este día</p>
-            <button className="mt-4 text-green-600 hover:text-green-700 font-medium text-sm" onClick={onAddEvent}>Agregar evento</button>
+            <button className="mt-4 text-primary hover:text-brand-700 font-medium text-sm" onClick={onAddEvent}>Agregar evento</button>
           </div>
         ) : (
           <>
@@ -41,7 +41,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
                       {task.description && <p className="text-sm text-muted-foreground mt-1">{task.description}</p>}
                     </div>
                   </div>
-                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-green-100 text-green-800' : 'bg-muted text-foreground'}`}>
+                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
                     {task.state ? 'Completada' : 'Pendiente'}
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
                       {event.description && <p className="text-sm text-muted-foreground mt-1">{event.description}</p>}
                     </div>
                   </div>
-                  {event.notify && <span className="px-3 py-1 text-xs rounded-full font-medium bg-green-100 text-green-800">🔔 Notificaciones</span>}
+                  {event.notify && <span className="px-3 py-1 text-xs rounded-full font-medium bg-brand-100 text-brand-700">🔔 Notificaciones</span>}
                 </div>
               </div>
             ))}

@@ -38,15 +38,15 @@ const getColorClass = (color) => {
     const map = {
       blue: 'bg-blue-50 border-blue-200',
       purple: 'bg-purple-50 border-purple-200',
-      green: 'bg-green-50 border-green-200',
+      green: 'bg-brand-50 border-brand-200',
       orange: 'bg-orange-50 border-orange-200',
-      red: 'bg-red-50 border-red-200',
+      red: 'bg-destructive/10 border-destructive/30',
       yellow: 'bg-yellow-50 border-yellow-200',
       'bg-blue-50': 'bg-blue-50 border-blue-200', // Fallback for new notes
       'bg-purple-50': 'bg-purple-50 border-purple-200',
-      'bg-green-50': 'bg-green-50 border-green-200',
+      'bg-brand-50': 'bg-brand-50 border-brand-200',
       'bg-orange-50': 'bg-orange-50 border-orange-200',
-      'bg-red-50': 'bg-red-50 border-red-200',
+      'bg-destructive/10': 'bg-destructive/10 border-destructive/30',
       'bg-yellow-50': 'bg-yellow-50 border-yellow-200',
     }
     return map[color] || 'bg-card border-border'
@@ -155,7 +155,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
                   <Edit size={16} className="mr-2" />
                   Editar
                 </Button>
-                <Button variant="outline" onClick={() => onDelete(note.id)} className="text-red-600 hover:bg-red-50 hover:text-red-700">
+                <Button variant="outline" onClick={() => onDelete(note.id)} className="text-destructive hover:bg-destructive/10 hover:text-destructive">
                   <Trash2 size={16} className="mr-2" />
                   Eliminar
                 </Button>
@@ -449,7 +449,7 @@ export default function NotesPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Error: {error}</p>
+          <p className="text-destructive mb-4">Error: {error}</p>
           <Button onClick={loadNotes} className="bg-primary hover:bg-primary/90">
             Reintentar
           </Button>
@@ -542,8 +542,8 @@ export default function NotesPage() {
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <Trash2 size={24} className="text-red-600" />
+                  <div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center">
+                    <Trash2 size={24} className="text-destructive" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-foreground">Eliminar Nota</h2>
