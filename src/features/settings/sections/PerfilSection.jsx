@@ -149,21 +149,21 @@ export default function PerfilSection() {
             <input id="nombre" type="text" value={formData.firstName}
               onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
               placeholder="Tu nombre"
-              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
           </div>
           <div>
             <Label htmlFor="apellido" className="text-sm font-medium text-foreground">Apellido</Label>
             <input id="apellido" type="text" value={formData.lastName}
               onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
               placeholder="Tu apellido"
-              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
           </div>
         </div>
 
         <div>
           <Label htmlFor="email" className="text-sm font-medium text-foreground">Email</Label>
           <input id="email" type="email" value={formData.email} disabled
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg opacity-60 cursor-not-allowed`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg opacity-60 cursor-not-allowed`} />
         </div>
 
         <div>
@@ -171,7 +171,7 @@ export default function PerfilSection() {
           <input id="carrera" type="text" value={formData.career}
             onChange={(e) => setFormData(prev => ({ ...prev, career: e.target.value }))}
             placeholder="Ej: Ingeniería de Sistemas"
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
 
         <div>
@@ -179,7 +179,7 @@ export default function PerfilSection() {
           <textarea id="bio" rows={3} value={formData.bio}
             onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
             placeholder="Cuéntanos un poco sobre ti..."
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground placeholder:text-muted-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
 
         <div className={compactView ? 'mt-4' : 'mt-6'}>
@@ -190,22 +190,22 @@ export default function PerfilSection() {
 
         {userData?.createdAt && (
           <div className={`mt-6 text-center ${compactView ? 'py-3' : 'py-4'}`}>
-            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${darkMode ? 'bg-gradient-to-r from-primary/20 to-primary/10 border-primary/30' : 'bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20'} backdrop-blur-sm`}>
+            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${'bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20'} backdrop-blur-sm`}>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                <span className={`text-sm font-medium ${darkMode ? 'text-primary/80' : 'text-primary'}`}>Miembro desde</span>
+                <span className={`text-sm font-medium ${'text-primary'}`}>Miembro desde</span>
               </div>
-              <div className={`px-3 py-1 rounded-xl ${darkMode ? 'bg-slate-800/50' : 'bg-card/70'} border border-primary/20`}>
-                <span className={`font-bold ${darkMode ? 'text-white' : 'text-foreground'}`}>
+              <div className={`px-3 py-1 rounded-xl ${'bg-card/70'} border border-primary/20`}>
+                <span className={`font-bold text-foreground`}>
                   {new Date(userData.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${darkMode ? 'text-primary/80' : 'text-primary'}`}>🎉</span>
+                <span className={`text-sm font-medium ${'text-primary'}`}>🎉</span>
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
               </div>
             </div>
-            <p className={`text-xs mt-2 ${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>¡Gracias por ser parte de Captus!</p>
+            <p className={`text-xs mt-2 text-muted-foreground`}>¡Gracias por ser parte de Captus!</p>
           </div>
         )}
       </div>

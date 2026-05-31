@@ -52,7 +52,7 @@ export default function CalendarWeekView({
   return (
     <div className="rounded-xl shadow-sm p-6 mb-6 bg-card border border-border">
       <div className="flex items-center justify-between mb-6">
-        <button onClick={() => navigateWeek(-1)} className={`p-2 rounded-xl transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-muted'}`}>
+        <button onClick={() => navigateWeek(-1)} className={`p-2 rounded-xl transition-colors hover:bg-muted`}>
           <ChevronLeft className="w-5 h-5 text-foreground" />
         </button>
         <h2 className="text-2xl font-bold text-foreground">Semana del {currentDate.toLocaleDateString('es-ES')}</h2>

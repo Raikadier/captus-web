@@ -55,8 +55,8 @@ export default function LogrosSection() {
   }, [achievementsLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Card className={`${compactView ? 'p-4' : 'p-6'} ${darkMode ? 'bg-card border-gray-700' : 'bg-card'} rounded-xl shadow-sm`}>
-      <h2 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-foreground'} ${compactView ? 'mb-4' : 'mb-6'}`}>🏆 Mis Logros</h2>
+    <Card className={`${compactView ? 'p-4' : 'p-6'} ${'bg-card'} rounded-xl shadow-sm`}>
+      <h2 className={`text-xl font-semibold text-foreground ${compactView ? 'mb-4' : 'mb-6'}`}>🏆 Mis Logros</h2>
 
       {achievementsLoading ? (
         <div className="text-center py-8"><Loading message="Cargando logros..." fullScreen={false} /></div>

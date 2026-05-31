@@ -218,7 +218,7 @@ const HomePage = () => {
                 Tareas Pendientes
               </h2>
               <Link to="/tasks">
-                <Button variant="ghost" className={`text-primary hover:text-primary/90 hover:bg-primary/10 transition-all duration-200 hover:scale-105 ${darkMode ? 'text-primary hover:text-primary hover:bg-primary/20' : ''
+                <Button variant="ghost" className={`text-primary hover:text-primary/90 hover:bg-primary/10 transition-all duration-200 hover:scale-105 ${''
                   }`}>
                   Ver todas
                 </Button>

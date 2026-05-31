@@ -52,7 +52,7 @@ export default function SeguridadSection() {
               value={passwordData.currentPassword}
               onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
               placeholder="Ingresa tu contraseña actual"
-              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} pr-10 border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} pr-10 border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
             <button type="button" onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -64,14 +64,14 @@ export default function SeguridadSection() {
           <input id="new-password" type="password" value={passwordData.newPassword}
             onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
             placeholder="Ingresa tu nueva contraseña"
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
         <div>
           <Label htmlFor="confirm-password" className="text-sm font-medium text-foreground">Confirmar Nueva Contraseña</Label>
           <input id="confirm-password" type="password" value={passwordData.confirmPassword}
             onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
             placeholder="Confirma tu nueva contraseña"
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-slate-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
         <div className="p-3 bg-blue-50 border-blue-200 border rounded-lg">
           <p className="text-sm text-blue-700">

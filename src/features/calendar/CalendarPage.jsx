@@ -121,7 +121,7 @@ export default function CalendarPage() {
             {['month', 'week'].map(v => (
               <button key={v} onClick={() => setView(v)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
-                  view === v ? 'bg-primary/10 text-primary shadow-sm' : darkMode ? 'text-slate-400 hover:bg-gray-700' : 'text-muted-foreground hover:bg-background'
+                  view === v ? 'bg-primary/10 text-primary shadow-sm' : 'text-muted-foreground hover:bg-muted'
                 }`}>
                 {v === 'month' ? 'Mes' : 'Semana'}
               </button>

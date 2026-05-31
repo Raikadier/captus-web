@@ -9,7 +9,7 @@ import { getPriorityColor, getEventColor } from '../helpers/calendarUtils'
 export function TaskDetailsModal({ task, onClose }) {
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-3">
@@ -48,7 +48,7 @@ export function EventDetailsModal({ event, onClose, onEdit, onDelete }) {
   const colorClasses = getEventColor(event.type).split(' ')
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-3">
@@ -101,7 +101,7 @@ export function EventDetailsModal({ event, onClose, onEdit, onDelete }) {
 export function DeleteEventModal({ eventTitle, onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-md animate-in zoom-in-95 duration-300 border border-border">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">

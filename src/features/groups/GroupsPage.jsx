@@ -136,19 +136,19 @@ export default function GroupsPage() {
   if (loading) return <Loading fullScreen message="Cargando grupos..." />
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-background' : 'bg-[#F6F7FB]'}`}>
+    <div className={`min-h-screen ${'bg-background'}`}>
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-24">
 
         <FadeIn>
-          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-card border-border'}`}>
+          <div className={`rounded-2xl shadow-sm p-6 mb-8 border bg-card border-border`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 text-primary`}>
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
-                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-foreground'}`}>Mis Grupos</h1>
-                  <p className={`${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>Colabora y gestiona tus equipos de trabajo</p>
+                  <h1 className={`text-2xl font-bold text-foreground`}>Mis Grupos</h1>
+                  <p className={`text-muted-foreground`}>Colabora y gestiona tus equipos de trabajo</p>
                 </div>
               </div>
               <Button
@@ -164,7 +164,7 @@ export default function GroupsPage() {
 
         <FadeIn delay={0.1}>
           <div className="mb-8 relative">
-            <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${darkMode ? 'text-muted-foreground' : 'text-slate-400'}`} />
+            <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground`} />
             <Input
               type="text"
               placeholder="Buscar grupos por nombre o descripción..."
@@ -182,10 +182,10 @@ export default function GroupsPage() {
           {filteredGroups.length === 0 ? (
             <div className="col-span-full">
               <FadeIn>
-                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-slate-900/50' : 'border-border bg-card/50'}`}>
-                  <Users className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-foreground' : 'text-slate-300'}`} />
-                  <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-foreground'}`}>No hay grupos</h3>
-                  <p className={`mb-6 ${darkMode ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
+                <div className={`text-center py-16 rounded-2xl border-2 border-dashed border-border bg-card/50`}>
+                  <Users className={`mx-auto h-16 w-16 mb-4 text-muted-foreground`} />
+                  <h3 className={`text-lg font-semibold mb-2 text-foreground`}>No hay grupos</h3>
+                  <p className={`mb-6 text-muted-foreground`}>
                     {searchQuery ? 'No se encontraron grupos con ese criterio' : 'Crea tu primer grupo para comenzar a colaborar'}
                   </p>
                   {!searchQuery && (
@@ -201,29 +201,29 @@ export default function GroupsPage() {
             filteredGroups.map((group) => (
               <StaggerItem key={group.id}>
                 <Card
-                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${darkMode ? 'bg-card hover:bg-slate-800' : 'bg-card hover:shadow-lg'
+                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${'bg-card hover:shadow-md'
                     }`}
                   onClick={() => setSelectedGroup(group)}
                 >
                   <div className={`h-2 w-full bg-gradient-to-r from-primary to-purple-500`} />
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${darkMode ? 'bg-slate-800 text-slate-400' : 'bg-muted text-muted-foreground'}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${'bg-muted text-muted-foreground'}`}>
                         <Users className="w-5 h-5" />
                       </div>
-                      <Badge variant="secondary" className={`${darkMode ? 'bg-slate-800 text-slate-300' : 'bg-muted text-muted-foreground'}`}>
+                      <Badge variant="secondary" className={`${'bg-muted text-muted-foreground'}`}>
                         {group.members} miembros
                       </Badge>
                     </div>
 
-                    <h3 className={`text-xl font-bold mb-2 line-clamp-1 ${darkMode ? 'text-white' : 'text-foreground'}`}>
+                    <h3 className={`text-xl font-bold mb-2 line-clamp-1 text-foreground`}>
                       {group.name}
                     </h3>
-                    <p className={`text-sm mb-4 line-clamp-2 ${darkMode ? 'text-slate-400' : 'text-muted-foreground'}`}>
+                    <p className={`text-sm mb-4 line-clamp-2 text-muted-foreground`}>
                       {group.description || 'Sin descripción'}
                     </p>
 
-                    <div className={`pt-4 border-t flex items-center justify-between text-xs ${darkMode ? 'border-gray-800 text-muted-foreground' : 'border-border text-slate-400'}`}>
+                    <div className={`pt-4 border-t flex items-center justify-between text-xs ${'border-border text-muted-foreground'}`}>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {new Date(group.created_at).toLocaleDateString()}
@@ -359,7 +359,7 @@ export default function GroupsPage() {
               <>
                 <DialogHeader>
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 text-primary`}>
                       <Users className="w-6 h-6" />
                     </div>
                     <div>
@@ -370,19 +370,19 @@ export default function GroupsPage() {
                 </DialogHeader>
 
                 <div className="grid grid-cols-3 gap-4 py-6">
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-slate-800' : 'bg-blue-50'}`}>
-                    <div className={`text-2xl font-bold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{selectedGroup.members}</div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-blue-600/60'}`}>Miembros</div>
+                  <div className={`p-4 rounded-xl text-center ${'bg-primary/8'}`}>
+                    <div className={`text-2xl font-bold ${'text-primary'}`}>{selectedGroup.members}</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Miembros</div>
                   </div>
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-slate-800' : 'bg-purple-50'}`}>
-                    <div className={`text-2xl font-bold ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>{selectedGroup.tasks || 0}</div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-purple-600/60'}`}>Tareas</div>
+                  <div className={`p-4 rounded-xl text-center ${'bg-brand-50'}`}>
+                    <div className={`text-2xl font-bold ${'text-brand-700'}`}>{selectedGroup.tasks || 0}</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Tareas</div>
                   </div>
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-slate-800' : 'bg-brand-50'}`}>
-                    <div className={`text-lg font-bold ${darkMode ? 'text-green-400' : 'text-primary'}`}>
+                  <div className={`p-4 rounded-xl text-center ${'bg-brand-50'}`}>
+                    <div className={`text-lg font-bold ${'text-primary'}`}>
                       {new Date(selectedGroup.created_at).toLocaleDateString()}
                     </div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-slate-400' : 'text-primary/60'}`}>Creado</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Creado</div>
                   </div>
                 </div>
 
