@@ -68,7 +68,7 @@
 
   /* Primary (brand CTA) */
   --primary:             var(--brand-500);   /* #1DB954 */
-  --primary-foreground:  oklch(1 0 0);       /* White on green */
+  --primary-foreground:  var(--slate-900);    /* Dark on green — WCAG AAA 6.9:1 */
 
   /* Secondary (soft green tint) */
   --secondary:           var(--brand-50);    /* Very light green */
