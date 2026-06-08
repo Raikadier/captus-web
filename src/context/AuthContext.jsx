@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../shared/api/supabase';
 import apiClient from '../shared/api/client';
+import { validatePassword } from '../lib/passwordValidator';
 import { AuthContext } from './contextDefinitions';
 
 // useAuth hook moved to ../hooks/useAuth.js to fix HMR warnings
@@ -106,13 +107,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, name, role = 'student') => {
     try {
-      // Validate password strength
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-      if (!passwordRegex.test(password)) {
-        return {
-          success: false,
-          error: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'
-        };
+      const passwordCheck = validatePassword(password);
+      if (!passwordCheck.valid) {
+        return { success: false, error: passwordCheck.error };
       }
 
       // First check if email is already registered in our users table
@@ -137,7 +134,7 @@ export const AuthProvider = ({ children }) => {
         options: {
           data: {
             name: name,
-            role: role, // Explicitly pass role here
+            role: role,
             display_name: name,
             full_name: name
           }
@@ -145,7 +142,6 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (error) {
-        // Handle specific Supabase errors
         if (error.message && (
           error.message.includes('already registered') ||
           error.message.includes('already been registered') ||
@@ -156,7 +152,6 @@ export const AuthProvider = ({ children }) => {
         throw error;
       }
 
-      // If we have a session immediately (no email confirm required), sync to backend
       if (data.session) {
         try {
           await apiClient.post('/users/sync');
@@ -165,20 +160,25 @@ export const AuthProvider = ({ children }) => {
         }
       }
 
-      // If email confirmation is enabled in Supabase, session might be null
       const requiresEmailConfirmation = !data.session;
 
       return { success: true, requiresEmailConfirmation };
     } catch (err) {
       console.error('Registration error:', err);
 
-      // Handle specific error messages
       if (err.message && (
         err.message.includes('already registered') ||
         err.message.includes('already been registered') ||
         err.message.includes('User already registered')
       )) {
         return { success: false, error: 'Este email ya está registrado' };
+      }
+
+      if (err.message?.includes('Error sending confirmation email')) {
+        return {
+          success: false,
+          error: 'No se pudo enviar el correo de verificación. Revisa la configuración SMTP en Supabase o inténtalo más tarde.',
+        };
       }
 
       return { success: false, error: err.message || 'Error en el registro' };

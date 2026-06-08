@@ -6,7 +6,6 @@ import { Card } from '../../../ui/card';
 import { Progress } from '../../../ui/progress';
 import NotificationsDropdown from './NotificationsDropdown';
 import { useAuth } from '../../../hooks/useAuth';
-import { useTheme } from '../../../context/themeContext';
 import apiClient from '../../../shared/api/client';
 import { useSubTasks } from '../../../hooks/useSubTasks';
 import { FadeIn, StaggerContainer, StaggerItem } from '../../../shared/components/animations/MotionComponents';
@@ -109,7 +108,6 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { darkMode } = useTheme()
   const [unreadCount, setUnreadCount] = useState(0)
 
   const handleToggleDropdown = useCallback(() => {

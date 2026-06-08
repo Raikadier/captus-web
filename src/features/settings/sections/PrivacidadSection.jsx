@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { supabase } from '../../../shared/api/supabase'
 
 export default function PrivacidadSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const [deletingAccount, setDeletingAccount] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteStep, setDeleteStep] = useState(1)

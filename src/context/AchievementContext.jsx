@@ -8,7 +8,7 @@ export const AchievementProvider = ({ children }) => {
   const [userAchievements, setUserAchievements] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
-  const [globalRefreshAchievements, setGlobalRefreshAchievements] = useState(null);
+  const [, setGlobalRefreshAchievements] = useState(null);
   const [error, setError] = useState(null);
 
   // Function to refresh achievements
@@ -65,16 +65,21 @@ export const AchievementProvider = ({ children }) => {
     }
   }, [user?.id]);
 
-  // Auto-refresh every 30 seconds when user is available
+  // Auto-refresh when tab is visible (efficiency: ISO 25010 performance)
   useEffect(() => {
     if (!user?.id) return;
 
-    const interval = setInterval(() => {
-      // console.log('🔄 Auto-refresh triggered (30s interval)');
-      refreshAchievements();
-    }, 30000);
+    const refreshIfVisible = () => {
+      if (!document.hidden) refreshAchievements();
+    };
 
-    return () => clearInterval(interval);
+    const interval = setInterval(refreshIfVisible, 60_000);
+    document.addEventListener('visibilitychange', refreshIfVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', refreshIfVisible);
+    };
   }, [user?.id, refreshAchievements]);
 
   // Set global function

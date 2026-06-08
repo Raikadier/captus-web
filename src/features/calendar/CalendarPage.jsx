@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
-import { useTheme } from '../../context/themeContext'
 import { Button } from '../../ui/button'
 import apiClient from '../../shared/api/client'
 import { useEvents } from '../../hooks/useEvents'
@@ -15,7 +14,6 @@ import DayPanel from './components/DayPanel'
 import { TaskDetailsModal, EventDetailsModal, DeleteEventModal } from './components/CalendarModals'
 
 export default function CalendarPage() {
-  const { darkMode } = useTheme()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [tasks, setTasks] = useState([])
@@ -35,7 +33,8 @@ export default function CalendarPage() {
       setTasksLoading(true); setTasksError(null)
       const response = await apiClient.get('/tasks/pending?limit=50')
       if (response.data.success) setTasks(response.data.data || [])
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al cargar tareas del calendario:', err)
       setTasksError('Error al cargar las tareas')
     } finally {
       setTasksLoading(false)
@@ -74,6 +73,7 @@ export default function CalendarPage() {
       if (result.success) setShowEventDetails(null)
       else alert('Error al eliminar el evento: ' + result.message)
     } catch (err) {
+      console.error('Error al eliminar evento:', err)
       alert('Error al eliminar el evento')
     }
   }

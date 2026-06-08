@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card } from '../../ui/card';
 import apiClient from '../api/client';
 import { toast } from 'sonner';
-import { useStreakData, useEventsData, useProjectsData, useNotesData, usePriorityData, useTimeData, useAchievementsData } from '../../hooks/useConsolidatedStats';
+import { useStreakData, useEventsData, useProjectsData, useNotesData, useTimeData } from '../../hooks/useConsolidatedStats';
 import { useAchievementsContext } from '../../hooks/useAchievementsContext';
 
 const StreakWidget = () => {

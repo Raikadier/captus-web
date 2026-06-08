@@ -30,7 +30,7 @@ export default function AdminUsersPage() {
     try {
       const { data } = await getMembers(role === 'all' ? undefined : role);
       setMembers(data);
-    } catch { toast.error('Error cargando usuarios'); }
+    } catch (err) { console.error('Error cargando usuarios:', err); toast.error('Error cargando usuarios'); }
     finally { setLoading(false); }
   };
 

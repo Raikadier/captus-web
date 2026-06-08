@@ -27,7 +27,6 @@ const NAV_ITEMS = [
 ]
 
 function SettingsMenuItem({ icon, label, active, onClick }) {
-  const { darkMode } = useTheme()
   return (
     <button onClick={onClick} type="button"
       className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
@@ -43,7 +42,7 @@ function SettingsMenuItem({ icon, label, active, onClick }) {
 }
 
 export default function SettingsPage() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const [activeSection, setActiveSection] = useState('perfil')
 
   return (

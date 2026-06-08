@@ -10,7 +10,7 @@ import Loading from '../../../ui/loading'
 import { supabase } from '../../../shared/api/supabase'
 
 export default function PerfilSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const fileInputRef = useRef(null)
 
   const [userData, setUserData] = useState(null)
@@ -99,7 +99,8 @@ export default function PerfilSection() {
       await apiClient.put(`/users/${userId}`, { avatar_url: publicUrl })
       setUserData(prev => ({ ...prev, avatar_url: publicUrl }))
       toast.success('Foto de perfil actualizada')
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al subir foto de perfil:', err)
       toast.error('Error al subir la foto')
     } finally {
       setUploadingPhoto(false)

@@ -1,7 +1,5 @@
 import React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useTheme } from '../../../context/themeContext'
-
 const HOUR_HEIGHT = 60
 const HOURS = Array.from({ length: 15 }, (_, i) => i + 7)
 const DAY_NAMES = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB']
@@ -12,7 +10,6 @@ export default function CalendarWeekView({
   getEventBlockColor, getTaskBlockColor,
   onTaskClick, onEventClick,
 }) {
-  const { darkMode } = useTheme()
 
   const startOfWeek = new Date(currentDate)
   startOfWeek.setDate(currentDate.getDate() - currentDate.getDay())

@@ -26,7 +26,7 @@ export default function AdminGradingPage() {
     try {
       const { data } = await getGradingScales();
       setScales(data);
-    } catch { toast.error('Error cargando escalas'); }
+    } catch (err) { console.error('Error cargando escalas:', err); toast.error('Error cargando escalas'); }
     finally { setLoading(false); }
   };
 

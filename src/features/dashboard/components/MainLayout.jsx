@@ -10,9 +10,8 @@ import ErrorBoundary from '../../../components/shared/ErrorBoundary'
 const MainLayout = ({ children }) => {
   const { user } = useAuth()
   const location = useLocation()
-  const isTeacher =
-    user?.user_metadata?.role === 'teacher' ||
-    location.pathname.startsWith('/teacher')
+  const role = user?.user_metadata?.role || user?.app_metadata?.role;
+  const isTeacher = role === 'teacher';
   const [isCollapsed, setIsCollapsed] = useState(false)
   const showFloatingButton = location.pathname !== '/chatbot'
 

@@ -45,7 +45,8 @@ export default function ProjectDetailPage() {
                 // If we have an uncomplete endpoint, use it. Otherwise update.
                 await apiClient.put(`/tasks/${taskId}`, { is_completed: false })
             }
-        } catch (error) {
+        } catch (err) {
+            console.error('Error actualizando tarea del proyecto:', err)
             toast.error('Error actualizando tarea')
             // Revert
             setTasks(prev => prev.map(t => t.id === taskId ? { ...t, is_completed: !isCompleted } : t))

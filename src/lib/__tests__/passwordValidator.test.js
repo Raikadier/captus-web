@@ -16,7 +16,8 @@
  *   CE3 (CI) – Contraseña < 8 chars                                  → error
  *   CE4 (CI) – Contraseña > 32 chars                                 → error
  *   CE5 (CI) – Sin mayúscula                                         → error
- *   CE6 (CI) – Sin dígito                                            → error
+ *   CE6 (CI) – Sin minúscula                                         → error
+ *   CE7 (CI) – Sin dígito                                            → error
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -75,12 +76,18 @@ describe('PU01 – Validador de Contraseña (passwordValidator)', () => {
   });
 
   it('PU01-CI06 | CE5 | Sin mayúscula → error mayúscula requerida', () => {
-    const resultado = validatePassword('contraseña1'); // sin mayúscula
+    const resultado = validatePassword('contraseña1');
     expect(resultado.valid).toBe(false);
     expect(resultado.error).toMatch(/mayúscula/i);
   });
 
-  it('PU01-CI07 | CE6 | Sin dígito → error número requerido', () => {
+  it('PU01-CI07 | CE6 | Sin minúscula → error minúscula requerida', () => {
+    const resultado = validatePassword('PASSWORD1');
+    expect(resultado.valid).toBe(false);
+    expect(resultado.error).toMatch(/minúscula/i);
+  });
+
+  it('PU01-CI08 | CE7 | Sin dígito → error número requerido', () => {
     const resultado = validatePassword('ContraseñaSinNum'); // sin número
     expect(resultado.valid).toBe(false);
     expect(resultado.error).toMatch(/número/i);
@@ -111,7 +118,7 @@ describe('PU01 – Validador de Contraseña (passwordValidator)', () => {
   });
 
   // ─── Camino Básico (Caja Blanca) ──────────────────────────────────────────
-  // Cubre los 5 if del módulo: vacío → <8 → >32 → sin mayúscula → sin número → ok
+  // Cubre los if del módulo: vacío → <8 → >32 → sin mayúscula → sin minúscula → sin número → ok
 
   it('PU01-CB01 | CB | Camino: vacío → sale en primer if', () => {
     expect(validatePassword('').valid).toBe(false);
@@ -129,11 +136,15 @@ describe('PU01 – Validador de Contraseña (passwordValidator)', () => {
     expect(validatePassword('abcde123').valid).toBe(false);
   });
 
-  it('PU01-CB05 | CB | Camino: sin número → sale en quinto if', () => {
+  it('PU01-CB05 | CB | Camino: sin minúscula → sale en quinto if', () => {
+    expect(validatePassword('ABCDE123').valid).toBe(false);
+  });
+
+  it('PU01-CB06 | CB | Camino: sin número → sale en sexto if', () => {
     expect(validatePassword('AbcdeXYZ').valid).toBe(false);
   });
 
-  it('PU01-CB06 | CB | Camino completo sin errores → retorna valid: true', () => {
+  it('PU01-CB07 | CB | Camino completo sin errores → retorna valid: true', () => {
     expect(validatePassword('ValidPass1').valid).toBe(true);
   });
 });

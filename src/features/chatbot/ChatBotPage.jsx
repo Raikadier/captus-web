@@ -38,9 +38,9 @@ const ChatBotPage = () => {
       const data = await aiTaskService.getMessages(conversationId);
       setMessages(data.map(msg => ({
         id: msg.id,
-        type: msg.role,
+        type: msg.role === 'assistant' || msg.role === 'bot' ? 'bot' : 'user',
         content: msg.content,
-        timestamp: new Date(msg.createdAt),
+        timestamp: new Date(msg.createdAt ?? msg.created_at),
       })));
     } catch (err) {
       console.error('Error fetching messages:', err);
@@ -139,61 +139,64 @@ const ChatBotPage = () => {
   };
 
   const hasConversation = activeConversation !== null || messages.length > 0;
+  const conversationList = Array.isArray(conversations) ? conversations : [];
 
   return (
-    <div className="h-screen flex bg-background text-foreground overflow-hidden">
+    <div className="h-screen flex overflow-hidden bg-background text-foreground">
 
-      {/* ── Sidebar ──────────────────────────────────────────────────────────── */}
+      {/* Sidebar: estructura de 2 bloques (como main en prod) + min-h-0 para que la lista no colapse */}
       <AnimatePresence>
         {showSidebar && (
-          <Motion.aside
+          <Motion.div
             aria-label="Historial de conversaciones"
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 260, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-            className="bg-card border-r border-border flex flex-col overflow-hidden flex-shrink-0"
+            className="shrink-0 flex flex-col overflow-hidden bg-card border-r border-border"
+            style={{ minHeight: 0 }}
           >
-            {/* Sidebar header */}
-            <div className="p-4 border-b border-border flex items-center gap-2">
-              <div className="w-7 h-7 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Sparkles className="w-4 h-4 text-white" />
+            <div className="shrink-0 border-b border-border">
+              <div className="p-3 flex items-center gap-2">
+                <div className="w-7 h-7 bg-gradient-to-br from-brand-400 to-brand-600 rounded-lg flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 text-white" aria-hidden="true" />
+                </div>
+                <span className="font-semibold text-foreground text-sm">Captus AI</span>
+                <button
+                  type="button"
+                  onClick={() => setShowSidebar(false)}
+                  aria-label="Ocultar panel de conversaciones"
+                  className="ml-auto p-1 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
+                >
+                  <ChevronLeft size={16} />
+                </button>
               </div>
-              <span className="font-semibold text-foreground text-sm">Captus AI</span>
-              <button
-                onClick={() => setShowSidebar(false)}
-                aria-label="Ocultar panel de conversaciones"
-                className="ml-auto p-1 rounded-lg hover:bg-muted text-muted-foreground transition-colors"
-              >
-                <ChevronLeft size={16} />
-              </button>
+              <div className="px-3 pb-3">
+                <button
+                  type="button"
+                  onClick={handleNewConversation}
+                  aria-label="Iniciar nueva conversación con Captus AI"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all text-sm font-medium shadow-brand-sm"
+                >
+                  <Plus size={16} aria-hidden="true" />
+                  Nueva conversación
+                </button>
+              </div>
             </div>
 
-            {/* New conversation button */}
-            <div className="p-3 border-b border-border">
-              <button
-                onClick={handleNewConversation}
-                aria-label="Iniciar nueva conversación con Captus AI"
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-all text-sm font-medium shadow-brand-sm"
-              >
-                <Plus size={16} aria-hidden="true" />
-                Nueva conversación
-              </button>
-            </div>
-
-            {/* Conversations list */}
             <nav
               aria-label="Lista de conversaciones"
-              className="flex-1 overflow-y-auto p-2"
+              className="flex-1 min-h-0 overflow-y-auto p-2"
             >
-              {conversations.length === 0 ? (
+              {conversationList.length === 0 ? (
                 <p className="text-xs text-muted-foreground text-center py-6 px-4 leading-relaxed">
                   Tus conversaciones aparecerán aquí
                 </p>
               ) : (
-                conversations.map((conv) => (
+                conversationList.map((conv) => (
                   <button
                     key={conv.id}
+                    type="button"
                     onClick={() => setActiveConversation(conv.id)}
                     aria-pressed={activeConversation === conv.id}
                     aria-label={`Conversación: ${conv.title || 'Nueva conversación'}`}
@@ -207,20 +210,22 @@ const ChatBotPage = () => {
                       {conv.title || 'Nueva conversación'}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {new Date(conv.updatedAt).toLocaleDateString('es-ES', {
-                        day: 'numeric', month: 'short',
-                      })}
+                      {(conv.updatedAt || conv.updated_at)
+                        ? new Date(conv.updatedAt || conv.updated_at).toLocaleDateString('es-ES', {
+                            day: 'numeric', month: 'short',
+                          })
+                        : ''}
                     </p>
                   </button>
                 ))
               )}
             </nav>
-          </Motion.aside>
+          </Motion.div>
         )}
       </AnimatePresence>
 
       {/* ── Main area ─────────────────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0">
 
         {/* Top bar */}
         <header className="h-14 border-b border-border flex items-center gap-3 px-4 flex-shrink-0">
@@ -244,7 +249,7 @@ const ChatBotPage = () => {
 
         {/* Messages area */}
         <main
-          className="flex-1 overflow-y-auto"
+          className="flex-1 min-h-0 overflow-y-auto"
           aria-label="Mensajes de conversación"
           aria-live="polite"
         >

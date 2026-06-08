@@ -10,13 +10,11 @@ import { Input } from '../../ui/input'
 import Loading from '../../ui/loading'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '../../ui/dialog'
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents'
-import { useTheme } from '../../context/themeContext'
 import { Card } from '../../ui/card'
 import { Progress } from '../../ui/progress'
 import { Badge } from '../../ui/badge'
 
 export default function StudentCoursesPage() {
-  const { darkMode } = useTheme()
   const navigate = useNavigate()
   const { courses, loading, error, refresh } = useCourses()
   const { joinByCode } = useEnrollments()

@@ -12,7 +12,7 @@ import Loading from '../../../ui/loading'
 const getDifficultyColor = (difficulty) => difficultyColors[difficulty] || 'bg-muted text-foreground border-border'
 
 export default function LogrosSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const { userAchievements, loading: achievementsLoading, error: achievementsError, refreshAchievements } = useAchievementsContext()
   const [statusFilter, setStatusFilter] = useState('all')
   const [difficultyFilter, setDifficultyFilter] = useState('all')

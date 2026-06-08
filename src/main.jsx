@@ -5,7 +5,6 @@ import App from './App.jsx'
 
 // Expose React globally for libs expecting window.React (dev safeguard)
 if (typeof window !== 'undefined') {
-  // eslint-disable-next-line no-undef
   window.React = React
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart3, Users, BookOpen, GraduationCap, TrendingUp } from 'lucide-react';
 import { Card } from '../../../ui/card';
-import { getAdminStats, getMembers, getAdminCourses } from '../../../shared/api/adminService';
+import { getAdminStats, getAdminCourses } from '../../../shared/api/adminService';
 import { toast } from 'sonner';
 
 function StatRow({ label, value, max, color }) {

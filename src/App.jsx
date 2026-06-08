@@ -66,8 +66,8 @@ const queryClient = new QueryClient({
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
-  // En desarrollo, permite navegar sin autenticación para validar estilos/UX
-  if (import.meta.env.MODE !== 'production') return children;
+  // Dev: sin login. Prod: solo con VITE_BYPASS_AUTH=true explícito
+  if (import.meta.env.MODE !== 'production' || import.meta.env.VITE_BYPASS_AUTH === 'true') return children;
   if (loading) return <Loading message="Cargando..." />;
   return isAuthenticated ? children : <Navigate to="/" />;
 };

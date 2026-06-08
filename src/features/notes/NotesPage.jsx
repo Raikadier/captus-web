@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Bell, MessageSquare, Pin, Edit, Trash2, Search as SearchIcon, Plus, FileText, X, Save, Sparkles } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { Button } from '../../ui/button'
 import { Card } from '../../ui/card'
 import { Input } from '../../ui/input'

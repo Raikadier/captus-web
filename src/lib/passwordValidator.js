@@ -6,7 +6,8 @@
  *   RN-PW1: Longitud mínima de 8 caracteres.
  *   RN-PW2: Longitud máxima de 32 caracteres.
  *   RN-PW3: Al menos una letra mayúscula.
- *   RN-PW4: Al menos un dígito numérico.
+ *   RN-PW4: Al menos una letra minúscula.
+ *   RN-PW5: Al menos un dígito numérico.
  *
  * Usado por: AuthContext (registro) y LoginForm (validación local).
  */
@@ -40,6 +41,13 @@ export function validatePassword(password) {
     return {
       valid: false,
       error: 'La contraseña debe contener al menos una letra mayúscula',
+    };
+  }
+
+  if (!/[a-z]/.test(password)) {
+    return {
+      valid: false,
+      error: 'La contraseña debe contener al menos una letra minúscula',
     };
   }
 

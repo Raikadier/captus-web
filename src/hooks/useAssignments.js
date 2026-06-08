@@ -1,9 +1,7 @@
 import { useState, useCallback } from 'react';
-import { useAuth } from './useAuth';
 import apiClient from '../shared/api/client';
 
 export function useAssignments() {
-  const { session } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 

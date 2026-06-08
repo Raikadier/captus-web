@@ -10,7 +10,7 @@ import apiClient from '../../../shared/api/client'
 import { toast } from 'sonner'
 
 export default function NotificacionesSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const [telegramStatus, setTelegramStatus] = useState({ connected: false, username: null })
   const [telegramCode, setTelegramCode] = useState(null)
   const [telegramLoading, setTelegramLoading] = useState(false)
@@ -38,7 +38,8 @@ export default function NotificacionesSection() {
     try {
       const response = await apiClient.post('/telegram/generate-code')
       if (response.data.success) setTelegramCode(response.data.data)
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al generar código Telegram:', err)
       toast.error('Error al generar código de vinculación')
     } finally {
       setTelegramLoading(false)
@@ -52,7 +53,8 @@ export default function NotificacionesSection() {
       setTelegramStatus({ connected: false, username: null })
       setTelegramCode(null)
       toast.success('Cuenta de Telegram desvinculada')
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al desvincular Telegram:', err)
       toast.error('Error al desvincular cuenta')
     } finally {
       setTelegramLoading(false)
@@ -79,7 +81,8 @@ export default function NotificacionesSection() {
     try {
       await apiClient.put('/notifications/preferences', notificationPrefs)
       toast.success('Preferencias de notificación actualizadas')
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al guardar preferencias:', err)
       toast.error('Error al guardar preferencias')
     } finally {
       setNotificationsSaving(false)

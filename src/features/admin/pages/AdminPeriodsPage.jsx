@@ -23,7 +23,7 @@ export default function AdminPeriodsPage() {
     try {
       const { data } = await getPeriods();
       setPeriods(data);
-    } catch { toast.error('Error cargando periodos'); }
+    } catch (err) { console.error('Error cargando periodos:', err); toast.error('Error cargando periodos'); }
     finally { setLoading(false); }
   };
 
