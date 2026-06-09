@@ -1,5 +1,6 @@
 import React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { taskMatchesDay, getTaskDate, getTaskPriorityId } from '../helpers/calendarUtils'
 const HOUR_HEIGHT = 60
 const HOURS = Array.from({ length: 15 }, (_, i) => i + 7)
 const DAY_NAMES = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB']
@@ -21,7 +22,7 @@ export default function CalendarWeekView({
 
   const getEventsWithPositions = (day) => {
     const dayEvents = events.filter(e => new Date(e.start_date).toDateString() === day.toDateString())
-    const dayTasks = tasks.filter(t => new Date(t.endDate || t.creationDate).toDateString() === day.toDateString())
+    const dayTasks = tasks.filter(t => taskMatchesDay(t, day))
 
     const processed = [
       ...dayEvents.map((event, idx) => {
@@ -31,10 +32,10 @@ export default function CalendarWeekView({
         return { ...event, top, height: Math.max(duration * HOUR_HEIGHT, 25), color: getEventBlockColor(event.type, idx), isEvent: true, isTask: false, displayTime: eventDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }
       }),
       ...dayTasks.map(task => {
-        const taskDate = new Date(task.endDate || task.creationDate)
+        const taskDate = getTaskDate(task) || new Date(day)
         const startHour = taskDate.getHours() || 9
         const top = (startHour - 7) * HOUR_HEIGHT + (taskDate.getMinutes() / 60) * HOUR_HEIGHT
-        return { ...task, top, height: 30, color: getTaskBlockColor(task.id_Priority || task.priority), isTask: true, isEvent: false, displayTime: taskDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }
+        return { ...task, top, height: 30, color: getTaskBlockColor(getTaskPriorityId(task)), isTask: true, isEvent: false, displayTime: taskDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) }
       })
     ]
     return processed

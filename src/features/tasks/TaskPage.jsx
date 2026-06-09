@@ -1,7 +1,8 @@
 // TaskPage - Diseño como la plantilla con mejor UI
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Filter, Search as SearchIcon, Bell, Calendar as CalendarIcon, AlertTriangle } from 'lucide-react';
+import { Plus, Filter, Search as SearchIcon, Bell, Calendar as CalendarIcon, AlertTriangle, Edit } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useTasks } from './hooks/useTasks';
 import { useReferenceData } from '../../hooks/useReferenceData';
 import { taskService } from '../../services/taskService';
@@ -20,7 +21,7 @@ import './TaskTabs.css';
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents';
 
 const TaskPage = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') === 'categories' ? 'categories' : 'tasks';
 
   const {
@@ -38,6 +39,13 @@ const TaskPage = () => {
 
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      setShowTaskForm(true);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const [filters, setFilters] = useState({
     searchText: '',
     categoryId: '',
@@ -70,9 +78,10 @@ const TaskPage = () => {
   const handleCreateTask = async (taskData) => {
     try {
       await createTask(taskData);
+      toast.success('Tarea creada correctamente');
       setShowTaskForm(false);
     } catch (error) {
-      console.error('Error creating task:', error);
+      toast.error(error.response?.data?.message || error.message || 'Error al crear la tarea');
     }
   };
 

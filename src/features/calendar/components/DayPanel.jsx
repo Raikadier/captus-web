@@ -1,9 +1,9 @@
 import React from 'react'
 import { Calendar, Clock } from 'lucide-react'
-import { getPriorityColor } from '../helpers/calendarUtils'
+import { getPriorityColor, taskMatchesDay, getTaskPriorityId, isTaskCompleted } from '../helpers/calendarUtils'
 
 export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onEventClick, onAddEvent }) {
-  const dayTasks = tasks.filter(t => new Date(t.endDate || t.creationDate).toDateString() === selectedDate.toDateString())
+  const dayTasks = tasks.filter(t => taskMatchesDay(t, selectedDate))
   const dayEvents = events.filter(e => new Date(e.start_date).toDateString() === selectedDate.toDateString())
 
   return (
@@ -31,18 +31,18 @@ export default function DayPanel({ selectedDate, tasks, events, onTaskClick, onE
           <>
             {dayTasks.map(task => (
               <div key={`task-${task.id}`}
-                className={`p-4 rounded-xl border-2 ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'opacity-60' : ''} cursor-pointer`}
+                className={`p-4 rounded-xl border-2 ${getPriorityColor(getTaskPriorityId(task))} ${isTaskCompleted(task) ? 'opacity-60' : ''} cursor-pointer`}
                 role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onTaskClick(task)}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="text-lg">📋</span>
                     <div>
-                      <h4 className={`font-semibold ${task.state ? 'line-through' : ''}`}>{task.title}</h4>
+                      <h4 className={`font-semibold ${isTaskCompleted(task) ? 'line-through' : ''}`}>{task.title}</h4>
                       {task.description && <p className="text-sm text-muted-foreground mt-1">{task.description}</p>}
                     </div>
                   </div>
-                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
-                    {task.state ? 'Completada' : 'Pendiente'}
+                  <span className={`px-3 py-1 text-xs rounded-full font-medium ${isTaskCompleted(task) ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
+                    {isTaskCompleted(task) ? 'Completada' : 'Pendiente'}
                   </span>
                 </div>
               </div>

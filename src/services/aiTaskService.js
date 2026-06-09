@@ -1,5 +1,7 @@
 import apiClient from '../shared/api/client';
 
+import { unwrapList } from '../shared/api/unwrap';
+
 export const aiTaskService = {
   /**
    * Envía un mensaje a la IA y maneja la respuesta incluyendo posibles acciones de herramientas.
@@ -23,7 +25,7 @@ export const aiTaskService = {
   async getConversations() {
     try {
       const response = await apiClient.get('/ai/conversations');
-      return response.data;
+      return unwrapList(response.data);
     } catch (error) {
       console.error("Error en aiTaskService.getConversations:", error);
       throw error;
@@ -33,7 +35,7 @@ export const aiTaskService = {
   async getMessages(conversationId) {
     try {
       const response = await apiClient.get(`/ai/conversations/${conversationId}/messages`);
-      return response.data;
+      return unwrapList(response.data);
     } catch (error) {
       console.error("Error en aiTaskService.getMessages:", error);
       throw error;

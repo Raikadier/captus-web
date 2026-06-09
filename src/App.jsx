@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
-import { ThemeProvider, useTheme } from './context/themeContext';
+import { ThemeProvider } from './context/themeContext';
 import { AchievementProvider } from './context/AchievementContext';
 import Loading from './ui/loading';
 import { Toaster } from 'sonner';
@@ -87,12 +87,11 @@ const TeacherRoute = ({ children }) => {
 
 // ─── App shell ────────────────────────────────────────────────────────────────
 function AppContent() {
-  const { fontSize } = useTheme();
   const { currentNotification, closeNotification } = useAchievementNotifications();
 
   return (
     <Router>
-      <div className={`App text-primary font-${fontSize}`}>
+      <div className="App text-primary">
         <Toaster richColors position="top-right" />
 
         {currentNotification && (

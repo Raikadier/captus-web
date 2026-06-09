@@ -4,7 +4,7 @@
 import React from 'react'
 import { Bell, Calendar, Clock, Edit, Trash2, X } from 'lucide-react'
 import { Button } from '../../../ui/button'
-import { getPriorityColor, getEventColor } from '../helpers/calendarUtils'
+import { getPriorityColor, getEventColor, getTaskDate, getTaskPriorityId, isTaskCompleted } from '../helpers/calendarUtils'
 
 export function TaskDetailsModal({ task, onClose }) {
   return (
@@ -16,7 +16,7 @@ export function TaskDetailsModal({ task, onClose }) {
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"><span className="text-2xl">📋</span></div>
               <div>
                 <h2 className="text-xl font-bold text-foreground">Detalles de Tarea</h2>
-                <p className="text-sm text-muted-foreground">{new Date(task.endDate || task.creationDate).toLocaleDateString('es-ES')}</p>
+                <p className="text-sm text-muted-foreground">{getTaskDate(task)?.toLocaleDateString('es-ES') ?? 'Sin fecha'}</p>
               </div>
             </div>
             <Button variant="ghost" size="icon" onClick={onClose}><X size={20} /></Button>
@@ -27,12 +27,12 @@ export function TaskDetailsModal({ task, onClose }) {
               {task.description && <p className="text-muted-foreground mt-2">{task.description}</p>}
             </div>
             <div className="flex items-center gap-2">
-              <span className={`px-3 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
-                {task.state ? 'Completada' : 'Pendiente'}
+              <span className={`px-3 py-1 text-xs rounded-full font-medium ${isTaskCompleted(task) ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
+                {isTaskCompleted(task) ? 'Completada' : 'Pendiente'}
               </span>
-              {task.id_Priority && (
-                <span className={`px-3 py-1 text-xs rounded-full font-medium ${getPriorityColor(task.id_Priority)}`}>
-                  Prioridad {task.id_Priority}
+              {getTaskPriorityId(task) && (
+                <span className={`px-3 py-1 text-xs rounded-full font-medium ${getPriorityColor(getTaskPriorityId(task))}`}>
+                  Prioridad {getTaskPriorityId(task)}
                 </span>
               )}
             </div>

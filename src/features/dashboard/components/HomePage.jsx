@@ -231,7 +231,7 @@ const HomePage = () => {
               ) : pendingTasks.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">No tienes tareas pendientes</p>
-                  <Link to="/tasks">
+                  <Link to="/tasks?new=true">
                     <Button className="mt-2 bg-primary hover:bg-primary/90">
                       Crear tarea
                     </Button>

@@ -6,6 +6,7 @@ import { useEvents } from '../../hooks/useEvents'
 import {
   MONTH_NAMES, DAY_NAMES_SHORT, getDaysInMonth,
   getPriorityColor, getEventColor, getEventBlockColor, getTaskBlockColor,
+  getTaskPriorityId, isTaskCompleted, taskMatchesDay,
 } from './helpers/calendarUtils'
 import { CreateEventModal, EditEventModal } from './components/EventFormModal'
 import CalendarWeekView from './components/CalendarWeekView'
@@ -26,7 +27,7 @@ export default function CalendarPage() {
   const [showEventDetails, setShowEventDetails] = useState(null)
   const [showDeleteEventConfirm, setShowDeleteEventConfirm] = useState(null)
 
-  const { events, loading: eventsLoading, error: eventsError, createEvent, updateEvent, deleteEvent } = useEvents()
+  const { events, loading: eventsLoading, error: eventsError, createEvent, updateEvent, deleteEvent, fetchEvents } = useEvents()
 
   const loadData = useCallback(async () => {
     try {
@@ -98,7 +99,7 @@ export default function CalendarPage() {
       <div className="p-6">
         <div className="rounded-xl shadow-sm p-6 bg-card border border-border flex flex-col items-center py-12">
           <div className="text-destructive mb-4">Error: {tasksError || eventsError}</div>
-          <button onClick={loadData} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">Reintentar</button>
+          <button onClick={() => { loadData(); fetchEvents() }} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">Reintentar</button>
         </div>
       </div>
     )
@@ -163,7 +164,7 @@ export default function CalendarPage() {
           <div className="grid grid-cols-7 gap-2">
             {getDaysInMonth(currentDate).map((date, index) => {
               if (!date) return <div key={index} className="bg-muted/10 rounded-xl" />
-              const dayTasks = tasks.filter(t => new Date(t.endDate || t.creationDate).toDateString() === date.toDateString())
+              const dayTasks = tasks.filter(t => taskMatchesDay(t, date))
               const dayEvents = events.filter(e => new Date(e.start_date).toDateString() === date.toDateString())
               const totalItems = dayTasks.length + dayEvents.length
               const isToday = date.toDateString() === new Date().toDateString()
@@ -180,7 +181,7 @@ export default function CalendarPage() {
                   <div className="space-y-1">
                     {dayTasks.slice(0, 1).map(task => (
                       <div key={`task-${task.id}`}
-                        className={`text-xs p-1.5 rounded-lg border ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'line-through opacity-60' : ''} cursor-pointer hover:opacity-80`}
+                        className={`text-xs p-1.5 rounded-lg border ${getPriorityColor(getTaskPriorityId(task))} ${isTaskCompleted(task) ? 'line-through opacity-60' : ''} cursor-pointer hover:opacity-80`}
                         title={task.title}
                         role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={(e) => { e.stopPropagation(); setShowTaskDetails(task) }}>
                         📋 {task.title.length > 8 ? `${task.title.substring(0, 8)}...` : task.title}

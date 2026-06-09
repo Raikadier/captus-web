@@ -18,6 +18,7 @@ import {
 import { useGroups } from '../../hooks/useGroups'
 import { useCourses } from '../../hooks/useCourses'
 import apiClient from '../../shared/api/client'
+import { unwrapData } from '../../shared/api/unwrap'
 import { toast } from 'sonner'
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents'
 import { useTheme } from '../../context/themeContext'
@@ -50,7 +51,7 @@ export default function GroupsPage() {
       const fetchStudents = async () => {
         try {
           const response = await apiClient.get(`/enrollments/course/${selectedCourseId}/students`);
-          setAvailableStudents(response.data);
+          setAvailableStudents(unwrapData(response.data));
         } catch (error) {
           console.error('Error fetching students:', error);
           toast.error('Error al cargar estudiantes');
@@ -121,13 +122,13 @@ export default function GroupsPage() {
     toast.info('Función de unirse próximamente');
   }
 
-  const filteredGroups = groups.filter(group =>
+  const filteredGroups = (Array.isArray(groups) ? groups : []).filter(group =>
     group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (group.description && group.description.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
-  const suggestedStudents = availableStudents.filter(student =>
-    student.name.toLowerCase().includes(searchInput.toLowerCase()) &&
+  const suggestedStudents = (Array.isArray(availableStudents) ? availableStudents : []).filter(student =>
+    (student.name || '').toLowerCase().includes(searchInput.toLowerCase()) &&
     !selectedStudents.find(s => s.id === student.id)
   )
 

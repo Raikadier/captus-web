@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Bell, MessageSquare, Pin, Edit, Trash2, Search as SearchIcon, Plus, FileText, X, Save, Sparkles } from 'lucide-react'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '../../ui/button'
 import { Card } from '../../ui/card'
 import { Input } from '../../ui/input'
@@ -11,6 +11,7 @@ import { Label } from '../../ui/label'
 import { Switch } from '../../ui/switch'
 import Loading from '../../ui/loading'
 import apiClient from '../../shared/api/client'
+import NoteContent from './NoteContent'
 
 function getCurrentDate() {
   const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
@@ -36,18 +37,18 @@ const colorOptions = ['blue', 'purple', 'green', 'orange', 'red', 'yellow']
 
 const getColorClass = (color) => {
     const map = {
-      blue: 'bg-blue-50 border-blue-200',
-      purple: 'bg-purple-50 border-purple-200',
-      green: 'bg-brand-50 border-brand-200',
-      orange: 'bg-orange-50 border-orange-200',
-      red: 'bg-destructive/10 border-destructive/30',
-      yellow: 'bg-yellow-50 border-yellow-200',
-      'bg-blue-50': 'bg-blue-50 border-blue-200', // Fallback for new notes
-      'bg-purple-50': 'bg-purple-50 border-purple-200',
-      'bg-brand-50': 'bg-brand-50 border-brand-200',
-      'bg-orange-50': 'bg-orange-50 border-orange-200',
-      'bg-destructive/10': 'bg-destructive/10 border-destructive/30',
-      'bg-yellow-50': 'bg-yellow-50 border-yellow-200',
+      blue: 'bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800',
+      purple: 'bg-purple-50 border-purple-200 dark:bg-purple-950/40 dark:border-purple-800',
+      green: 'bg-brand-50 border-brand-200 dark:bg-brand-950/40 dark:border-brand-800',
+      orange: 'bg-orange-50 border-orange-200 dark:bg-orange-950/40 dark:border-orange-800',
+      red: 'bg-destructive/10 border-destructive/30 dark:bg-destructive/20 dark:border-destructive/40',
+      yellow: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/40 dark:border-yellow-800',
+      'bg-blue-50': 'bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800',
+      'bg-purple-50': 'bg-purple-50 border-purple-200 dark:bg-purple-950/40 dark:border-purple-800',
+      'bg-brand-50': 'bg-brand-50 border-brand-200 dark:bg-brand-950/40 dark:border-brand-800',
+      'bg-orange-50': 'bg-orange-50 border-orange-200 dark:bg-orange-950/40 dark:border-orange-800',
+      'bg-destructive/10': 'bg-destructive/10 border-destructive/30 dark:bg-destructive/20 dark:border-destructive/40',
+      'bg-yellow-50': 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/40 dark:border-yellow-800',
     }
     return map[color] || 'bg-card border-border'
 }
@@ -139,7 +140,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
               </div>
 
               <div className="prose max-w-none mb-6">
-                <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                <NoteContent content={note.content} className="leading-relaxed" />
               </div>
 
               <div className="flex gap-2 pt-4 border-t">
@@ -285,7 +286,9 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
         <div className="flex justify-between items-start mb-3 pr-8">
           <h3 className="font-semibold text-foreground text-base flex-1">{note.title}</h3>
         </div>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-3">{note.content}</p>
+        <div className="text-muted-foreground text-sm mb-3 line-clamp-3 overflow-hidden">
+          <NoteContent content={note.content} />
+        </div>
         <div className="flex justify-between items-center">
           {note.subject ? (
             <Badge variant="outline" className="bg-card">

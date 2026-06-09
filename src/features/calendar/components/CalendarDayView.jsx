@@ -1,9 +1,9 @@
 import React from 'react'
 import { Clock } from 'lucide-react'
-import { getEventColor, getPriorityColor } from '../helpers/calendarUtils'
+import { getEventColor, getPriorityColor, taskMatchesDay, getTaskPriorityId, isTaskCompleted, getTaskDate } from '../helpers/calendarUtils'
 
 export default function CalendarDayView({ selectedDate, tasks, events, onTaskClick, onEventClick }) {
-  const dayTasks = tasks.filter(t => new Date(t.endDate || t.creationDate).toDateString() === selectedDate.toDateString())
+  const dayTasks = tasks.filter(t => taskMatchesDay(t, selectedDate))
   const dayEvents = events.filter(e => new Date(e.start_date).toDateString() === selectedDate.toDateString())
   const hours = Array.from({ length: 24 }, (_, i) => i)
 
@@ -49,14 +49,14 @@ export default function CalendarDayView({ selectedDate, tasks, events, onTaskCli
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {dayTasks.map(task => (
               <div key={`task-${task.id}`}
-                className={`p-3 rounded-xl border transition-all hover:shadow-md cursor-pointer flex items-start justify-between gap-3 ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'opacity-60 grayscale' : ''}`}
+                className={`p-3 rounded-xl border transition-all hover:shadow-md cursor-pointer flex items-start justify-between gap-3 ${getPriorityColor(getTaskPriorityId(task))} ${isTaskCompleted(task) ? 'opacity-60 grayscale' : ''}`}
                 role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => onTaskClick(task)}>
                 <div className="flex-1 min-w-0">
-                  <h4 className={`font-semibold text-sm truncate ${task.state ? 'line-through' : ''}`}>{task.title}</h4>
+                  <h4 className={`font-semibold text-sm truncate ${isTaskCompleted(task) ? 'line-through' : ''}`}>{task.title}</h4>
                   {task.description && <p className="text-xs opacity-80 mt-1 line-clamp-1">{task.description}</p>}
                 </div>
-                <span className={`px-2 py-1 text-xs rounded-full font-medium ${task.state ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
-                  {task.state ? 'Listo' : 'Pendiente'}
+                <span className={`px-2 py-1 text-xs rounded-full font-medium ${isTaskCompleted(task) ? 'bg-brand-100 text-brand-700' : 'bg-muted text-foreground'}`}>
+                  {isTaskCompleted(task) ? 'Listo' : 'Pendiente'}
                 </span>
               </div>
             ))}

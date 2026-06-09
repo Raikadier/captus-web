@@ -72,11 +72,13 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const savedFontSize = localStorage.getItem('fontSize') || 'medium';
     setFontSize(savedFontSize);
+    document.documentElement.setAttribute('data-font-size', savedFontSize);
   }, []);
 
   const changeFontSize = (size) => {
     setFontSize(size);
     localStorage.setItem('fontSize', size);
+    document.documentElement.setAttribute('data-font-size', size);
   };
 
   const [accentColor, setAccentColor] = useState('green');

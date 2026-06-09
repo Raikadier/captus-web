@@ -535,3 +535,8 @@
     100% { background-position:  200% 0; }
   }
 }
+
+/* Font size preference (Settings → Apariencia) */
+html[data-font-size='small']  { font-size: 14px; }
+html[data-font-size='medium'] { font-size: 16px; }
+html[data-font-size='large']  { font-size: 18px; }

@@ -111,9 +111,12 @@ const ChatBotPage = () => {
       }]);
     } catch (err) {
       console.error('Error sending message:', err);
+      const apiMsg = err.response?.data?.error?.message || err.response?.data?.message;
       setMessages(prev => [...prev, {
         id: Date.now() + 1, type: 'bot',
-        content: 'Lo siento, hubo un error al procesar tu mensaje. Intenta de nuevo.',
+        content: apiMsg
+          ? `Error: ${apiMsg}`
+          : 'Lo siento, hubo un error al procesar tu mensaje. Intenta de nuevo.',
         timestamp: new Date(),
       }]);
     } finally {
