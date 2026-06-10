@@ -21,7 +21,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calcularProgreso, calcularProgresoSubtareas } from '../progressCalculator';
+import { calcularProgreso, calcularProgresoSubtareas, calcularTasaCumplimientoSemanal } from '../progressCalculator';
 
 describe('PU02 – Calculador de Progreso (progressCalculator)', () => {
   // ─── Clases Válidas ────────────────────────────────────────────────────────
@@ -140,6 +140,29 @@ describe('PU02 – Calculador de Progreso (progressCalculator)', () => {
         { state: false, title: 'B', id_SubTask: 2 },
       ];
       expect(calcularProgresoSubtareas(subtareas)).toBe(50);
+    });
+  });
+
+  describe('calcularTasaCumplimientoSemanal – tasa semanal de tareas', () => {
+    it('PU02-WS01 | Más completadas que creadas → 100 %', () => {
+      const chart = [
+        { day: 'Lun', created: 2, completed: 5 },
+        { day: 'Mar', created: 3, completed: 7 },
+      ];
+      expect(calcularTasaCumplimientoSemanal(chart, 220)).toBe(100);
+    });
+
+    it('PU02-WS02 | Calcula porcentaje normal desde el gráfico', () => {
+      const chart = [
+        { day: 'Lun', created: 4, completed: 2 },
+        { day: 'Mar', created: 6, completed: 3 },
+      ];
+      expect(calcularTasaCumplimientoSemanal(chart)).toBe(50);
+    });
+
+    it('PU02-WS03 | Sin gráfico limita el fallback del backend a 100 %', () => {
+      expect(calcularTasaCumplimientoSemanal([], 220)).toBe(100);
+      expect(calcularTasaCumplimientoSemanal(null, 75)).toBe(75);
     });
   });
 });

@@ -41,3 +41,22 @@ export function calcularProgresoSubtareas(subtareas) {
   const completadas = subtareas.filter((st) => st.state === true).length;
   return calcularProgreso(completadas, subtareas.length);
 }
+
+/**
+ * Calcula la tasa de cumplimiento semanal a partir del gráfico de productividad.
+ * Evita porcentajes > 100 cuando se completan tareas de semanas anteriores.
+ *
+ * @param {Array<{ created?: number, completed?: number }>} productivityChart
+ * @param {number} fallbackRate - Valor del backend si no hay datos del gráfico.
+ * @returns {number} Porcentaje de cumplimiento (0–100).
+ */
+export function calcularTasaCumplimientoSemanal(productivityChart, fallbackRate = 0) {
+  if (Array.isArray(productivityChart) && productivityChart.length > 0) {
+    const created = productivityChart.reduce((sum, day) => sum + (day.created || 0), 0);
+    const completed = productivityChart.reduce((sum, day) => sum + (day.completed || 0), 0);
+    return calcularProgreso(completed, created);
+  }
+
+  const rate = Number(fallbackRate) || 0;
+  return Math.min(100, Math.max(0, rate));
+}

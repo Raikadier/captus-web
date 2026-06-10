@@ -9,6 +9,7 @@ import { ManageSubjectsDialog } from '../subjects/components/ManageSubjectsDialo
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, ComposedChart } from 'recharts'
 import StreakWidget, { FavoriteCategoryWidget, EventsOverviewWidget, ProjectsOverviewWidget, NotesStatsWidget, CategoriesStatsWidget, AverageTimeWidget, RecentAchievementsWidget, BestStreakWidget } from '../../shared/components/StreakWidget'
 import { StatsProvider, useStreakData, useAdditionalStats } from '../../hooks/useConsolidatedStats'
+import { calcularTasaCumplimientoSemanal } from '../../lib/progressCalculator'
 
 function getCurrentDate() {
   const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
@@ -149,7 +150,10 @@ function StatsPageContent() {
     fetchStats();
   }, []);
 
-  const completionPercent = taskStats.weeklyCompletionRate;
+  const completionPercent = calcularTasaCumplimientoSemanal(
+    taskStats.productivityChart,
+    taskStats.weeklyCompletionRate
+  );
   const totalCompleted = taskStats.totalCompleted || 0;
   const totalCreated = totalCompleted + (taskStats.tasksCreatedToday || 0);
   const pendingTasks = Math.max(0, totalCreated - totalCompleted);
@@ -197,7 +201,8 @@ function StatsPageContent() {
   // }, []) || [];
 
   const circumference = 2 * Math.PI * 88;
-  const strokeDasharray = `${(completionPercent / 100) * circumference} ${circumference}`;
+  const visualCompletionPercent = Math.min(100, Math.max(0, completionPercent));
+  const strokeDasharray = `${(visualCompletionPercent / 100) * circumference} ${circumference}`;
 
   if (loading) {
     return <Loading message="Cargando estadísticas..." />;
@@ -289,7 +294,7 @@ function StatsPageContent() {
           <StatCard
             icon={<Target className="text-orange-600" size={28} />}
             label="Productividad Semanal"
-            value={`${taskStats.weeklyCompletionRate}%`}
+            value={`${completionPercent}%`}
             bgColor="bg-orange-50"
           />
         </div>

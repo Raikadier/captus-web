@@ -34,34 +34,32 @@ describe('ManageSubjectsDialog – Pruebas Unitarias Gestión de Materias', () =
   });
 
   it('SUB02 – Abre el diálogo de gestión académica', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
+    apiClient.get.mockResolvedValue({ data: [] });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
     expect(await screen.findByText('Gestión Académica')).toBeInTheDocument();
-    expect(screen.getByText('Nueva Materia')).toBeInTheDocument();
+    expect(screen.getByText('Nuevo Curso')).toBeInTheDocument();
   });
 
-  it('SUB03 – Muestra mensaje cuando no hay materias registradas', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
+  it('SUB03 – Muestra mensaje cuando no hay cursos', async () => {
+    apiClient.get.mockResolvedValue({ data: [] });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
-    expect(await screen.findByText('No hay materias registradas.')).toBeInTheDocument();
+    expect(await screen.findByText(/no tienes cursos creados/i)).toBeInTheDocument();
   });
 
-  it('SUB04 – Lista materias existentes', async () => {
+  it('SUB04 – Lista cursos existentes', async () => {
     apiClient.get.mockResolvedValue({
-      data: {
-        data: [
-          { id: 1, name: 'Matemáticas', grade: 4.5, color: 'blue' },
-          { id: 2, name: 'Ingeniería de Software', grade: 4.8, color: 'green' },
-        ],
-      },
+      data: [
+        { id: 1, title: 'Matemáticas', grade: 4.5, color: 'blue' },
+        { id: 2, title: 'Ingeniería de Software', grade: 4.8, color: 'green' },
+      ],
     });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
@@ -70,89 +68,73 @@ describe('ManageSubjectsDialog – Pruebas Unitarias Gestión de Materias', () =
 
     expect(await screen.findByText('Matemáticas')).toBeInTheDocument();
     expect(screen.getByText('Ingeniería de Software')).toBeInTheDocument();
-    expect(screen.getByText('Materias Activas (2)')).toBeInTheDocument();
+    expect(screen.getByText('Cursos (2)')).toBeInTheDocument();
   });
 
-  it('SUB05 – Crea una materia con datos válidos', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
+  it('SUB05 – Crea un curso con datos válidos', async () => {
+    apiClient.get.mockResolvedValue({ data: [] });
     apiClient.post.mockResolvedValue({ data: { success: true } });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
-    fireEvent.change(await screen.findByLabelText('Nombre'), {
+    fireEvent.change(await screen.findByLabelText('Nombre del curso'), {
       target: { value: 'Bases de Datos' },
     });
 
-    fireEvent.change(screen.getByLabelText('Promedio'), {
-      target: { value: '4.2' },
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /crear materia/i }));
+    fireEvent.click(screen.getByRole('button', { name: /crear curso/i }));
 
     await waitFor(() => {
-      expect(apiClient.post).toHaveBeenCalledWith('/subjects', {
-        name: 'Bases de Datos',
-        grade: 4.2,
-        progress: 0,
-        color: 'blue',
+      expect(apiClient.post).toHaveBeenCalledWith('/courses', {
+        title: 'Bases de Datos',
+        description: '',
       });
       expect(onUpdate).toHaveBeenCalled();
     });
   });
 
-  it('SUB06 – No crea materia si el nombre está vacío', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
+  it('SUB06 – No crea curso si el nombre está vacío', async () => {
+    apiClient.get.mockResolvedValue({ data: [] });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
-    fireEvent.click(await screen.findByRole('button', { name: /crear materia/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /crear curso/i }));
 
     expect(apiClient.post).not.toHaveBeenCalled();
   });
 
-  it('SUB07 – Permite seleccionar color para la materia', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
-    apiClient.post.mockResolvedValue({ data: { success: true } });
+  it('SUB07 – Muestra progreso cuando no hay promedio', async () => {
+    apiClient.get.mockResolvedValue({
+      data: [{ id: 1, title: 'Programación', progress: 75, color: '#3b82f6' }],
+    });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
-    fireEvent.change(await screen.findByLabelText('Nombre'), {
-      target: { value: 'Programación' },
-    });
-
-    fireEvent.click(screen.getByTitle('Green'));
-    fireEvent.click(screen.getByRole('button', { name: /crear materia/i }));
-
-    await waitFor(() => {
-      expect(apiClient.post).toHaveBeenCalledWith('/subjects', expect.objectContaining({
-        name: 'Programación',
-        color: 'green',
-      }));
-    });
+    expect(await screen.findByText('Programación')).toBeInTheDocument();
+    expect(screen.getByText(/75%/)).toBeInTheDocument();
   });
 
   it('SUB08 – Muestra mensaje de error si falla la creación', async () => {
-    apiClient.get.mockResolvedValue({ data: { data: [] } });
+    apiClient.get.mockResolvedValue({ data: [] });
     apiClient.post.mockRejectedValue({
-      response: { data: { error: 'No tienes permisos para crear materias' } },
+      response: { data: { error: 'No tienes permisos para crear cursos' } },
     });
 
     render(<ManageSubjectsDialog onUpdate={onUpdate} />);
 
     fireEvent.click(screen.getByRole('button', { name: /materias/i }));
 
-    fireEvent.change(await screen.findByLabelText('Nombre'), {
+    fireEvent.change(await screen.findByLabelText('Nombre del curso'), {
       target: { value: 'Física' },
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /crear materia/i }));
+    fireEvent.click(screen.getByRole('button', { name: /crear curso/i }));
 
-    expect(await screen.findByText('No tienes permisos para crear materias')).toBeInTheDocument();
+    expect(await screen.findByText('No tienes permisos para crear cursos')).toBeInTheDocument();
   });
-});     
+});

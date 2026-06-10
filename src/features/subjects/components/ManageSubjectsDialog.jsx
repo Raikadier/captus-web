@@ -1,7 +1,8 @@
-// Manage Subjects Dialog
+// Manage Subjects Dialog — las materias son los cursos del usuario
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import apiClient from '../../../shared/api/client';
+import { unwrapList } from '../../../shared/api/unwrap';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,7 @@ import { Input } from '../../../ui/input';
 import { Label } from '../../../ui/label';
 import { ScrollArea } from '../../../ui/scroll-area';
 import Loading from '../../../ui/loading';
-import { BookOpen, Plus, Loader2, Trash2 } from 'lucide-react';
+import { BookOpen, Plus, Loader2 } from 'lucide-react';
 
 const COLORS = [
   { name: 'Blue', value: 'blue', class: 'bg-blue-600' },
@@ -26,31 +27,50 @@ const COLORS = [
   { name: 'Yellow', value: 'yellow', class: 'bg-yellow-600' },
 ];
 
+function mapCourseToSubject(course) {
+  return {
+    id: course.id,
+    name: course.title || course.name,
+    grade: course.grade ?? course.averageGrade,
+    progress: course.progress ?? 0,
+    color: course.color || 'blue',
+  };
+}
+
+function getColorIndicator(color) {
+  const named = COLORS.find((c) => c.value === color);
+  if (named) return { className: named.class };
+  if (color?.startsWith('#')) return { style: { backgroundColor: color } };
+  return { className: 'bg-gray-500' };
+}
+
 export function ManageSubjectsDialog({ trigger, onUpdate }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({ name: '', grade: '', progress: '', color: 'blue' });
+  const [formData, setFormData] = useState({ name: '', description: '', color: 'blue' });
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState(null);
 
-  // Check if user is teacher (role in metadata)
   const isTeacher = user?.user_metadata?.role === 'teacher' || user?.app_metadata?.role === 'teacher';
 
   useEffect(() => {
     if (open) {
-      fetchSubjects();
+      fetchCourses();
     }
-  }, [open]);
+  }, [open, isTeacher]);
 
-  const fetchSubjects = async () => {
+  const fetchCourses = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get('/subjects'); // Assuming this endpoint exists based on SubjectRoutes
-      setSubjects(response.data?.data || []);
+      const endpoint = isTeacher ? '/courses/teacher' : '/courses/student';
+      const response = await apiClient.get(endpoint);
+      const courses = unwrapList(response.data);
+      setSubjects(courses.map(mapCourseToSubject));
     } catch (err) {
-      console.error('Error fetching subjects:', err);
+      console.error('Error fetching courses:', err);
+      setSubjects([]);
     } finally {
       setLoading(false);
     }
@@ -64,18 +84,13 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
       setCreating(true);
       setError(null);
 
-      const payload = {
-        name: formData.name,
-        grade: parseFloat(formData.grade) || 0,
-        progress: parseInt(formData.progress) || 0,
-        color: formData.color
-      };
+      await apiClient.post('/courses', {
+        title: formData.name,
+        description: formData.description || '',
+      });
 
-      await apiClient.post('/subjects', payload);
-
-      // Reset form and refresh list
-      setFormData({ name: '', grade: '', progress: '', color: 'blue' });
-      await fetchSubjects();
+      setFormData({ name: '', description: '', color: 'blue' });
+      await fetchCourses();
       if (onUpdate) onUpdate();
 
     } catch (err) {
@@ -101,8 +116,8 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
           <DialogTitle>Gestión Académica</DialogTitle>
           <DialogDescription>
             {isTeacher
-              ? "Administra las materias y calificaciones del curso."
-              : "Visualiza tus materias y progreso académico."}
+              ? 'Administra tus cursos (materias) y calificaciones.'
+              : 'Visualiza tus cursos inscritos y progreso académico.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -112,56 +127,34 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
           {isTeacher && (
             <div className="bg-muted/50 p-4 rounded-xl space-y-4 border">
               <h3 className="font-medium text-sm flex items-center gap-2">
-                <Plus className="h-4 w-4" /> Nueva Materia
+                <Plus className="h-4 w-4" /> Nuevo Curso
               </h3>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nombre</Label>
-                    <Input
-                      id="name"
-                      placeholder="Ej: Matemáticas"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="grade">Promedio</Label>
-                    <Input
-                      id="grade"
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      max="10"
-                      placeholder="0.0"
-                      value={formData.grade}
-                      onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-                    />
-                  </div>
-                </div>
-
                 <div className="space-y-2">
-                  <Label>Color</Label>
-                  <div className="flex gap-2">
-                    {COLORS.map((c) => (
-                      <button
-                        key={c.value}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, color: c.value })}
-                        className={`w-6 h-6 rounded-full transition-all ${c.class} ${formData.color === c.value ? 'ring-2 ring-offset-2 ring-black' : 'opacity-70 hover:opacity-100'
-                          }`}
-                        title={c.name}
-                      />
-                    ))}
-                  </div>
+                  <Label htmlFor="name">Nombre del curso</Label>
+                  <Input
+                    id="name"
+                    placeholder="Ej: Matemáticas"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Descripción (opcional)</Label>
+                  <Input
+                    id="description"
+                    placeholder="Breve descripción del curso"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  />
                 </div>
 
                 {error && <p className="text-xs text-destructive font-medium">{error}</p>}
 
                 <div className="flex justify-end">
                   <Button type="submit" size="sm" disabled={creating}>
-                    {creating ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Crear Materia'}
+                    {creating ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Crear Curso'}
                   </Button>
                 </div>
               </form>
@@ -170,31 +163,41 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
 
           {/* Subjects List */}
           <div className="flex-1 flex flex-col min-h-0">
-            <h3 className="font-medium text-sm mb-3">Materias Activas ({subjects.length})</h3>
+            <h3 className="font-medium text-sm mb-3">Cursos ({subjects.length})</h3>
             <ScrollArea className="flex-1 pr-4">
               {loading ? (
                 <Loading message="Cargando..." fullScreen={false} />
               ) : subjects.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground border-dashed border-2 rounded-lg">
-                  No hay materias registradas.
+                  {isTeacher
+                    ? 'No tienes cursos creados. Crea uno arriba o desde la sección Cursos.'
+                    : 'No estás inscrito en ningún curso.'}
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {subjects.map((subject) => (
-                    <div key={subject.id} className="flex items-center justify-between p-3 bg-card rounded-xl border shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-10 rounded-full ${COLORS.find(c => c.value === subject.color)?.class || 'bg-gray-500'
-                          }`} />
-                        <div>
-                          <p className="font-medium leading-none">{subject.name}</p>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Promedio: <span className="font-bold text-foreground">{subject.grade}</span>
-                          </p>
+                  {subjects.map((subject) => {
+                    const colorIndicator = getColorIndicator(subject.color);
+                    return (
+                      <div key={subject.id} className="flex items-center justify-between p-3 bg-card rounded-xl border shadow-sm">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-3 h-10 rounded-full ${colorIndicator.className || ''}`}
+                            style={colorIndicator.style}
+                          />
+                          <div>
+                            <p className="font-medium leading-none">{subject.name}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {subject.grade != null ? (
+                                <>Promedio: <span className="font-bold text-foreground">{subject.grade}</span></>
+                              ) : (
+                                <>Progreso: <span className="font-bold text-foreground">{subject.progress}%</span></>
+                              )}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      {/* Future: Edit/Delete buttons can go here */}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </ScrollArea>
