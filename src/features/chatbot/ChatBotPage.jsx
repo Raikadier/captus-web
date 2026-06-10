@@ -27,8 +27,14 @@ const ChatBotPage = () => {
   const fetchConversations = async () => {
     try {
       const data = await aiTaskService.getConversations();
-      setConversations(data);
+      // #region agent log
+      fetch('http://127.0.0.1:7697/ingest/9edb4587-8b39-4b9a-916c-9f808f5e6cc5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'98b83a'},body:JSON.stringify({sessionId:'98b83a',location:'ChatBotPage:fetchConversations',message:'conversations loaded',data:{count:Array.isArray(data)?data.length:0,isArray:Array.isArray(data)},timestamp:Date.now(),hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
+      setConversations(Array.isArray(data) ? data : []);
     } catch (err) {
+      // #region agent log
+      fetch('http://127.0.0.1:7697/ingest/9edb4587-8b39-4b9a-916c-9f808f5e6cc5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'98b83a'},body:JSON.stringify({sessionId:'98b83a',location:'ChatBotPage:fetchConversations:catch',message:'conversations fetch failed',data:{status:err.response?.status,apiMessage:err.response?.data?.error?.message},timestamp:Date.now(),hypothesisId:'D'})}).catch(()=>{});
+      // #endregion
       console.error('Error fetching conversations:', err);
     }
   };
@@ -88,8 +94,7 @@ const ChatBotPage = () => {
       );
 
       if (!activeConversation && responseData.conversationId) {
-        setActiveConversation(responseData.conversationId);
-        fetchConversations();
+        setActiveConversation(String(responseData.conversationId));
       }
 
       if (responseData.actionPerformed) {
@@ -111,6 +116,9 @@ const ChatBotPage = () => {
       }]);
     } catch (err) {
       console.error('Error sending message:', err);
+      // #region agent log
+      fetch('http://127.0.0.1:7697/ingest/9edb4587-8b39-4b9a-916c-9f808f5e6cc5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'98b83a'},body:JSON.stringify({sessionId:'98b83a',location:'ChatBotPage:handleSendMessage:catch',message:'AI chat failed',data:{status:err.response?.status,apiError:err.response?.data?.error?.message||err.response?.data?.message},timestamp:Date.now(),hypothesisId:'C'})}).catch(()=>{});
+      // #endregion
       const apiMsg = err.response?.data?.error?.message || err.response?.data?.message;
       setMessages(prev => [...prev, {
         id: Date.now() + 1, type: 'bot',
@@ -121,6 +129,7 @@ const ChatBotPage = () => {
       }]);
     } finally {
       setIsLoading(false);
+      fetchConversations();
     }
   };
 
@@ -200,8 +209,8 @@ const ChatBotPage = () => {
                   <button
                     key={conv.id}
                     type="button"
-                    onClick={() => setActiveConversation(conv.id)}
-                    aria-pressed={activeConversation === conv.id}
+                    onClick={() => setActiveConversation(String(conv.id))}
+                    aria-pressed={String(activeConversation) === String(conv.id)}
                     aria-label={`Conversación: ${conv.title || 'Nueva conversación'}`}
                     className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-150 ${
                       activeConversation === conv.id
