@@ -7,7 +7,7 @@ import { Switch } from '../../../ui/switch'
 import { useTheme } from '../../../context/themeContext'
 
 const COLORS = [
-  { name: 'green',  bg: 'bg-green-600',  border: 'border-green-700' },
+  { name: 'green',  bg: 'bg-primary',  border: 'border-green-700' },
   { name: 'blue',   bg: 'bg-blue-600',   border: 'border-blue-700' },
   { name: 'purple', bg: 'bg-purple-600', border: 'border-purple-700' },
   { name: 'orange', bg: 'bg-orange-600', border: 'border-orange-700' },
@@ -54,7 +54,7 @@ export default function AparienciaSection() {
               <button key={color.name} onClick={() => changeAccentColor(color.name)}
                 className={`w-10 h-10 rounded-full ${color.bg} flex items-center justify-center transition-all ${
                   accentColor === color.name
-                    ? `border-2 ${darkMode ? 'border-white' : 'border-gray-900'} ring-2 ${darkMode ? 'ring-gray-700' : 'ring-gray-200'}`
+                    ? `border-2 ${'border-foreground'} ring-2 ${'ring-border'}`
                     : 'hover:scale-110'
                 }`}>
                 {accentColor === color.name && <Check size={20} className="text-white" />}

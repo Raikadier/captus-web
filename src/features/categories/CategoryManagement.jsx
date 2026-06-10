@@ -171,7 +171,7 @@ const CategoryManagement = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Tag className="text-primary" size={24} />
             Gestión de Categorías
           </h2>
@@ -278,8 +278,8 @@ const CategoryManagement = () => {
                         <Badge
                           variant={getCategoryStats(category.id_Category).completionRate === 100 ? "default" : "outline"}
                           className={`text-xs ${getCategoryStats(category.id_Category).completionRate === 100
-                              ? "bg-green-100 text-green-800 border-green-200"
-                              : "text-gray-600 border-gray-200"
+                              ? "bg-brand-100 text-brand-700 border-brand-200"
+                              : "text-muted-foreground border-border"
                             }`}
                         >
                           {getCategoryStats(category.id_Category).completionRate}% completado
@@ -310,7 +310,7 @@ const CategoryManagement = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleEdit(category)}
-                    className="text-gray-600 hover:text-primary"
+                    className="text-muted-foreground hover:text-primary"
                   >
                     <Edit2 size={16} />
                   </Button>
@@ -350,7 +350,7 @@ const CategoryManagement = () => {
       <Dialog open={deleteDialog.open} onOpenChange={(open) => !open && cancelDelete()}>
         <DialogContent className="sm:max-w-md bg-card">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-600">
+            <DialogTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle size={20} />
               Confirmar Eliminación
             </DialogTitle>
@@ -359,16 +359,16 @@ const CategoryManagement = () => {
                 <p>
                   ¿Estás seguro de que quieres eliminar la categoría <strong>"{deleteDialog.category?.name}"</strong>?
                 </p>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
                   <h4 className="font-medium text-red-900 mb-2">⚠️ Consecuencias de esta acción:</h4>
-                  <ul className="text-sm text-red-800 space-y-1">
+                  <ul className="text-sm text-destructive space-y-1">
                     <li>• Todas las tareas asociadas a esta categoría serán eliminadas permanentemente</li>
                     <li>• Los subtasks de esas tareas también serán eliminados</li>
                     <li>• Esta acción no se puede deshacer</li>
                     <li>• Las estadísticas relacionadas se actualizarán automáticamente</li>
                   </ul>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Clock size={16} />
                   <span>El botón de confirmación estará disponible en {deleteCountdown} segundos</span>
                 </div>

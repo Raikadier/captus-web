@@ -108,7 +108,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
           </div>
 
           {/* Progress Overview */}
-          <div className="mb-6 p-4 bg-muted rounded-lg">
+          <div className="mb-6 p-4 bg-muted rounded-xl">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium">Progreso</span>
               <span className="text-sm text-muted-foreground">
@@ -155,7 +155,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
 
           {/* Create/Edit Form */}
           {showCreateForm && (
-            <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-lg bg-muted/50">
+            <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-xl bg-muted/50">
               <div className="space-y-4">
                 <div>
                   <Label>Título *</Label>
@@ -217,8 +217,8 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
               subTasks.map((subTask) => (
                 <div
                   key={subTask.id_SubTask}
-                  className={`p-4 border rounded-lg transition-all ${subTask.state ? 'bg-green-50 border-green-200 dark:bg-green-900/20' :
-                    (subTask.endDate && new Date(subTask.endDate) < new Date()) ? 'bg-red-50 border-red-200 dark:bg-red-900/20' : 'bg-card border-border'
+                  className={`p-4 border rounded-lg transition-all ${subTask.state ? 'bg-brand-50 border-brand-200 dark:bg-green-900/20' :
+                    (subTask.endDate && new Date(subTask.endDate) < new Date()) ? 'bg-destructive/10 border-destructive/30 dark:bg-red-900/20' : 'bg-card border-border'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -264,7 +264,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
                         </button>
                         <button
                           onClick={() => handleDelete(subTask.id_SubTask)}
-                          className="text-red-600 hover:text-red-900 text-sm"
+                          className="text-destructive hover:text-red-900 text-sm"
                           title="Eliminar subtarea"
                         >
                           <Trash2 size={16} />

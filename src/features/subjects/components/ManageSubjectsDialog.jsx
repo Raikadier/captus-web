@@ -19,7 +19,7 @@ import { BookOpen, Plus, Loader2, Trash2 } from 'lucide-react';
 
 const COLORS = [
   { name: 'Blue', value: 'blue', class: 'bg-blue-600' },
-  { name: 'Green', value: 'green', class: 'bg-green-600' },
+  { name: 'Green', value: 'green', class: 'bg-primary' },
   { name: 'Purple', value: 'purple', class: 'bg-purple-600' },
   { name: 'Orange', value: 'orange', class: 'bg-orange-600' },
   { name: 'Red', value: 'red', class: 'bg-red-600' },
@@ -110,7 +110,7 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
 
           {/* Teacher Create Section */}
           {isTeacher && (
-            <div className="bg-muted/50 p-4 rounded-lg space-y-4 border">
+            <div className="bg-muted/50 p-4 rounded-xl space-y-4 border">
               <h3 className="font-medium text-sm flex items-center gap-2">
                 <Plus className="h-4 w-4" /> Nueva Materia
               </h3>
@@ -181,7 +181,7 @@ export function ManageSubjectsDialog({ trigger, onUpdate }) {
               ) : (
                 <div className="space-y-3">
                   {subjects.map((subject) => (
-                    <div key={subject.id} className="flex items-center justify-between p-3 bg-card rounded-lg border shadow-sm">
+                    <div key={subject.id} className="flex items-center justify-between p-3 bg-card rounded-xl border shadow-sm">
                       <div className="flex items-center gap-3">
                         <div className={`w-3 h-10 rounded-full ${COLORS.find(c => c.value === subject.color)?.class || 'bg-gray-500'
                           }`} />

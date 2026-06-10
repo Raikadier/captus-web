@@ -1,22 +1,22 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 
 export const FadeIn = ({ children, delay = 0, duration = 0.5, className = '' }) => {
     return (
-        <motion.div
+        <Motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration, delay, ease: 'easeOut' }}
             className={className}
         >
             {children}
-        </motion.div>
+        </Motion.div>
     );
 };
 
 export const StaggerContainer = ({ children, staggerDelay = 0.1, className = '' }) => {
     return (
-        <motion.div
+        <Motion.div
             initial="hidden"
             animate="visible"
             variants={{
@@ -31,13 +31,13 @@ export const StaggerContainer = ({ children, staggerDelay = 0.1, className = '' 
             className={className}
         >
             {children}
-        </motion.div>
+        </Motion.div>
     );
 };
 
 export const StaggerItem = ({ children, className = '' }) => {
     return (
-        <motion.div
+        <Motion.div
             variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
@@ -45,6 +45,6 @@ export const StaggerItem = ({ children, className = '' }) => {
             className={className}
         >
             {children}
-        </motion.div>
+        </Motion.div>
     );
 };

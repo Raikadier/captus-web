@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Card } from '../../ui/card';
 import apiClient from '../api/client';
 import { toast } from 'sonner';
-import { useStreakData, useEventsData, useProjectsData, useNotesData, usePriorityData, useTimeData, useAchievementsData } from '../../hooks/useConsolidatedStats';
+import { useStreakData, useEventsData, useProjectsData, useNotesData, useTimeData } from '../../hooks/useConsolidatedStats';
 import { useAchievementsContext } from '../../hooks/useAchievementsContext';
 
 const StreakWidget = () => {
@@ -218,7 +218,7 @@ const StreakWidget = () => {
       </div>
 
       {/* Motivational Message */}
-      <div className="bg-white/50 dark:bg-black/20 rounded-lg p-4 mb-6">
+      <div className="bg-card/50 dark:bg-black/20 rounded-xl p-4 mb-6">
         <div className="flex items-start space-x-3">
           <CheckCircle className="text-green-500 mt-0.5 flex-shrink-0" size={20} />
           <div>
@@ -233,7 +233,7 @@ const StreakWidget = () => {
       {/* Streak status */}
       <div className="text-center">
         {isStreakActive ? (
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-medium">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-brand-100 text-brand-700 text-sm font-medium">
             <Flame size={16} className="mr-2" />
             ¡Racha activa! 🔥
           </div>
@@ -280,7 +280,7 @@ export const MiniStreakWidget = () => {
 
   if (loading || !streakData) {
     return (
-      <div className="bg-card rounded-lg p-4 border">
+      <div className="bg-card rounded-xl p-4 border">
         <div className="animate-pulse">
           <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -305,7 +305,7 @@ export const MiniStreakWidget = () => {
         </div>
       </div>
       {streakData.motivationalMessage && (
-        <div className="mt-3 p-2 bg-white/50 dark:bg-black/20 rounded text-xs text-muted-foreground italic">
+        <div className="mt-3 p-2 bg-card/50 dark:bg-black/20 rounded text-xs text-muted-foreground italic">
           "{streakData.motivationalMessage}"
         </div>
       )}
@@ -338,7 +338,7 @@ export const FavoriteCategoryWidget = () => {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-lg p-6 border">
+      <div className="bg-card rounded-xl p-6 border">
         <div className="animate-pulse">
           <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
           <div className="h-6 bg-muted rounded w-1/2 mb-4"></div>
@@ -353,9 +353,9 @@ export const FavoriteCategoryWidget = () => {
 
   if (!favoriteCategory) {
     return (
-      <div className="bg-card rounded-lg p-6 border">
+      <div className="bg-card rounded-xl p-6 border">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-muted rounded-xl flex items-center justify-center">
             <Star className="text-muted-foreground" size={20} />
           </div>
           <div>
@@ -368,7 +368,7 @@ export const FavoriteCategoryWidget = () => {
   }
 
   return (
-    <div className="bg-card rounded-lg p-6 border">
+    <div className="bg-card rounded-xl p-6 border">
       <div className="flex items-center space-x-3 mb-4">
         <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
           <Star className="text-white" size={20} />
@@ -394,7 +394,7 @@ export const FavoriteCategoryWidget = () => {
           </div>
           <div>
             <p className="text-muted-foreground">Completadas</p>
-            <p className="font-semibold text-green-600">{favoriteCategory.stats.completedTasks}</p>
+            <p className="font-semibold text-primary">{favoriteCategory.stats.completedTasks}</p>
           </div>
         </div>
 
@@ -419,7 +419,7 @@ export const EventsOverviewWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -431,19 +431,19 @@ export const EventsOverviewWidget = () => {
   if (!eventsData) return null;
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
           <Calendar className="text-purple-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Eventos</h3>
-          <p className="text-sm text-gray-600">Calendario</p>
+          <h3 className="font-semibold text-foreground">Eventos</h3>
+          <p className="text-sm text-muted-foreground">Calendario</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center mt-2">
-        <span className="text-sm text-gray-600">Total de eventos</span>
+        <span className="text-sm text-muted-foreground">Total de eventos</span>
         <span className="text-2xl font-bold text-purple-600">{eventsData.totalEvents}</span>
       </div>
     </Card>
@@ -456,7 +456,7 @@ export const ProjectsOverviewWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -469,29 +469,29 @@ export const ProjectsOverviewWidget = () => {
   if (!projectsData) return null;
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center">
           <Target className="text-orange-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Proyectos</h3>
-          <p className="text-sm text-gray-600">Gestión de proyectos</p>
+          <h3 className="font-semibold text-foreground">Proyectos</h3>
+          <p className="text-sm text-muted-foreground">Gestión de proyectos</p>
         </div>
       </div>
 
       <div className="space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">Total de proyectos</span>
+          <span className="text-sm text-muted-foreground">Total de proyectos</span>
           <span className="font-bold text-orange-600">{projectsData.totalProjects}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">Proyectos activos</span>
-          <span className="font-medium text-gray-900">{projectsData.activeProjects}</span>
+          <span className="text-sm text-muted-foreground">Proyectos activos</span>
+          <span className="font-medium text-foreground">{projectsData.activeProjects}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-600">Completados</span>
-          <span className="font-medium text-green-600">{projectsData.totalProjects - projectsData.activeProjects}</span>
+          <span className="text-sm text-muted-foreground">Completados</span>
+          <span className="font-medium text-primary">{projectsData.totalProjects - projectsData.activeProjects}</span>
         </div>
       </div>
     </Card>
@@ -504,7 +504,7 @@ export const NotesStatsWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -516,19 +516,19 @@ export const NotesStatsWidget = () => {
   if (!notesData) return null;
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center">
           <CheckCircle className="text-cyan-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Notas</h3>
-          <p className="text-sm text-gray-600">Total de notas</p>
+          <h3 className="font-semibold text-foreground">Notas</h3>
+          <p className="text-sm text-muted-foreground">Total de notas</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center mt-2">
-        <span className="text-sm text-gray-600">Total</span>
+        <span className="text-sm text-muted-foreground">Total</span>
         <span className="text-2xl font-bold text-cyan-600">{notesData.totalNotes}</span>
       </div>
     </Card>
@@ -541,7 +541,7 @@ export const CategoriesStatsWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -553,19 +553,19 @@ export const CategoriesStatsWidget = () => {
   if (!notesData) return null;
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
           <Settings className="text-purple-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Categorías</h3>
-          <p className="text-sm text-gray-600">Organización</p>
+          <h3 className="font-semibold text-foreground">Categorías</h3>
+          <p className="text-sm text-muted-foreground">Organización</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center mt-2">
-        <span className="text-sm text-gray-600">Total Categorías</span>
+        <span className="text-sm text-muted-foreground">Total Categorías</span>
         <span className="text-2xl font-bold text-purple-600">{notesData.totalCategories}</span>
       </div>
     </Card>
@@ -580,7 +580,7 @@ export const AverageTimeWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -602,14 +602,14 @@ export const AverageTimeWidget = () => {
   };
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
           <Clock className="text-blue-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Tiempo Promedio</h3>
-          <p className="text-sm text-gray-600">Completación de tareas</p>
+          <h3 className="font-semibold text-foreground">Tiempo Promedio</h3>
+          <p className="text-sm text-muted-foreground">Completación de tareas</p>
         </div>
       </div>
 
@@ -617,7 +617,7 @@ export const AverageTimeWidget = () => {
         <div className="text-3xl font-bold text-blue-600 mb-2">
           {formatTime(timeData.averageTime)}
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Tiempo promedio para completar una tarea
         </p>
       </div>
@@ -637,7 +637,7 @@ export const RecentAchievementsWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -649,32 +649,32 @@ export const RecentAchievementsWidget = () => {
 
   if (recentAchievements.length === 0) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="flex items-center space-x-4 mb-4">
           <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
             <Award className="text-yellow-600" size={24} />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">Logros Recientes</h3>
-            <p className="text-sm text-gray-600">Tus últimos desbloqueos</p>
+            <h3 className="font-semibold text-foreground">Logros Recientes</h3>
+            <p className="text-sm text-muted-foreground">Tus últimos desbloqueos</p>
           </div>
         </div>
         <div className="text-center py-4">
-          <p className="text-sm text-gray-500">¡Completa tareas para desbloquear logros!</p>
+          <p className="text-sm text-muted-foreground">¡Completa tareas para desbloquear logros!</p>
         </div>
       </Card>
     );
   }
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
           <Award className="text-yellow-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Logros Recientes</h3>
-          <p className="text-sm text-gray-600">Tus últimos desbloqueos</p>
+          <h3 className="font-semibold text-foreground">Logros Recientes</h3>
+          <p className="text-sm text-muted-foreground">Tus últimos desbloqueos</p>
         </div>
       </div>
 
@@ -685,10 +685,10 @@ export const RecentAchievementsWidget = () => {
               <span className="text-yellow-600 text-sm">🏆</span>
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-foreground">
                 {achievement.achievementId ? achievement.achievementId.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Logro Desbloqueado'}
               </p>
-              <p className="text-xs text-gray-600">
+              <p className="text-xs text-muted-foreground">
                 {achievement.unlockedAt ? new Date(achievement.unlockedAt).toLocaleDateString('es-ES') : 'Hoy'}
               </p>
             </div>
@@ -705,7 +705,7 @@ export const BestStreakWidget = () => {
 
   if (loading) {
     return (
-      <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+      <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
         <div className="animate-pulse space-y-2">
           <div className="h-4 bg-muted rounded w-3/4"></div>
           <div className="h-6 bg-muted rounded w-1/2"></div>
@@ -717,14 +717,14 @@ export const BestStreakWidget = () => {
   if (!streakData || !streakData.bestStreak) return null;
 
   return (
-    <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
+    <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-4 mb-4">
         <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
           <Award className="text-yellow-600" size={24} />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900">Mejor Racha</h3>
-          <p className="text-sm text-gray-600">Récord histórico</p>
+          <h3 className="font-semibold text-foreground">Mejor Racha</h3>
+          <p className="text-sm text-muted-foreground">Récord histórico</p>
         </div>
       </div>
 
@@ -732,7 +732,7 @@ export const BestStreakWidget = () => {
         <div className="text-4xl font-bold text-yellow-600 mb-2">
           {streakData.bestStreak} días
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Tu mejor racha consecutiva
         </p>
       </div>

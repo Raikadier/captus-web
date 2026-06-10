@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 import { supabase } from '../../../shared/api/supabase'
 
 export default function PrivacidadSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const [deletingAccount, setDeletingAccount] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteStep, setDeleteStep] = useState(1)
@@ -62,13 +62,13 @@ export default function PrivacidadSection() {
       <Card className={`${compactView ? 'p-4' : 'p-6'} bg-card rounded-xl shadow-sm`}>
         <h2 className={`text-xl font-semibold text-foreground ${compactView ? 'mb-4' : 'mb-6'}`}>Gestión de Datos</h2>
         <div className={compactView ? 'space-y-2' : 'space-y-3'}>
-          <Button variant="outline" className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
+          <Button variant="outline" className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
             onClick={handleDeleteAccount} disabled={deletingAccount}>
             {deletingAccount ? 'Eliminando cuenta...' : 'Eliminar mi cuenta'}
           </Button>
         </div>
-        <div className={`${compactView ? 'mt-3' : 'mt-4'} p-3 bg-red-50 border-red-200 border rounded-lg`}>
-          <p className="text-sm text-red-700">
+        <div className={`${compactView ? 'mt-3' : 'mt-4'} p-3 bg-destructive/10 border-destructive/30 border rounded-lg`}>
+          <p className="text-sm text-destructive">
             ⚠️ <strong>Advertencia importante:</strong> La eliminación de tu cuenta es <strong>permanente</strong> e <strong>irreversible</strong>.
             Perderás acceso a todas tus tareas, estadísticas, rachas y datos almacenados. Esta acción no se puede deshacer.
           </p>
@@ -78,13 +78,13 @@ export default function PrivacidadSection() {
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <DialogContent className="bg-card max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-red-600">⚠️ Eliminar Cuenta</DialogTitle>
+            <DialogTitle className="text-xl font-bold text-destructive">⚠️ Eliminar Cuenta</DialogTitle>
             <DialogDescription className="text-muted-foreground">
               {deleteStep === 1 ? (
                 <div className="space-y-3">
                   <p>¿Estás seguro de que quieres eliminar tu cuenta?</p>
-                  <div className="p-3 rounded-lg bg-red-50">
-                    <p className="text-sm font-medium text-red-700 mb-2">Esta acción es <strong>IRREVERSIBLE</strong> y eliminará:</p>
+                  <div className="p-3 rounded-lg bg-destructive/10">
+                    <p className="text-sm font-medium text-destructive mb-2">Esta acción es <strong>IRREVERSIBLE</strong> y eliminará:</p>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Todas tus tareas y subtareas</li>
                       <li>• Tus estadísticas y rachas de productividad</li>
@@ -95,19 +95,19 @@ export default function PrivacidadSection() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <div className="p-4 rounded-lg border-2 bg-red-50 border-red-300">
-                    <h3 className="font-bold text-lg text-red-600 mb-2">🚨 ÚLTIMA ADVERTENCIA 🚨</h3>
-                    <p className="text-red-700 font-medium">Esta es tu última oportunidad para cancelar.</p>
+                  <div className="p-4 rounded-lg border-2 bg-destructive/10 border-destructive/30">
+                    <h3 className="font-bold text-lg text-destructive mb-2">🚨 ÚLTIMA ADVERTENCIA 🚨</h3>
+                    <p className="text-destructive font-medium">Esta es tu última oportunidad para cancelar.</p>
                     <p className="text-muted-foreground mt-2">¿Realmente quieres <strong>ELIMINAR DEFINITIVAMENTE</strong> tu cuenta de Captus?</p>
                     <p className="text-sm text-muted-foreground mt-2">No podrás recuperar ningún dato después de esto.</p>
                   </div>
                   {countdownActive && (
-                    <div className="text-center p-3 rounded-lg bg-muted">
+                    <div className="text-center p-3 rounded-xl bg-muted">
                       <p className="text-sm text-muted-foreground">
                         El botón se habilitará en: <span className="font-bold text-red-500">{countdown}s</span>
                       </p>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                        <div className="bg-red-500 h-2 rounded-full transition-all duration-1000" style={{ width: `${(countdown / 10) * 100}%` }}></div>
+                      <div className="w-full bg-slate-200 rounded-full h-2 mt-2">
+                        <div className="bg-destructive/100 h-2 rounded-full transition-all duration-1000" style={{ width: `${(countdown / 10) * 100}%` }}></div>
                       </div>
                     </div>
                   )}

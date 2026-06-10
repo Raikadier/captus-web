@@ -10,7 +10,7 @@ import Loading from '../../../ui/loading'
 import { supabase } from '../../../shared/api/supabase'
 
 export default function PerfilSection() {
-  const { darkMode, compactView } = useTheme()
+  const { compactView } = useTheme()
   const fileInputRef = useRef(null)
 
   const [userData, setUserData] = useState(null)
@@ -99,7 +99,8 @@ export default function PerfilSection() {
       await apiClient.put(`/users/${userId}`, { avatar_url: publicUrl })
       setUserData(prev => ({ ...prev, avatar_url: publicUrl }))
       toast.success('Foto de perfil actualizada')
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al subir foto de perfil:', err)
       toast.error('Error al subir la foto')
     } finally {
       setUploadingPhoto(false)
@@ -110,7 +111,7 @@ export default function PerfilSection() {
   if (error) return (
     <Card className={`${compactView ? 'p-4' : 'p-6'} bg-card rounded-xl shadow-sm`}>
       <div className="text-center py-8">
-        <div className="text-red-600 text-lg mb-4">Error: {error}</div>
+        <div className="text-destructive text-lg mb-4">Error: {error}</div>
         <Button onClick={fetchUserProfile} variant="outline">Reintentar</Button>
       </div>
     </Card>
@@ -149,21 +150,21 @@ export default function PerfilSection() {
             <input id="nombre" type="text" value={formData.firstName}
               onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
               placeholder="Tu nombre"
-              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
           </div>
           <div>
             <Label htmlFor="apellido" className="text-sm font-medium text-foreground">Apellido</Label>
             <input id="apellido" type="text" value={formData.lastName}
               onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
               placeholder="Tu apellido"
-              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+              className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
           </div>
         </div>
 
         <div>
           <Label htmlFor="email" className="text-sm font-medium text-foreground">Email</Label>
           <input id="email" type="email" value={formData.email} disabled
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'} rounded-lg opacity-60 cursor-not-allowed`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg opacity-60 cursor-not-allowed`} />
         </div>
 
         <div>
@@ -171,7 +172,7 @@ export default function PerfilSection() {
           <input id="carrera" type="text" value={formData.career}
             onChange={(e) => setFormData(prev => ({ ...prev, career: e.target.value }))}
             placeholder="Ej: Ingeniería de Sistemas"
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
 
         <div>
@@ -179,7 +180,7 @@ export default function PerfilSection() {
           <textarea id="bio" rows={3} value={formData.bio}
             onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}
             placeholder="Cuéntanos un poco sobre ti..."
-            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
+            className={`mt-1 w-full px-3 ${compactView ? 'py-1.5' : 'py-2'} border ${'border-border bg-background text-foreground placeholder:text-muted-foreground'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary`} />
         </div>
 
         <div className={compactView ? 'mt-4' : 'mt-6'}>
@@ -190,22 +191,22 @@ export default function PerfilSection() {
 
         {userData?.createdAt && (
           <div className={`mt-6 text-center ${compactView ? 'py-3' : 'py-4'}`}>
-            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${darkMode ? 'bg-gradient-to-r from-primary/20 to-primary/10 border-primary/30' : 'bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20'} backdrop-blur-sm`}>
+            <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${'bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20'} backdrop-blur-sm`}>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                <span className={`text-sm font-medium ${darkMode ? 'text-primary/80' : 'text-primary'}`}>Miembro desde</span>
+                <span className={`text-sm font-medium ${'text-primary'}`}>Miembro desde</span>
               </div>
-              <div className={`px-3 py-1 rounded-lg ${darkMode ? 'bg-gray-800/50' : 'bg-white/70'} border border-primary/20`}>
-                <span className={`font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              <div className={`px-3 py-1 rounded-xl ${'bg-card/70'} border border-primary/20`}>
+                <span className={`font-bold text-foreground`}>
                   {new Date(userData.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${darkMode ? 'text-primary/80' : 'text-primary'}`}>🎉</span>
+                <span className={`text-sm font-medium ${'text-primary'}`}>🎉</span>
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
               </div>
             </div>
-            <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>¡Gracias por ser parte de Captus!</p>
+            <p className={`text-xs mt-2 text-muted-foreground`}>¡Gracias por ser parte de Captus!</p>
           </div>
         )}
       </div>

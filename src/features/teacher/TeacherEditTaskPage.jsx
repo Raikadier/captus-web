@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useAssignments } from '../../hooks/useAssignments'
-import { useCourses } from '../../hooks/useCourses'
 import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
 import { Textarea } from '../../ui/textarea'
@@ -16,8 +15,6 @@ export default function TeacherEditTaskPage() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { getAssignment, createAssignment, updateAssignment } = useAssignments()
-  const { getCourse } = useCourses()
-
   const [loading, setLoading] = useState(true)
   const [isEditing, setIsEditing] = useState(false)
 

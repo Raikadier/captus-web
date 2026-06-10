@@ -45,7 +45,8 @@ export default function ProjectDetailPage() {
                 // If we have an uncomplete endpoint, use it. Otherwise update.
                 await apiClient.put(`/tasks/${taskId}`, { is_completed: false })
             }
-        } catch (error) {
+        } catch (err) {
+            console.error('Error actualizando tarea del proyecto:', err)
             toast.error('Error actualizando tarea')
             // Revert
             setTasks(prev => prev.map(t => t.id === taskId ? { ...t, is_completed: !isCompleted } : t))
@@ -80,22 +81,22 @@ export default function ProjectDetailPage() {
             {/* Kanban Columns */}
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden">
                 {/* Pending Column */}
-                <div className="bg-gray-50/50 rounded-xl border border-gray-200 flex flex-col h-full">
-                    <div className="p-4 border-b border-gray-200 bg-white/50 rounded-t-xl flex items-center justify-between">
-                        <h3 className="font-semibold text-gray-700 flex items-center gap-2">
+                <div className="bg-background/50 rounded-xl border border-border flex flex-col h-full">
+                    <div className="p-4 border-b border-border bg-card/50 rounded-t-xl flex items-center justify-between">
+                        <h3 className="font-semibold text-foreground flex items-center gap-2">
                             <Circle className="w-4 h-4" /> Pendientes
                         </h3>
-                        <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-xs font-medium">
+                        <span className="bg-muted text-muted-foreground px-2 py-0.5 rounded-full text-xs font-medium">
                             {pendingTasks.length}
                         </span>
                     </div>
                     <div className="p-4 flex-1 overflow-y-auto space-y-3">
                         {pendingTasks.map(task => (
-                            <div key={task.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all group">
-                                <h4 className="font-medium text-gray-900 mb-1">{task.title}</h4>
-                                <p className="text-sm text-gray-500 mb-3 line-clamp-2">{task.description}</p>
+                            <div key={task.id} className="bg-card p-4 rounded-xl shadow-sm border border-border hover:shadow-md transition-all group">
+                                <h4 className="font-medium text-foreground mb-1">{task.title}</h4>
+                                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{task.description}</p>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                    <span className="text-xs text-slate-400 flex items-center gap-1">
                                         <Clock className="w-3 h-3" />
                                         {new Date(task.due_date).toLocaleDateString()}
                                     </span>
@@ -111,7 +112,7 @@ export default function ProjectDetailPage() {
                             </div>
                         ))}
                         {pendingTasks.length === 0 && (
-                            <div className="text-center py-10 text-gray-400 text-sm">
+                            <div className="text-center py-10 text-slate-400 text-sm">
                                 No hay tareas pendientes
                             </div>
                         )}
@@ -119,24 +120,24 @@ export default function ProjectDetailPage() {
                 </div>
 
                 {/* Completed Column */}
-                <div className="bg-gray-50/50 rounded-xl border border-gray-200 flex flex-col h-full">
-                    <div className="p-4 border-b border-gray-200 bg-white/50 rounded-t-xl flex items-center justify-between">
-                        <h3 className="font-semibold text-green-700 flex items-center gap-2">
+                <div className="bg-background/50 rounded-xl border border-border flex flex-col h-full">
+                    <div className="p-4 border-b border-border bg-card/50 rounded-t-xl flex items-center justify-between">
+                        <h3 className="font-semibold text-brand-700 flex items-center gap-2">
                             <CheckCircle className="w-4 h-4" /> Completadas
                         </h3>
-                        <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">
+                        <span className="bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full text-xs font-medium">
                             {completedTasks.length}
                         </span>
                     </div>
                     <div className="p-4 flex-1 overflow-y-auto space-y-3">
                         {completedTasks.map(task => (
-                            <div key={task.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 opacity-75 hover:opacity-100 transition-all group">
-                                <h4 className="font-medium text-gray-900 mb-1 line-through text-gray-500">{task.title}</h4>
+                            <div key={task.id} className="bg-card p-4 rounded-xl shadow-sm border border-border opacity-75 hover:opacity-100 transition-all group">
+                                <h4 className="font-medium text-foreground mb-1 line-through text-muted-foreground">{task.title}</h4>
                                 <div className="flex items-center justify-end mt-2">
                                     <Button
                                         size="sm"
                                         variant="ghost"
-                                        className="h-7 text-xs text-gray-500 hover:text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="h-7 text-xs text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
                                         onClick={() => handleStatusChange(task.id, false)}
                                     >
                                         Reabrir
@@ -145,7 +146,7 @@ export default function ProjectDetailPage() {
                             </div>
                         ))}
                         {completedTasks.length === 0 && (
-                            <div className="text-center py-10 text-gray-400 text-sm">
+                            <div className="text-center py-10 text-slate-400 text-sm">
                                 No hay tareas completadas
                             </div>
                         )}

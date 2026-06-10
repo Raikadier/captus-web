@@ -78,7 +78,7 @@ const TaskListView = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-red-600">Error: {error}</div>
+        <div className="text-xl text-destructive">Error: {error}</div>
       </div>
     );
   }
@@ -87,17 +87,17 @@ const TaskListView = () => {
     <div className="min-h-screen bg-background p-6">
       {/* Header with view toggle */}
       <div className="max-w-4xl mx-auto mb-6">
-        <div className="flex items-center justify-between bg-card p-4 rounded-lg shadow-sm">
+        <div className="flex items-center justify-between bg-card p-4 rounded-xl shadow-sm">
           <h1 className="text-2xl font-bold text-foreground">Mis Tareas</h1>
 
           <div className="flex items-center space-x-4">
             {/* View toggle buttons */}
-            <div className="flex bg-muted rounded-lg p-1">
+            <div className="flex bg-muted rounded-xl p-1">
               <button
                 onClick={() => setViewMode('list')}
                 className={`px-4 py-2 rounded-md transition-colors ${viewMode === 'list'
-                  ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:bg-gray-200'
+                  ? 'bg-card shadow-sm text-primary'
+                  : 'text-muted-foreground hover:bg-slate-200'
                   }`}
               >
                 <List size={18} className="inline mr-2" />
@@ -106,8 +106,8 @@ const TaskListView = () => {
               <button
                 onClick={() => setViewMode('calendar')}
                 className={`px-4 py-2 rounded-md transition-colors ${viewMode === 'calendar'
-                  ? 'bg-white shadow-sm text-primary'
-                  : 'text-gray-600 hover:bg-gray-200'
+                  ? 'bg-card shadow-sm text-primary'
+                  : 'text-muted-foreground hover:bg-slate-200'
                   }`}
               >
                 <Calendar size={18} className="inline mr-2" />
@@ -131,7 +131,7 @@ const TaskListView = () => {
       {/* Task list content */}
       <div className="max-w-4xl mx-auto">
         {Object.keys(groupedTasks).length === 0 ? (
-          <div className="bg-card rounded-lg shadow-sm p-8 text-center">
+          <div className="bg-card rounded-xl shadow-sm p-8 text-center">
             <div className="text-muted-foreground text-lg mb-4">No hay tareas pendientes</div>
             <button
               onClick={() => setShowAddForm(true)}
@@ -144,7 +144,7 @@ const TaskListView = () => {
         ) : (
           <div className="space-y-6">
             {Object.entries(groupedTasks).map(([dateGroup, tasksInGroup]) => (
-              <div key={dateGroup} className="bg-card rounded-lg shadow-sm overflow-hidden">
+              <div key={dateGroup} className="bg-card rounded-xl shadow-sm overflow-hidden">
                 {/* Date header */}
                 <div className="bg-primary/10 px-6 py-3 border-b">
                   <h2 className="text-lg font-bold text-primary">{dateGroup}</h2>
@@ -156,7 +156,7 @@ const TaskListView = () => {
                     <div
                       key={task.id}
                       className={`p-4 hover:bg-muted transition-colors cursor-pointer border-l-4 ${getPriorityColor(task.priority?.name)}`}
-                      onClick={() => handleTaskComplete(task.id)}
+                      role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => handleTaskComplete(task.id)}
                     >
                       <div className="flex items-start space-x-4">
                         {/* Checkbox */}
@@ -197,7 +197,7 @@ const TaskListView = () => {
                               </span>
                             )}
                             {task.priority && (
-                              <span className={`px-2 py-1 rounded text-xs text-white ${task.priority.name === 'Alta' ? 'bg-red-500' :
+                              <span className={`px-2 py-1 rounded text-xs text-white ${task.priority.name === 'Alta' ? 'bg-destructive/100' :
                                 task.priority.name === 'Media' ? 'bg-orange-500' : 'bg-primary'
                                 }`}>
                                 {task.priority.name}

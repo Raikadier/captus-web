@@ -28,14 +28,12 @@ export default function TeacherStatsPage() {
   // Calculate teacher specific stats from the response
   // Assuming 'subjects' are the courses the teacher teaches
   const activeCourses = stats?.subjects?.length || 0
-  const totalStudents = stats?.subjects?.reduce((acc, sub) => acc + (sub.studentCount || 0), 0) || 0 // Assuming subject has studentCount
-
   // For "Tasks reviewed", we might need a specific endpoint, but for now let's use completedTasks as a proxy or 0 if not available
   const tasksReviewed = stats?.completedTasks || 0
 
   const statCards = [
     { label: 'Cursos Activos', value: activeCourses, icon: BookOpen, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Tareas Revisadas', value: tasksReviewed, icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Tareas Revisadas', value: tasksReviewed, icon: CheckCircle, color: 'text-primary', bg: 'bg-brand-50' },
     { label: 'Promedio General', value: `${stats?.averageGrade || 0}/10`, icon: BarChart3, color: 'text-purple-600', bg: 'bg-purple-50' },
   ]
 

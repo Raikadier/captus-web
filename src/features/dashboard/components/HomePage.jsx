@@ -6,7 +6,6 @@ import { Card } from '../../../ui/card';
 import { Progress } from '../../../ui/progress';
 import NotificationsDropdown from './NotificationsDropdown';
 import { useAuth } from '../../../hooks/useAuth';
-import { useTheme } from '../../../context/themeContext';
 import apiClient from '../../../shared/api/client';
 import { useSubTasks } from '../../../hooks/useSubTasks';
 import { FadeIn, StaggerContainer, StaggerItem } from '../../../shared/components/animations/MotionComponents';
@@ -50,14 +49,14 @@ function TaskItem({ task, onClick }) {
 
   return (
     <StaggerItem
-      className="p-4 border rounded-lg transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md border-border hover:border-primary bg-card"
+      className="p-4 border rounded-xl transition-all duration-200 cursor-pointer hover:scale-[1.02] hover:shadow-md border-border hover:border-primary bg-card"
       onClick={onClick}
     >
       <div className="flex items-center gap-3 mb-1">
         <h3 className="text-base font-semibold text-foreground">
           {task.title}
         </h3>
-        <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-500">
+        <span className="text-xs px-2 py-0.5 rounded-full bg-destructive/100/10 text-red-500">
           {task.Priority?.name || 'Sin prioridad'}
         </span>
         <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
@@ -109,7 +108,6 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { darkMode } = useTheme()
   const [unreadCount, setUnreadCount] = useState(0)
 
   const handleToggleDropdown = useCallback(() => {
@@ -187,10 +185,10 @@ const HomePage = () => {
             <div className="relative">
               <Button
                 variant="outline"
-                className="border-gray-300 relative bg-transparent"
+                className="border-slate-300 relative bg-transparent"
                 onClick={handleToggleDropdown}
               >
-                <Bell size={18} className="text-gray-500" />
+                <Bell size={18} className="text-muted-foreground" />
                 {unreadCount > 0 && (
                   <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center">
                     <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-ping" />
@@ -218,7 +216,7 @@ const HomePage = () => {
                 Tareas Pendientes
               </h2>
               <Link to="/tasks">
-                <Button variant="ghost" className={`text-primary hover:text-primary/90 hover:bg-primary/10 transition-all duration-200 hover:scale-105 ${darkMode ? 'text-primary hover:text-primary hover:bg-primary/20' : ''
+                <Button variant="ghost" className={`text-primary hover:text-primary/90 hover:bg-primary/10 transition-all duration-200 hover:scale-105 ${''
                   }`}>
                   Ver todas
                 </Button>
@@ -228,12 +226,12 @@ const HomePage = () => {
               {loading ? (
                 <div className="text-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Cargando tareas...</p>
+                  <p className="mt-2 text-muted-foreground">Cargando tareas...</p>
                 </div>
               ) : pendingTasks.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">No tienes tareas pendientes</p>
-                  <Link to="/tasks">
+                  <Link to="/tasks?new=true">
                     <Button className="mt-2 bg-primary hover:bg-primary/90">
                       Crear tarea
                     </Button>
@@ -255,10 +253,10 @@ const HomePage = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <StatCard
-                icon={<CheckSquare className="text-green-600" size={24} />}
+                icon={<CheckSquare className="text-primary" size={24} />}
                 label="Total de Tareas"
                 value={loading ? "..." : stats.totalTasks.toString()}
-                bgColor="bg-green-50"
+                bgColor="bg-brand-50"
               />
               <StatCard
                 icon={<CalendarIcon className="text-blue-600" size={24} />}

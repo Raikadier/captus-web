@@ -66,6 +66,27 @@ export function getEventBlockColor(type, index = 0) {
   }
 }
 
+export function getTaskDate(task) {
+  const raw = task?.due_date ?? task?.endDate ?? task?.creationDate ?? task?.created_at
+  if (!raw) return null
+  const d = new Date(raw)
+  return Number.isNaN(d.getTime()) ? null : d
+}
+
+export function isTaskCompleted(task) {
+  return Boolean(task?.completed ?? task?.state)
+}
+
+export function getTaskPriorityId(task) {
+  return task?.priority_id ?? task?.id_Priority ?? task?.priority
+}
+
+export function taskMatchesDay(task, date) {
+  const taskDate = getTaskDate(task)
+  if (!taskDate || !date) return false
+  return taskDate.toDateString() === date.toDateString()
+}
+
 export function getTaskBlockColor(priority) {
   if (typeof priority === 'number') {
     switch (priority) {

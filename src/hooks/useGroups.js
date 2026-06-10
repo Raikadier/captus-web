@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../shared/api/client';
+import { unwrapData, unwrapList } from '../shared/api/unwrap';
 
 export const useGroups = () => {
     const [groups, setGroups] = useState([]);
@@ -10,7 +11,7 @@ export const useGroups = () => {
         setLoading(true);
         try {
             const response = await apiClient.get('/groups/my-groups');
-            setGroups(response.data);
+            setGroups(unwrapList(response.data));
             setError(null);
         } catch (err) {
             setError(err.response?.data?.error || 'Error fetching groups');
@@ -26,8 +27,9 @@ export const useGroups = () => {
     const createGroup = async (data) => {
         try {
             const response = await apiClient.post('/groups', data);
-            setGroups(prev => [...prev, response.data]);
-            return response.data;
+            const created = unwrapData(response.data);
+            setGroups(prev => [...prev, created]);
+            return created;
         } catch (err) {
             throw new Error(err.response?.data?.error || 'Error creating group');
         }

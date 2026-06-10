@@ -70,6 +70,8 @@ const Sidebar = memo(({ onCollapseChange }) => {
         <button
           onClick={handleCollapse}
           className={`p-1.5 rounded-lg hover:bg-sidebar-accent text-sidebar-foreground transition-colors`}
+          aria-label={isCollapsed ? 'Expandir menú lateral' : 'Colapsar menú lateral'}
+          aria-expanded={!isCollapsed}
           title={isCollapsed ? 'Expandir' : 'Colapsar'}
         >
           {isCollapsed ? <ChevronRight size={18} className="text-muted-foreground" /> : <ChevronLeft size={18} className="text-muted-foreground" />}
@@ -100,6 +102,8 @@ const Sidebar = memo(({ onCollapseChange }) => {
                 <Link
                   key={item.path}
                   to={item.path}
+                  aria-label={item.label}
+                  aria-current={active ? 'page' : undefined}
                   className={`flex items-center ${isCollapsed ? 'justify-center' : 'space-x-3'} px-3 py-2.5 rounded-xl transition-all duration-200 active:scale-95 ${active
                     ? 'bg-sidebar-accent text-primary font-medium shadow-sm'
                     : 'text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'

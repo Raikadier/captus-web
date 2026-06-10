@@ -5,7 +5,7 @@ import { Button } from '../../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 
 export default function TeacherReviewSubmissionPage() {
-  const { studentId } = useParams()
+  useParams() // route params reserved for future submission lookup
   const navigate = useNavigate()
 
   const submission = {

@@ -41,7 +41,7 @@ export default function HeroSection() {
           {/* Hero Mockup */}
           <div className="relative w-full max-w-5xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/5 to-primary/20 blur-3xl -z-10" />
-            <div className="relative rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-2xl">
+            <div className="relative rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-xl">
               <div className="bg-muted/30 px-4 py-3 flex items-center gap-2 border-b border-border/50">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-destructive/60" />
@@ -56,7 +56,7 @@ export default function HeroSection() {
                 <div className="grid grid-cols-3 gap-4 h-full">
                   <Card className="col-span-1 bg-card/80 backdrop-blur">
                     <CardHeader className="pb-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                      <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
                         <CheckCircle2 className="w-4 h-4 text-primary" />
                       </div>
                       <CardTitle className="text-sm">Tareas Completadas</CardTitle>

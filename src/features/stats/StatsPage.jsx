@@ -49,7 +49,7 @@ function SubjectProgress({ subject }) {
     const colors = {
       blue: 'bg-blue-600',
       purple: 'bg-purple-600',
-      green: 'bg-green-600',
+      green: 'bg-primary',
       orange: 'bg-orange-600',
       red: 'bg-red-600',
       yellow: 'bg-yellow-600',
@@ -244,10 +244,10 @@ function StatsPageContent() {
             bgColor="bg-blue-50"
           />
           <StatCard
-            icon={<CheckCircle2 className="text-green-600" size={24} />}
+            icon={<CheckCircle2 className="text-primary" size={24} />}
             label="Tareas Completadas Hoy"
             value={taskStats.tasksCompletedToday}
-            bgColor="bg-green-50"
+            bgColor="bg-brand-50"
           />
           <StatCard
             icon={<ListChecks className="text-purple-600" size={24} />}
@@ -275,10 +275,10 @@ function StatsPageContent() {
         {/* Key Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <StatCard
-            icon={<TrendingUp className="text-green-600" size={28} />}
+            icon={<TrendingUp className="text-primary" size={28} />}
             label="Promedio General"
             value={stats.averageGrade.toFixed(2)}
-            bgColor="bg-green-50"
+            bgColor="bg-brand-50"
           />
           <StatCard
             icon={<CheckSquare className="text-blue-600" size={28} />}
@@ -314,8 +314,8 @@ function StatsPageContent() {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Overall Completion Rate Pie Chart */}
-          <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Estado General de Tareas</h2>
+          <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Estado General de Tareas</h2>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -344,7 +344,7 @@ function StatsPageContent() {
               {completionRateData.map((item, index) => (
                 <div key={index} className="flex items-center space-x-2">
                   <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: item.color }}></div>
-                  <span className="text-sm text-gray-600">{item.name} ({item.percentage}%)</span>
+                  <span className="text-sm text-muted-foreground">{item.name} ({item.percentage}%)</span>
                 </div>
               ))}
             </div>
@@ -399,8 +399,8 @@ function StatsPageContent() {
           </Card>
 
           {/* Priority Distribution */}
-          <Card className="p-6 border border-gray-200 rounded-xl hover:shadow-md transition-shadow">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Distribución por Prioridad</h2>
+          <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Distribución por Prioridad</h2>
             <div className="h-64 w-full">
               {priorityDistribution.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -429,7 +429,7 @@ function StatsPageContent() {
                 {priorityDistribution.map((item, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: item.color }}></div>
-                    <span className="text-sm text-gray-600">{item.name} ({item.value})</span>
+                    <span className="text-sm text-muted-foreground">{item.name} ({item.value})</span>
                   </div>
                 ))}
               </div>
@@ -441,7 +441,7 @@ function StatsPageContent() {
       {/* Floating AI Chat Button */}
       <Link to="/chatbot" title="Hablar con Captus">
         <Button
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-primary hover:bg-primary/90 shadow-brand-sm hover:shadow-xl transition-all"
           size="icon"
         >
           <MessageSquare size={24} />

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Bell, MessageSquare, Pin, Edit, Trash2, Search as SearchIcon, Plus, FileText, X, Save, Sparkles } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '../../ui/button'
 import { Card } from '../../ui/card'
 import { Input } from '../../ui/input'
@@ -11,6 +11,7 @@ import { Label } from '../../ui/label'
 import { Switch } from '../../ui/switch'
 import Loading from '../../ui/loading'
 import apiClient from '../../shared/api/client'
+import NoteContent from './NoteContent'
 
 function getCurrentDate() {
   const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
@@ -36,18 +37,18 @@ const colorOptions = ['blue', 'purple', 'green', 'orange', 'red', 'yellow']
 
 const getColorClass = (color) => {
     const map = {
-      blue: 'bg-blue-50 border-blue-200',
-      purple: 'bg-purple-50 border-purple-200',
-      green: 'bg-green-50 border-green-200',
-      orange: 'bg-orange-50 border-orange-200',
-      red: 'bg-red-50 border-red-200',
-      yellow: 'bg-yellow-50 border-yellow-200',
-      'bg-blue-50': 'bg-blue-50 border-blue-200', // Fallback for new notes
-      'bg-purple-50': 'bg-purple-50 border-purple-200',
-      'bg-green-50': 'bg-green-50 border-green-200',
-      'bg-orange-50': 'bg-orange-50 border-orange-200',
-      'bg-red-50': 'bg-red-50 border-red-200',
-      'bg-yellow-50': 'bg-yellow-50 border-yellow-200',
+      blue: 'bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800',
+      purple: 'bg-purple-50 border-purple-200 dark:bg-purple-950/40 dark:border-purple-800',
+      green: 'bg-brand-50 border-brand-200 dark:bg-brand-950/40 dark:border-brand-800',
+      orange: 'bg-orange-50 border-orange-200 dark:bg-orange-950/40 dark:border-orange-800',
+      red: 'bg-destructive/10 border-destructive/30 dark:bg-destructive/20 dark:border-destructive/40',
+      yellow: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/40 dark:border-yellow-800',
+      'bg-blue-50': 'bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800',
+      'bg-purple-50': 'bg-purple-50 border-purple-200 dark:bg-purple-950/40 dark:border-purple-800',
+      'bg-brand-50': 'bg-brand-50 border-brand-200 dark:bg-brand-950/40 dark:border-brand-800',
+      'bg-orange-50': 'bg-orange-50 border-orange-200 dark:bg-orange-950/40 dark:border-orange-800',
+      'bg-destructive/10': 'bg-destructive/10 border-destructive/30 dark:bg-destructive/20 dark:border-destructive/40',
+      'bg-yellow-50': 'bg-yellow-50 border-yellow-200 dark:bg-yellow-950/40 dark:border-yellow-800',
     }
     return map[color] || 'bg-card border-border'
 }
@@ -69,12 +70,12 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-3">
               <div className={`w-12 h-12 ${getColorClass(note.color).split(' ')[0]} rounded-lg flex items-center justify-center`}>
-                <FileText size={24} className="text-gray-700" />
+                <FileText size={24} className="text-foreground" />
               </div>
               <div>
                 <h2 className="text-xl font-bold text-foreground">Detalle de Nota</h2>
@@ -139,7 +140,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
               </div>
 
               <div className="prose max-w-none mb-6">
-                <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed">{note.content}</p>
+                <NoteContent content={note.content} className="leading-relaxed" />
               </div>
 
               <div className="flex gap-2 pt-4 border-t">
@@ -155,7 +156,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
                   <Edit size={16} className="mr-2" />
                   Editar
                 </Button>
-                <Button variant="outline" onClick={() => onDelete(note.id)} className="text-red-600 hover:bg-red-50 hover:text-red-700">
+                <Button variant="outline" onClick={() => onDelete(note.id)} className="text-destructive hover:bg-destructive/10 hover:text-destructive">
                   <Trash2 size={16} className="mr-2" />
                   Eliminar
                 </Button>
@@ -188,7 +189,7 @@ function CreateNoteModal({ onClose, onCreate }) {
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-card rounded-xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-2xl max-h-[85vh] overflow-y-auto border border-border">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
             <div className="flex items-center gap-3">
@@ -283,9 +284,11 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
           <Pin size={14} className={note.pinned ? 'text-primary' : 'text-muted-foreground'} />
         </button>
         <div className="flex justify-between items-start mb-3 pr-8">
-          <h3 className="font-semibold text-gray-900 text-base flex-1">{note.title}</h3>
+          <h3 className="font-semibold text-foreground text-base flex-1">{note.title}</h3>
         </div>
-        <p className="text-muted-foreground text-sm mb-3 line-clamp-3">{note.content}</p>
+        <div className="text-muted-foreground text-sm mb-3 line-clamp-3 overflow-hidden">
+          <NoteContent content={note.content} />
+        </div>
         <div className="flex justify-between items-center">
           {note.subject ? (
             <Badge variant="outline" className="bg-card">
@@ -293,7 +296,7 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
             </Badge>
           ) : (<div></div>)}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-muted-foreground mt-2">
           Editado:{' '}
           {note.lastEdited.includes('-') ?
             new Date(note.lastEdited).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
@@ -449,7 +452,7 @@ export default function NotesPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Error: {error}</p>
+          <p className="text-destructive mb-4">Error: {error}</p>
           <Button onClick={loadNotes} className="bg-primary hover:bg-primary/90">
             Reintentar
           </Button>
@@ -538,12 +541,12 @@ export default function NotesPage() {
 
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-card rounded-xl shadow-2xl w-full max-w-md max-h-[85vh] overflow-y-auto border border-border">
+          <div className="bg-card rounded-xl shadow-xl w-full max-w-md max-h-[85vh] overflow-y-auto border border-border">
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <Trash2 size={24} className="text-red-600" />
+                  <div className="w-12 h-12 bg-destructive/10 rounded-lg flex items-center justify-center">
+                    <Trash2 size={24} className="text-destructive" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-foreground">Eliminar Nota</h2>

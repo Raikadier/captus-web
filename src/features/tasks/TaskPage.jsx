@@ -1,7 +1,8 @@
 // TaskPage - Diseño como la plantilla con mejor UI
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Filter, Search as SearchIcon, Bell, Calendar as CalendarIcon, AlertTriangle } from 'lucide-react';
+import { Plus, Filter, Search as SearchIcon, Bell, Calendar as CalendarIcon, AlertTriangle, Edit } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useTasks } from './hooks/useTasks';
 import { useReferenceData } from '../../hooks/useReferenceData';
 import { taskService } from '../../services/taskService';
@@ -20,7 +21,7 @@ import './TaskTabs.css';
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents';
 
 const TaskPage = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') === 'categories' ? 'categories' : 'tasks';
 
   const {
@@ -38,6 +39,13 @@ const TaskPage = () => {
 
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      setShowTaskForm(true);
+      setSearchParams({}, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const [filters, setFilters] = useState({
     searchText: '',
     categoryId: '',
@@ -70,9 +78,10 @@ const TaskPage = () => {
   const handleCreateTask = async (taskData) => {
     try {
       await createTask(taskData);
+      toast.success('Tarea creada correctamente');
       setShowTaskForm(false);
     } catch (error) {
-      console.error('Error creating task:', error);
+      toast.error(error.response?.data?.message || error.message || 'Error al crear la tarea');
     }
   };
 
@@ -234,7 +243,7 @@ const TaskPage = () => {
                       <select
                         value={filters.categoryId}
                         onChange={(e) => handleFilterChange('categoryId', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todas las categorías</option>
                         {categories.map((category) => (
@@ -252,7 +261,7 @@ const TaskPage = () => {
                       <select
                         value={filters.priorityId}
                         onChange={(e) => handleFilterChange('priorityId', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todas las prioridades</option>
                         {priorities.map((priority) => (
@@ -270,7 +279,7 @@ const TaskPage = () => {
                       <select
                         value={filters.completed}
                         onChange={(e) => handleFilterChange('completed', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary bg-white"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-xl focus:ring-primary focus:border-primary bg-card"
                       >
                         <option value="">Todos</option>
                         <option value="false">Pendientes</option>
@@ -325,8 +334,8 @@ const TaskPage = () => {
       {/* Error Message */}
       {
         tasksError && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="text-red-800">{tasksError}</div>
+          <div className="mb-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+            <div className="text-destructive">{tasksError}</div>
           </div>
         )
       }
@@ -336,13 +345,13 @@ const TaskPage = () => {
         <TabsList className="task-main-tabs bg-card mb-6 rounded-xl p-1 shadow-sm">
           <TabsTrigger
             value="tasks"
-            className="tab-trigger px-6 py-2.5 rounded-lg font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
+            className="tab-trigger px-6 py-2.5 rounded-xl font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
           >
             <span className="tab-icon">📝</span> Mis Tareas
           </TabsTrigger>
           <TabsTrigger
             value="categories"
-            className="tab-trigger px-6 py-2.5 rounded-lg font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
+            className="tab-trigger px-6 py-2.5 rounded-xl font-medium data-[state=active]:bg-background data-[state=active]:text-foreground"
           >
             <span className="tab-icon">🏷️</span> Categorías
           </TabsTrigger>
@@ -352,7 +361,7 @@ const TaskPage = () => {
         <TabsContent value="tasks" className="tab-content space-y-6">
           {/* Sub-tabs for task status */}
           <Tabs defaultValue="todas" className="w-full">
-            <TabsList className="task-sub-tabs bg-muted mb-4 rounded-lg p-1">
+            <TabsList className="task-sub-tabs bg-muted mb-4 rounded-xl p-1">
               <TabsTrigger
                 value="todas"
                 className="tab-trigger px-4 py-2 rounded-md text-sm font-medium"
@@ -480,14 +489,14 @@ const TaskPage = () => {
       <Dialog open={deleteDialog.isOpen} onOpenChange={(open) => !open && cancelDeleteTask()}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-red-600">
+            <DialogTitle className="flex items-center gap-2 text-destructive">
               <AlertTriangle className="h-5 w-5" />
               Confirmar Eliminación
             </DialogTitle>
             <DialogDescription className="text-left">
               ¿Estás seguro de que quieres eliminar la tarea <strong>"{deleteDialog.task?.title}"</strong>?
               <br /><br />
-              <span className="text-red-600 font-medium">
+              <span className="text-destructive font-medium">
                 ⚠️ Esta acción no se puede deshacer y la tarea será removida permanentemente de tu lista.
               </span>
             </DialogDescription>

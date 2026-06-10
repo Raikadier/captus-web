@@ -139,10 +139,10 @@ export default function StudentCourseDetailPage() {
   const getTypeIcon = (type) => {
     switch (type) {
       case 'Video': return <PlayCircle className="w-4 h-4 text-blue-600" />
-      case 'PDF': return <FilePdf className="w-4 h-4 text-red-600" />
+      case 'PDF': return <FilePdf className="w-4 h-4 text-destructive" />
       case 'Apunte': return <Bookmark className="w-4 h-4 text-primary" />
       case 'Quiz': return <CheckCircle2 className="w-4 h-4 text-purple-600" />
-      default: return <FileText className="w-4 h-4 text-gray-600" />
+      default: return <FileText className="w-4 h-4 text-muted-foreground" />
     }
   }
 
@@ -184,7 +184,7 @@ export default function StudentCourseDetailPage() {
       case 'pendiente':
         return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">Pendiente</Badge>
       case 'atrasada':
-        return <Badge className="bg-red-100 text-red-700 hover:bg-red-100">Atrasada</Badge>
+        return <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/10">Atrasada</Badge>
       default:
         return <Badge variant="outline">{status}</Badge>
     }
@@ -193,7 +193,7 @@ export default function StudentCourseDetailPage() {
   const getAnnouncementBadge = (type) => {
     switch (type) {
       case 'Urgente':
-        return <Badge className="bg-red-100 text-red-700 hover:bg-red-100">Urgente</Badge>
+        return <Badge className="bg-destructive/10 text-destructive hover:bg-destructive/10">Urgente</Badge>
       case 'Recordatorio':
         return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">Recordatorio</Badge>
       case 'General':
@@ -304,7 +304,7 @@ export default function StudentCourseDetailPage() {
             <div className="bg-card rounded-xl shadow-sm p-6">
               <h3 className="font-semibold text-foreground mb-4">Tareas Pendientes</h3>
               <div className="space-y-3">
-                <div className="p-3 bg-red-50 rounded-lg">
+                <div className="p-3 bg-destructive/10 rounded-lg">
                   <p className="text-sm font-medium text-foreground">Taller 3</p>
                   <p className="text-xs text-muted-foreground">Vence en 2 días</p>
                 </div>
@@ -320,8 +320,8 @@ export default function StudentCourseDetailPage() {
               {contentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors cursor-pointer"
-                  onClick={() => {}}
+                  className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors cursor-pointer"
+                  role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => {}}
                 >
                   <div className="flex items-center gap-3">
                     {getTypeIcon(item.type)}
@@ -349,14 +349,14 @@ export default function StudentCourseDetailPage() {
         <TabsContent value="assignments">
           <Card className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Tareas del Curso</h2>
+              <h2 className="text-xl font-semibold text-foreground">Tareas del Curso</h2>
             </div>
 
             <div className="space-y-3">
               {displayedAssignments.map((assignment) => (
                 <div
                   key={assignment.id}
-                  className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors"
+                  className="flex items-center justify-between p-4 border border-border rounded-xl hover:bg-muted transition-colors"
                 >
                   <div className="flex-1">
                     <p className="font-medium text-foreground">{assignment.name}</p>

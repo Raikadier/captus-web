@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
-import { useTheme } from '../../context/themeContext'
 import { Button } from '../../ui/button'
 import apiClient from '../../shared/api/client'
 import { useEvents } from '../../hooks/useEvents'
 import {
   MONTH_NAMES, DAY_NAMES_SHORT, getDaysInMonth,
   getPriorityColor, getEventColor, getEventBlockColor, getTaskBlockColor,
+  getTaskPriorityId, isTaskCompleted, taskMatchesDay,
 } from './helpers/calendarUtils'
 import { CreateEventModal, EditEventModal } from './components/EventFormModal'
 import CalendarWeekView from './components/CalendarWeekView'
@@ -15,7 +15,6 @@ import DayPanel from './components/DayPanel'
 import { TaskDetailsModal, EventDetailsModal, DeleteEventModal } from './components/CalendarModals'
 
 export default function CalendarPage() {
-  const { darkMode } = useTheme()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [tasks, setTasks] = useState([])
@@ -28,14 +27,15 @@ export default function CalendarPage() {
   const [showEventDetails, setShowEventDetails] = useState(null)
   const [showDeleteEventConfirm, setShowDeleteEventConfirm] = useState(null)
 
-  const { events, loading: eventsLoading, error: eventsError, createEvent, updateEvent, deleteEvent } = useEvents()
+  const { events, loading: eventsLoading, error: eventsError, createEvent, updateEvent, deleteEvent, fetchEvents } = useEvents()
 
   const loadData = useCallback(async () => {
     try {
       setTasksLoading(true); setTasksError(null)
       const response = await apiClient.get('/tasks/pending?limit=50')
       if (response.data.success) setTasks(response.data.data || [])
-    } catch (error) {
+    } catch (err) {
+      console.error('Error al cargar tareas del calendario:', err)
       setTasksError('Error al cargar las tareas')
     } finally {
       setTasksLoading(false)
@@ -74,6 +74,7 @@ export default function CalendarPage() {
       if (result.success) setShowEventDetails(null)
       else alert('Error al eliminar el evento: ' + result.message)
     } catch (err) {
+      console.error('Error al eliminar evento:', err)
       alert('Error al eliminar el evento')
     }
   }
@@ -97,8 +98,8 @@ export default function CalendarPage() {
     return (
       <div className="p-6">
         <div className="rounded-xl shadow-sm p-6 bg-card border border-border flex flex-col items-center py-12">
-          <div className="text-red-600 mb-4">Error: {tasksError || eventsError}</div>
-          <button onClick={loadData} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">Reintentar</button>
+          <div className="text-destructive mb-4">Error: {tasksError || eventsError}</div>
+          <button onClick={() => { loadData(); fetchEvents() }} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">Reintentar</button>
         </div>
       </div>
     )
@@ -121,7 +122,7 @@ export default function CalendarPage() {
             {['month', 'week'].map(v => (
               <button key={v} onClick={() => setView(v)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95 ${
-                  view === v ? 'bg-primary/10 text-primary shadow-sm' : darkMode ? 'text-gray-400 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-50'
+                  view === v ? 'bg-primary/10 text-primary shadow-sm' : 'text-muted-foreground hover:bg-muted'
                 }`}>
                 {v === 'month' ? 'Mes' : 'Semana'}
               </button>
@@ -163,7 +164,7 @@ export default function CalendarPage() {
           <div className="grid grid-cols-7 gap-2">
             {getDaysInMonth(currentDate).map((date, index) => {
               if (!date) return <div key={index} className="bg-muted/10 rounded-xl" />
-              const dayTasks = tasks.filter(t => new Date(t.endDate || t.creationDate).toDateString() === date.toDateString())
+              const dayTasks = tasks.filter(t => taskMatchesDay(t, date))
               const dayEvents = events.filter(e => new Date(e.start_date).toDateString() === date.toDateString())
               const totalItems = dayTasks.length + dayEvents.length
               const isToday = date.toDateString() === new Date().toDateString()
@@ -173,16 +174,16 @@ export default function CalendarPage() {
                   className={`min-h-32 p-3 border-2 rounded-xl hover:shadow-md cursor-pointer transition-all duration-200 ${
                     isSelected ? 'ring-2 ring-primary bg-primary/10 border-primary/20' : 'border-border hover:border-primary/20 bg-card'
                   }`}
-                  onClick={() => { setSelectedDate(date); setView('day') }}>
+                  role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => { setSelectedDate(date); setView('day') }}>
                   <div className={`text-sm font-semibold mb-2 ${isToday ? 'w-7 h-7 bg-primary text-primary-foreground rounded-full flex items-center justify-center' : 'text-foreground'}`}>
                     {date.getDate()}
                   </div>
                   <div className="space-y-1">
                     {dayTasks.slice(0, 1).map(task => (
                       <div key={`task-${task.id}`}
-                        className={`text-xs p-1.5 rounded-lg border ${getPriorityColor(task.id_Priority || task.priority)} ${task.state ? 'line-through opacity-60' : ''} cursor-pointer hover:opacity-80`}
+                        className={`text-xs p-1.5 rounded-lg border ${getPriorityColor(getTaskPriorityId(task))} ${isTaskCompleted(task) ? 'line-through opacity-60' : ''} cursor-pointer hover:opacity-80`}
                         title={task.title}
-                        onClick={(e) => { e.stopPropagation(); setShowTaskDetails(task) }}>
+                        role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={(e) => { e.stopPropagation(); setShowTaskDetails(task) }}>
                         📋 {task.title.length > 8 ? `${task.title.substring(0, 8)}...` : task.title}
                       </div>
                     ))}

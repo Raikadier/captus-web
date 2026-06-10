@@ -18,6 +18,7 @@ import {
 import { useGroups } from '../../hooks/useGroups'
 import { useCourses } from '../../hooks/useCourses'
 import apiClient from '../../shared/api/client'
+import { unwrapData } from '../../shared/api/unwrap'
 import { toast } from 'sonner'
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents'
 import { useTheme } from '../../context/themeContext'
@@ -50,7 +51,7 @@ export default function GroupsPage() {
       const fetchStudents = async () => {
         try {
           const response = await apiClient.get(`/enrollments/course/${selectedCourseId}/students`);
-          setAvailableStudents(response.data);
+          setAvailableStudents(unwrapData(response.data));
         } catch (error) {
           console.error('Error fetching students:', error);
           toast.error('Error al cargar estudiantes');
@@ -121,13 +122,13 @@ export default function GroupsPage() {
     toast.info('Función de unirse próximamente');
   }
 
-  const filteredGroups = groups.filter(group =>
+  const filteredGroups = (Array.isArray(groups) ? groups : []).filter(group =>
     group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (group.description && group.description.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
-  const suggestedStudents = availableStudents.filter(student =>
-    student.name.toLowerCase().includes(searchInput.toLowerCase()) &&
+  const suggestedStudents = (Array.isArray(availableStudents) ? availableStudents : []).filter(student =>
+    (student.name || '').toLowerCase().includes(searchInput.toLowerCase()) &&
     !selectedStudents.find(s => s.id === student.id)
   )
 
@@ -136,24 +137,24 @@ export default function GroupsPage() {
   if (loading) return <Loading fullScreen message="Cargando grupos..." />
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-background' : 'bg-[#F6F7FB]'}`}>
+    <div className={`min-h-screen ${'bg-background'}`}>
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-24">
 
         <FadeIn>
-          <div className={`rounded-2xl shadow-sm p-6 mb-8 border ${darkMode ? 'bg-card border-gray-800' : 'bg-white border-gray-200'}`}>
+          <div className={`rounded-2xl shadow-sm p-6 mb-8 border bg-card border-border`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 text-primary`}>
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
-                  <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>Mis Grupos</h1>
-                  <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Colabora y gestiona tus equipos de trabajo</p>
+                  <h1 className={`text-2xl font-bold text-foreground`}>Mis Grupos</h1>
+                  <p className={`text-muted-foreground`}>Colabora y gestiona tus equipos de trabajo</p>
                 </div>
               </div>
               <Button
                 onClick={() => setShowCreateForm(true)}
-                className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+                className="bg-primary hover:bg-primary/90 text-white shadow-brand-sm shadow-primary/20"
               >
                 <Plus className="w-5 h-5 mr-2" />
                 Nuevo Grupo
@@ -164,7 +165,7 @@ export default function GroupsPage() {
 
         <FadeIn delay={0.1}>
           <div className="mb-8 relative">
-            <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+            <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground`} />
             <Input
               type="text"
               placeholder="Buscar grupos por nombre o descripción..."
@@ -172,7 +173,7 @@ export default function GroupsPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className={`pl-12 py-6 text-lg rounded-xl border-0 shadow-sm ${darkMode
                 ? 'bg-card text-white placeholder-gray-500 focus:ring-primary/50'
-                : 'bg-white text-gray-900 placeholder-gray-400 focus:ring-primary/20'
+                : 'bg-card text-foreground placeholder-gray-400 focus:ring-primary/20'
                 }`}
             />
           </div>
@@ -182,10 +183,10 @@ export default function GroupsPage() {
           {filteredGroups.length === 0 ? (
             <div className="col-span-full">
               <FadeIn>
-                <div className={`text-center py-16 rounded-2xl border-2 border-dashed ${darkMode ? 'border-gray-800 bg-gray-900/50' : 'border-gray-200 bg-white/50'}`}>
-                  <Users className={`mx-auto h-16 w-16 mb-4 ${darkMode ? 'text-gray-700' : 'text-gray-300'}`} />
-                  <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>No hay grupos</h3>
-                  <p className={`mb-6 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                <div className={`text-center py-16 rounded-2xl border-2 border-dashed border-border bg-card/50`}>
+                  <Users className={`mx-auto h-16 w-16 mb-4 text-muted-foreground`} />
+                  <h3 className={`text-lg font-semibold mb-2 text-foreground`}>No hay grupos</h3>
+                  <p className={`mb-6 text-muted-foreground`}>
                     {searchQuery ? 'No se encontraron grupos con ese criterio' : 'Crea tu primer grupo para comenzar a colaborar'}
                   </p>
                   {!searchQuery && (
@@ -201,29 +202,29 @@ export default function GroupsPage() {
             filteredGroups.map((group) => (
               <StaggerItem key={group.id}>
                 <Card
-                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${darkMode ? 'bg-card hover:bg-gray-800' : 'bg-white hover:shadow-lg'
+                  className={`h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer border-0 overflow-hidden group ${'bg-card hover:shadow-md'
                     }`}
                   onClick={() => setSelectedGroup(group)}
                 >
                   <div className={`h-2 w-full bg-gradient-to-r from-primary to-purple-500`} />
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${darkMode ? 'bg-gray-800 text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${'bg-muted text-muted-foreground'}`}>
                         <Users className="w-5 h-5" />
                       </div>
-                      <Badge variant="secondary" className={`${darkMode ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+                      <Badge variant="secondary" className={`${'bg-muted text-muted-foreground'}`}>
                         {group.members} miembros
                       </Badge>
                     </div>
 
-                    <h3 className={`text-xl font-bold mb-2 line-clamp-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <h3 className={`text-xl font-bold mb-2 line-clamp-1 text-foreground`}>
                       {group.name}
                     </h3>
-                    <p className={`text-sm mb-4 line-clamp-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <p className={`text-sm mb-4 line-clamp-2 text-muted-foreground`}>
                       {group.description || 'Sin descripción'}
                     </p>
 
-                    <div className={`pt-4 border-t flex items-center justify-between text-xs ${darkMode ? 'border-gray-800 text-gray-500' : 'border-gray-100 text-gray-400'}`}>
+                    <div className={`pt-4 border-t flex items-center justify-between text-xs ${'border-border text-muted-foreground'}`}>
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {new Date(group.created_at).toLocaleDateString()}
@@ -300,7 +301,7 @@ export default function GroupsPage() {
                 <div className="space-y-2">
                   <Label>Añadir Integrantes ({selectedStudents.length})</Label>
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                    <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                     <Input
                       value={searchInput}
                       onChange={(e) => {
@@ -316,7 +317,7 @@ export default function GroupsPage() {
                         {suggestedStudents.map((student) => (
                           <div
                             key={student.id}
-                            onClick={() => addStudent(student)}
+                            role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.click()} onClick={() => addStudent(student)}
                             className="px-4 py-2 hover:bg-accent cursor-pointer text-sm"
                           >
                             <div className="font-medium">{student.name}</div>
@@ -332,7 +333,7 @@ export default function GroupsPage() {
                       {selectedStudents.map((student) => (
                         <Badge key={student.id} variant="secondary" className="pl-2 pr-1 py-1">
                           {student.name}
-                          <button onClick={() => removeStudent(student.id)} className="ml-1 hover:bg-gray-200 rounded-full p-0.5">
+                          <button onClick={() => removeStudent(student.id)} className="ml-1 hover:bg-slate-200 rounded-full p-0.5">
                             <X className="w-3 h-3" />
                           </button>
                         </Badge>
@@ -359,7 +360,7 @@ export default function GroupsPage() {
               <>
                 <DialogHeader>
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${darkMode ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'}`}>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-primary/10 text-primary`}>
                       <Users className="w-6 h-6" />
                     </div>
                     <div>
@@ -370,19 +371,19 @@ export default function GroupsPage() {
                 </DialogHeader>
 
                 <div className="grid grid-cols-3 gap-4 py-6">
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-gray-800' : 'bg-blue-50'}`}>
-                    <div className={`text-2xl font-bold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{selectedGroup.members}</div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-blue-600/60'}`}>Miembros</div>
+                  <div className={`p-4 rounded-xl text-center ${'bg-primary/8'}`}>
+                    <div className={`text-2xl font-bold ${'text-primary'}`}>{selectedGroup.members}</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Miembros</div>
                   </div>
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-gray-800' : 'bg-purple-50'}`}>
-                    <div className={`text-2xl font-bold ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>{selectedGroup.tasks || 0}</div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-purple-600/60'}`}>Tareas</div>
+                  <div className={`p-4 rounded-xl text-center ${'bg-brand-50'}`}>
+                    <div className={`text-2xl font-bold ${'text-brand-700'}`}>{selectedGroup.tasks || 0}</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Tareas</div>
                   </div>
-                  <div className={`p-4 rounded-xl text-center ${darkMode ? 'bg-gray-800' : 'bg-green-50'}`}>
-                    <div className={`text-lg font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
+                  <div className={`p-4 rounded-xl text-center ${'bg-brand-50'}`}>
+                    <div className={`text-lg font-bold ${'text-primary'}`}>
                       {new Date(selectedGroup.created_at).toLocaleDateString()}
                     </div>
-                    <div className={`text-xs font-medium uppercase tracking-wider ${darkMode ? 'text-gray-400' : 'text-green-600/60'}`}>Creado</div>
+                    <div className={`text-xs font-medium uppercase tracking-wider ${'text-muted-foreground'}`}>Creado</div>
                   </div>
                 </div>
 

@@ -116,7 +116,7 @@ export default function TeacherReviewsPage() {
                <Card key={sub.id} className="hover:shadow-sm transition-shadow">
                    <CardContent className="p-4 flex items-center justify-between">
                        <div className="flex items-center gap-4">
-                           <div className={`w-2 h-12 rounded-full ${sub.graded ? 'bg-green-500' : 'bg-yellow-500'}`} />
+                           <div className={`w-2 h-12 rounded-full ${sub.graded ? 'bg-brand-500' : 'bg-yellow-500'}`} />
                            <div>
                                <h3 className="font-bold text-foreground flex items-center gap-2">
                                    {sub.student?.name || sub.student?.email || (sub.group ? `Grupo: ${sub.group.name}` : 'Desconocido')}
@@ -135,7 +135,7 @@ export default function TeacherReviewsPage() {
                        <div className="flex items-center gap-4">
                            {sub.graded && (
                                <div className="text-right mr-4">
-                                   <div className="text-2xl font-bold text-green-700">{sub.grade}</div>
+                                   <div className="text-2xl font-bold text-brand-700">{sub.grade}</div>
                                    <div className="text-xs text-muted-foreground">Calificado</div>
                                </div>
                            )}

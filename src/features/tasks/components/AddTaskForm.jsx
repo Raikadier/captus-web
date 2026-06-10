@@ -191,13 +191,13 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
       case 1: return 'bg-red-200 border-red-500'; // Alta
       case 2: return 'bg-orange-200 border-orange-500'; // Media
       case 3: return 'bg-primary/20 border-primary'; // Baja
-      default: return 'bg-gray-200 border-gray-500';
+      default: return 'bg-slate-200 border-gray-500';
     }
   };
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-card rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         {/* Header with logo and close button */}
         <div className="bg-primary/10 p-4 rounded-t-lg flex items-center justify-between">
           <img src="/LogoCaptusAddTask.png" alt="Captus Logo" className="h-12" />
@@ -218,7 +218,7 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
               onChange={(e) => handleInputChange('title', e.target.value)}
               onFocus={handleTitleFocus}
               onBlur={handleTitleBlur}
-              className="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full p-3 border border-slate-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-primary"
               rows="2"
               style={{ fontFamily: 'Arial', fontSize: '14px' }}
             />
@@ -238,7 +238,7 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
               onChange={(e) => handleInputChange('description', e.target.value)}
               onFocus={handleDescriptionFocus}
               onBlur={handleDescriptionBlur}
-              className="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full p-3 border border-slate-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-primary"
               rows="4"
               style={{ fontFamily: 'Segoe UI', fontSize: '14px', fontWeight: 'bold' }}
             />
@@ -250,7 +250,7 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
               type="date"
               value={formData.due_date}
               onInput={(e) => handleInputChange('due_date', e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full p-3 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
               style={{ fontFamily: 'Segoe UI', fontSize: '12px' }}
             />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
@@ -309,7 +309,7 @@ const AddTaskForm = ({ onClose, onTaskAdded }) => {
               <select
                 value={formData.category_id}
                 onChange={(e) => handleInputChange('category_id', parseInt(e.target.value))}
-                className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                 style={{ fontFamily: 'Century Gothic', fontSize: '14px' }}
               >
                 {categories.map(category => (

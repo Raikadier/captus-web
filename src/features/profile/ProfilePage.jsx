@@ -132,7 +132,7 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-primary text-white p-6 shadow-lg">
+      <div className="bg-primary text-white p-6 shadow-brand-sm">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold">Mi Perfil</h1>
           <p className="text-white/90 mt-1">Gestiona tu información personal</p>
@@ -140,7 +140,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-card rounded-lg shadow-lg overflow-hidden border border-border">
+        <div className="bg-card rounded-xl shadow-lg overflow-hidden border border-border">
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-primary to-primary/80 p-8 text-white">
             <div className="flex items-center space-x-6">
@@ -177,7 +177,7 @@ const ProfilePage = () => {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-brand-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
                   >
                     <Save className="h-4 w-4 mr-2" />
                     {saving ? 'Guardando...' : 'Guardar'}
@@ -286,7 +286,7 @@ const ProfilePage = () => {
                     value={formData.bio}
                     onChange={(e) => handleInputChange('bio', e.target.value)}
                     placeholder="Cuéntanos un poco sobre ti..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
                     rows={3}
                   />
                 ) : (

@@ -115,7 +115,7 @@ const LoginForm = () => {
                     onClick={() => setUserRole('student')}
                     className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${userRole === 'student'
                       ? 'border-primary bg-primary/10'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      : 'border-border bg-card hover:border-slate-300'
                       }`}
                   >
                     <GraduationCap className={`h-6 w-6 ${userRole === 'student' ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -128,7 +128,7 @@ const LoginForm = () => {
                     onClick={() => setUserRole('teacher')}
                     className={`flex flex-col items-center gap-2 p-4 rounded-lg border-2 transition-all ${userRole === 'teacher'
                       ? 'border-primary bg-primary/10'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      : 'border-border bg-card hover:border-slate-300'
                       }`}
                   >
                     <User className={`h-6 w-6 ${userRole === 'teacher' ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -186,8 +186,8 @@ const LoginForm = () => {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                <p className="text-red-600 text-sm">{error}</p>
+              <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
+                <p className="text-destructive text-sm">{error}</p>
               </div>
             )}
 

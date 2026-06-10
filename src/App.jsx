@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
-import { ThemeProvider, useTheme } from './context/themeContext';
+import { ThemeProvider } from './context/themeContext';
 import { AchievementProvider } from './context/AchievementContext';
 import Loading from './ui/loading';
 import { Toaster } from 'sonner';
 import AchievementNotification from './components/shared/AchievementNotification';
 import { useAchievementNotifications } from './hooks/useAchievementNotifications';
+import ErrorBoundary from './components/shared/ErrorBoundary';
 // Layouts are always needed once authenticated — keep eager
 import MainLayout from './features/dashboard/components/MainLayout';
 import AdminLayout from './features/admin/components/AdminLayout';
@@ -65,8 +66,8 @@ const queryClient = new QueryClient({
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
-  // En desarrollo, permite navegar sin autenticación para validar estilos/UX
-  if (import.meta.env.MODE !== 'production') return children;
+  // Dev: sin login. Prod: solo con VITE_BYPASS_AUTH=true explícito
+  if (import.meta.env.MODE !== 'production' || import.meta.env.VITE_BYPASS_AUTH === 'true') return children;
   if (loading) return <Loading message="Cargando..." />;
   return isAuthenticated ? children : <Navigate to="/" />;
 };
@@ -86,12 +87,11 @@ const TeacherRoute = ({ children }) => {
 
 // ─── App shell ────────────────────────────────────────────────────────────────
 function AppContent() {
-  const { fontSize } = useTheme();
   const { currentNotification, closeNotification } = useAchievementNotifications();
 
   return (
     <Router>
-      <div className={`App text-primary font-${fontSize}`}>
+      <div className="App text-primary">
         <Toaster richColors position="top-right" />
 
         {currentNotification && (
@@ -148,15 +148,17 @@ function AppContent() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider>
-          <AchievementProvider>
-            <AppContent />
-          </AchievementProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemeProvider>
+            <AchievementProvider>
+              <AppContent />
+            </AchievementProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
