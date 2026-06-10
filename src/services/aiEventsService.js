@@ -9,9 +9,11 @@ export const aiEventsService = {
    */
   sendMessage: async (message, conversationId = null) => {
     try {
-      const payload = {
-        message,
-        conversationId
+      const payload = { message }
+      // Only include conversationId for existing conversations. Sending null for a
+      // new chat made the backend query id=eq.null (bigint) and throw a 500.
+      if (conversationId) {
+        payload.conversationId = conversationId
       }
 
       const response = await apiClient.post('/ai/chat', payload)
