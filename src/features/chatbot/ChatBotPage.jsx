@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useIsMobile } from '../../hooks/useMediaQuery';
 import { aiTaskService } from '../../services/aiTaskService';
 import { aiEventsService } from '../../services/aiEventsService';
 import { AnimatePresence, motion as Motion } from 'framer-motion';
@@ -10,13 +12,21 @@ import {
 
 const ChatBotPage = () => {
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [conversations, setConversations] = useState([]);
   const [activeConversation, setActiveConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return !window.matchMedia('(max-width: 767px)').matches;
+  });
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    setShowSidebar(!isMobile);
+  }, [isMobile]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -209,7 +219,10 @@ const ChatBotPage = () => {
                   <button
                     key={conv.id}
                     type="button"
-                    onClick={() => setActiveConversation(String(conv.id))}
+                    onClick={() => {
+                      setActiveConversation(String(conv.id));
+                      if (isMobile) setShowSidebar(false);
+                    }}
                     aria-pressed={String(activeConversation) === String(conv.id)}
                     aria-label={`Conversación: ${conv.title || 'Nueva conversación'}`}
                     className={`w-full text-left p-3 rounded-xl mb-1 transition-all duration-150 ${
@@ -241,8 +254,18 @@ const ChatBotPage = () => {
 
         {/* Top bar */}
         <header className="h-14 border-b border-border flex items-center gap-3 px-4 flex-shrink-0">
+          {isMobile && (
+            <Link
+              to="/home"
+              aria-label="Volver al inicio"
+              className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground"
+            >
+              <ChevronLeft size={18} />
+            </Link>
+          )}
           {!showSidebar && (
             <button
+              type="button"
               onClick={() => setShowSidebar(true)}
               aria-label="Mostrar historial de conversaciones"
               className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground"
