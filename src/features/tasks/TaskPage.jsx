@@ -19,6 +19,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import Loading from '../../ui/loading';
 import './TaskTabs.css';
 import { FadeIn, StaggerContainer, StaggerItem } from '../../shared/components/animations/MotionComponents';
+import { isTaskOverdue } from '../calendar/helpers/calendarUtils';
 
 const TaskPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -121,6 +122,19 @@ const TaskPage = () => {
     setEditingTask(task);
   };
 
+  const handleToggleComplete = async (taskId, completed) => {
+    try {
+      await toggleTaskCompletion(taskId, completed);
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.error?.message ||
+        error.message ||
+        'No se pudo actualizar la tarea';
+      toast.error(message);
+    }
+  };
+
   const handleCancelForm = () => {
     setShowTaskForm(false);
     setEditingTask(null);
@@ -153,8 +167,7 @@ const TaskPage = () => {
     if (filters.completed !== '') {
       if (filters.completed === 'overdue') {
         // Mostrar solo tareas vencidas (no completadas y con fecha límite pasada)
-        const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
-        if (!isOverdue) return false;
+        if (!isTaskOverdue(task.due_date, task.completed)) return false;
       } else {
         // Filtro normal de completadas/pendientes
         const isCompleted = filters.completed === 'true';
@@ -406,7 +419,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
+                        onToggleComplete={() => handleToggleComplete(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />
@@ -426,7 +439,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
+                        onToggleComplete={() => handleToggleComplete(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                         onRefreshTasks={refetch}
@@ -449,7 +462,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
+                        onToggleComplete={() => handleToggleComplete(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />
@@ -468,7 +481,7 @@ const TaskPage = () => {
                         task={task}
                         categories={categories}
                         priorities={priorities}
-                        onToggleComplete={() => toggleTaskCompletion(task.id, task.completed)}
+                        onToggleComplete={() => handleToggleComplete(task.id, task.completed)}
                         onEdit={handleEditTask}
                         onDelete={handleDeleteTask}
                       />

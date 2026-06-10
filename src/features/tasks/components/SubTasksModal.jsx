@@ -6,6 +6,7 @@ import { Textarea } from '../../../ui/textarea';
 import { Label } from '../../../ui/label';
 import { Progress } from '../../../ui/progress';
 import { useSubTasks } from '../../../hooks/useSubTasks';
+import { isTaskOverdue } from '../../calendar/helpers/calendarUtils';
 
 const SubTasksModal = ({ task, isOpen, onClose }) => {
   const {
@@ -218,7 +219,7 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
                 <div
                   key={subTask.id_SubTask}
                   className={`p-4 border rounded-lg transition-all ${subTask.state ? 'bg-brand-50 border-brand-200 dark:bg-green-900/20' :
-                    (subTask.endDate && new Date(subTask.endDate) < new Date()) ? 'bg-destructive/10 border-destructive/30 dark:bg-red-900/20' : 'bg-card border-border'
+                    isTaskOverdue(subTask.endDate, subTask.state) ? 'bg-destructive/10 border-destructive/30 dark:bg-red-900/20' : 'bg-card border-border'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -226,8 +227,8 @@ const SubTasksModal = ({ task, isOpen, onClose }) => {
                       <button
                         onClick={() => handleToggle(subTask.id_SubTask)}
                         className="mt-1 flex-shrink-0"
-                        disabled={task.completed || (subTask.endDate && new Date(subTask.endDate) < new Date() && !subTask.state)} // No permitir cambios si la tarea padre está completada o si la subtarea está vencida
-                        title={subTask.endDate && new Date(subTask.endDate) < new Date() && !subTask.state ? "Esta subtarea está vencida y no puede ser completada" : ""}
+                        disabled={task.completed}
+                        title={task.completed ? 'La tarea principal ya está completada' : ''}
                       >
                         {subTask.state ? (
                           <CheckCircle className="h-5 w-5 text-green-500" />

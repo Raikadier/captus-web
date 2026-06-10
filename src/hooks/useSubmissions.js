@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 // import { useAuth } from './useAuth';
 import apiClient from '../shared/api/client';
+import { unwrapList } from '../shared/api/unwrap';
 
 export function useSubmissions() {
   // const { session } = useAuth(); // session not needed for client calls
@@ -11,7 +12,7 @@ export function useSubmissions() {
     setLoading(true);
     try {
       const response = await apiClient.get(`/submissions/assignment/${assignmentId}`);
-      return response.data;
+      return unwrapList(response.data);
     } catch (err) {
       setError(err.message);
       throw err;

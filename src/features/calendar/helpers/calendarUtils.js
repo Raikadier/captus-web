@@ -77,6 +77,21 @@ export function isTaskCompleted(task) {
   return Boolean(task?.completed ?? task?.state)
 }
 
+/** True when due date is before today (local). Tasks due today are not overdue. */
+export function isTaskOverdue(dueDate, completed = false) {
+  if (!dueDate || completed) return false
+
+  const raw = String(dueDate).split('T')[0]
+  const [year, month, day] = raw.split('-').map(Number)
+  if (!year || !month || !day) return false
+
+  const due = new Date(year, month - 1, day)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return due < today
+}
+
 export function getTaskPriorityId(task) {
   return task?.priority_id ?? task?.id_Priority ?? task?.priority
 }

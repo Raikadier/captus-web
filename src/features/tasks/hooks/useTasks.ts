@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../../shared/api/client';
 import { getCurrentUser } from '../../../shared/api/supabase';
+import { isTaskOverdue } from '../../calendar/helpers/calendarUtils';
 import type { Task, TaskFilter, SubTask } from '../../../types';
 
 export const TASKS_QUERY_KEY = ['tasks'] as const;
@@ -142,24 +143,15 @@ export const useTasks = (filters: TaskFilter = {}): UseTasksReturn => {
       taskId: number;
       completed: boolean;
     }): Promise<Task> => {
-      const cached = queryClient.getQueryData<Task[]>(TASKS_QUERY_KEY) ?? [];
-      const currentTask = cached.find(t => t.id === taskId);
-      if (!currentTask) throw new Error('Task not found');
+      const response = !completed
+        ? await apiClient.put(`/tasks/${taskId}/complete`)
+        : await apiClient.put(`/tasks/${taskId}`, { completed: false });
 
-      const user = await getCurrentUser();
-      if (!user?.id) throw new Error('User not authenticated');
-
-      const payload = {
-        completed: !completed,
-        title: currentTask.title,
-        due_date: currentTask.due_date ? currentTask.due_date.split('T')[0] : null,
-        priority_id: currentTask.priority_id ?? 1,
-        category_id: currentTask.category_id ?? 6,
-        description: currentTask.description ?? null,
-        user_id: user.id,
-      };
-      const response = await apiClient.put(`/tasks/${taskId}`, payload);
-      return response.data?.data as Task;
+      const body = response.data;
+      if (body?.success === false) {
+        throw new Error(body.message || 'No se pudo actualizar la tarea');
+      }
+      return body?.data as Task;
     },
     onSuccess: invalidate,
   });
@@ -213,9 +205,7 @@ export const useTasks = (filters: TaskFilter = {}): UseTasksReturn => {
 
   const getOverdueTasks = useCallback(async (): Promise<Task[]> => {
     const cached = queryClient.getQueryData<Task[]>(TASKS_QUERY_KEY) ?? [];
-    return cached.filter(
-      t => !t.completed && t.due_date && new Date(t.due_date) < new Date()
-    );
+    return cached.filter(t => isTaskOverdue(t.due_date, t.completed));
   }, [queryClient]);
 
   const getCompletedTasksToday = useCallback(async (): Promise<Task[]> => [], []);

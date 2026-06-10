@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { CheckCircle, Circle, Calendar, Tag, AlertTriangle, ListChecks } from 'lucide-react';
 import { Progress } from '../../../ui/progress';
 import { useSubTasks } from '../../../hooks/useSubTasks';
+import { isTaskOverdue } from '../../calendar/helpers/calendarUtils';
 import SubTasksModal from './SubTasksModal';
 
 const TaskCard = React.memo(({
@@ -20,7 +21,7 @@ const TaskCard = React.memo(({
   const category = categories.find(c => c.id === task.category_id);
   const priority = priorities.find(p => p.id === task.priority_id);
 
-  const isOverdue = task.due_date && new Date(task.due_date) < new Date() && !task.completed;
+  const isOverdue = isTaskOverdue(task.due_date, task.completed);
 
   return (
     <div className={`bg-card border rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow ${isOverdue ? 'border-red-500 bg-destructive/10 dark:bg-red-900/20' : 'border-border'
@@ -30,7 +31,8 @@ const TaskCard = React.memo(({
           <button
             onClick={() => onToggleComplete(task.id)}
             className="mt-1 flex-shrink-0"
-            disabled={!showActions || isOverdue}
+            disabled={!showActions}
+            aria-label={task.completed ? 'Marcar como pendiente' : 'Marcar como completada'}
           >
             {task.completed ? (
               <CheckCircle className="h-5 w-5 text-primary" />

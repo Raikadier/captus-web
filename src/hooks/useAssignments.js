@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import apiClient from '../shared/api/client';
+import { unwrapData, unwrapList } from '../shared/api/unwrap';
 
 export function useAssignments() {
   const [loading, setLoading] = useState(false);
@@ -9,7 +10,7 @@ export function useAssignments() {
     setLoading(true);
     try {
       const response = await apiClient.get(`/assignments/course/${courseId}`);
-      return response.data;
+      return unwrapList(response.data);
     } catch (err) {
       setError(err.message);
       throw err;
@@ -22,7 +23,7 @@ export function useAssignments() {
     setLoading(true);
     try {
       const response = await apiClient.get(`/assignments/${id}`);
-      return response.data;
+      return unwrapData(response.data);
     } finally {
       setLoading(false);
     }

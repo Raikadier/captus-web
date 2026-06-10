@@ -5,6 +5,7 @@ import {
   getEventColor,
   getEventBlockColor,
   getTaskBlockColor,
+  isTaskOverdue,
   MONTH_NAMES,
   DAY_NAMES_SHORT,
 } from './calendarUtils';
@@ -83,5 +84,21 @@ describe('calendarUtils – Pruebas Unitarias Calendario Académico', () => {
 
   it('CAL13 – Retorna color por defecto para prioridad de tarea inválida', () => {
     expect(getTaskBlockColor(99).bg).toBe('bg-[#9E9E9E]');
+  });
+
+  it('CAL14 – No marca como vencida una tarea con fecha de hoy', () => {
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    expect(isTaskOverdue(todayStr, false)).toBe(false);
+  });
+
+  it('CAL15 – Marca como vencida una tarea con fecha anterior a hoy', () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
+    expect(isTaskOverdue(yesterdayStr, false)).toBe(true);
+    expect(isTaskOverdue(yesterdayStr, true)).toBe(false);
   });
 });

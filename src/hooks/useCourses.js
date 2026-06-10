@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import apiClient from '../shared/api/client';
+import { unwrapData } from '../shared/api/unwrap';
 
 export function useCourses() {
   const [courses, setCourses] = useState([]);
@@ -62,7 +63,7 @@ export function useCourses() {
 
   const getCourse = useCallback(async (id) => {
     const response = await apiClient.get(`/courses/${id}`);
-    return response.data;
+    return unwrapData(response.data);
   }, []);
 
   useEffect(() => {

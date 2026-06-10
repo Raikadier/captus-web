@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 // import { useAuth } from './useAuth';
 import apiClient from '../shared/api/client';
+import { unwrapData, unwrapList } from '../shared/api/unwrap';
 
 export function useCourseGroups() {
   // const { session } = useAuth(); // session not needed for client calls
@@ -11,7 +12,7 @@ export function useCourseGroups() {
     setLoading(true);
     try {
       const response = await apiClient.get(`/groups/course/${courseId}`);
-      return response.data;
+      return unwrapList(response.data);
     } catch (err) {
       setError(err.message);
       throw err;

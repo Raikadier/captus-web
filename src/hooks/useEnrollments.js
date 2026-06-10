@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import apiClient from '../shared/api/client';
+import { unwrapList } from '../shared/api/unwrap';
 
 export function useEnrollments() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,7 @@ export function useEnrollments() {
     setLoading(true);
     try {
       const response = await apiClient.get(`/enrollments/course/${courseId}/students`);
-      return response.data;
+      return unwrapList(response.data);
     } finally {
       setLoading(false);
     }
