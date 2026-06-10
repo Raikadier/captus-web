@@ -35,6 +35,40 @@ function getCurrentDate() {
 
 const colorOptions = ['blue', 'purple', 'green', 'orange', 'red', 'yellow']
 
+function normalizeNote(note, color) {
+  const lastEdited = note.lastEdited ?? note.updated_at ?? note.created_at ?? ''
+  return {
+    ...note,
+    color,
+    title: note.title ?? '',
+    content: note.content ?? '',
+    subject: note.subject ?? null,
+    pinned: Boolean(note.pinned ?? note.is_pinned),
+    lastEdited,
+  }
+}
+
+function formatLastEdited(lastEdited) {
+  if (!lastEdited) return 'Sin fecha'
+  if (typeof lastEdited === 'string' && lastEdited.includes('-')) {
+    const date = new Date(lastEdited)
+    if (!Number.isNaN(date.getTime())) {
+      return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+    }
+  }
+  return String(lastEdited)
+}
+
+function noteMatchesQuery(note, query) {
+  if (!query.trim()) return true
+  const q = query.toLowerCase()
+  return (
+    (note.title ?? '').toLowerCase().includes(q) ||
+    (note.content ?? '').toLowerCase().includes(q) ||
+    (note.subject ?? '').toLowerCase().includes(q)
+  )
+}
+
 const getColorClass = (color) => {
     const map = {
       blue: 'bg-blue-50 border-blue-200 dark:bg-blue-950/40 dark:border-blue-800',
@@ -80,9 +114,7 @@ function NoteDetailModal({ note, onClose, onSave, onDelete, onTogglePin }) {
               <div>
                 <h2 className="text-xl font-bold text-foreground">Detalle de Nota</h2>
                 <p className="text-sm text-muted-foreground">
-                  Editado: {note.lastEdited.includes('-') ?
-                    new Date(note.lastEdited).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-                    : note.lastEdited}
+                  Editado: {formatLastEdited(note.lastEdited)}
                 </p>
               </div>
             </div>
@@ -297,10 +329,7 @@ function NoteCard({ note, index, onClick, onTogglePin }) {
           ) : (<div></div>)}
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Editado:{' '}
-          {note.lastEdited.includes('-') ?
-            new Date(note.lastEdited).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
-            : note.lastEdited}
+          Editado: {formatLastEdited(note.lastEdited)}
         </p>
       </Card>
     </motion.div>
@@ -325,11 +354,10 @@ export default function NotesPage() {
       setLoading(true)
       const response = await apiClient.get('/notes')
       if (response.data.success) {
-        // Add color to notes for UI
-        const notesWithColor = response.data.data.map((note, index) => ({
-          ...note,
-          color: colorOptions[index % colorOptions.length]
-        }))
+        const rawNotes = Array.isArray(response.data.data) ? response.data.data : []
+        const notesWithColor = rawNotes.map((note, index) =>
+          normalizeNote(note, colorOptions[index % colorOptions.length])
+        )
         setNotes(notesWithColor)
       } else {
         setError(response.data.message || 'Error al cargar notas')
@@ -346,7 +374,9 @@ export default function NotesPage() {
     try {
       const response = await apiClient.put(`/notes/${noteId}`, updates)
       if (response.data.success) {
-        setNotes(notes.map((n) => (n.id === noteId ? { ...n, ...response.data.data } : n)))
+        setNotes(notes.map((n) =>
+          n.id === noteId ? normalizeNote({ ...n, ...response.data.data }, n.color) : n
+        ))
         setSelectedNote(null)
       } else {
         alert('Error al guardar la nota: ' + response.data.message)
@@ -382,10 +412,11 @@ export default function NotesPage() {
     try {
       const response = await apiClient.put(`/notes/${noteId}/toggle-pin`)
       if (response.data.success) {
-        setNotes(notes.map((n) => (n.id === noteId ? { ...n, ...response.data.data } : n)))
-        // Update selected note if open
+        setNotes(notes.map((n) =>
+          n.id === noteId ? normalizeNote({ ...n, ...response.data.data }, n.color) : n
+        ))
         if (selectedNote && selectedNote.id === noteId) {
-          setSelectedNote(prev => ({ ...prev, ...response.data.data }))
+          setSelectedNote((prev) => normalizeNote({ ...prev, ...response.data.data }, prev.color))
         }
       } else {
         alert('Error al cambiar el estado de fijación: ' + response.data.message)
@@ -400,10 +431,10 @@ export default function NotesPage() {
     try {
       const response = await apiClient.post('/notes', newNote)
       if (response.data.success) {
-        const createdNote = {
-          ...response.data.data,
-          color: colorOptions[notes.length % colorOptions.length]
-        }
+        const createdNote = normalizeNote(
+          response.data.data,
+          colorOptions[notes.length % colorOptions.length]
+        )
         setNotes([...notes, createdNote])
       } else {
         alert('Error al crear la nota: ' + response.data.message)
@@ -416,25 +447,13 @@ export default function NotesPage() {
 
   const pinnedNotes = useMemo(() => notes.filter((n) => n.pinned), [notes])
   const regularNotes = useMemo(
-    () =>
-      notes
-        .filter((n) => !n.pinned)
-        .filter((n) => {
-          if (!searchQuery.trim()) return true
-          const q = searchQuery.toLowerCase()
-          return (
-            n.title.toLowerCase().includes(q) ||
-            n.content.toLowerCase().includes(q) ||
-            (n.subject && n.subject.toLowerCase().includes(q))
-          )
-        }),
+    () => notes.filter((n) => !n.pinned).filter((n) => noteMatchesQuery(n, searchQuery)),
     [notes, searchQuery]
   )
 
-  const filteredPinnedNotes = pinnedNotes.filter(note =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    note.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (note.subject && note.subject.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredPinnedNotes = useMemo(
+    () => pinnedNotes.filter((note) => noteMatchesQuery(note, searchQuery)),
+    [pinnedNotes, searchQuery]
   )
 
   if (loading) {
