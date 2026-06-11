@@ -10,7 +10,7 @@ export function useCourses() {
   const { session, user } = useAuth();
 
   // Helper to determine if we should fetch teacher or student courses
-  const role = user?.user_metadata?.role || 'student';
+  const role = user?.user_metadata?.role || user?.app_metadata?.role || 'student';
 
   const fetchCourses = useCallback(async () => {
     // Rely on apiClient interceptor for token.

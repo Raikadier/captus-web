@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BarChart3, CheckCircle, BookOpen, Clock } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 import apiClient from '../../shared/api/client'
+import { unwrapData } from '../../shared/api/unwrap'
 import Loading from '../../ui/loading'
 
 export default function TeacherStatsPage() {
@@ -13,7 +14,7 @@ export default function TeacherStatsPage() {
       try {
         // Fetch dashboard stats which includes subjects and general stats
         const response = await apiClient.get('/statistics/dashboard')
-        setStats(response.data)
+        setStats(unwrapData(response.data))
       } catch (error) {
         console.error('Error fetching stats:', error)
       } finally {

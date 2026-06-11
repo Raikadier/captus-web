@@ -1,26 +1,25 @@
 import apiClient from '../shared/api/client';
+import { unwrapData, unwrapList } from '../shared/api/unwrap';
 
 export const courseService = {
     getCourses: async () => {
-        // Default to student courses if generic call, or maybe deprecate this?
-        // For now, let's try to detect or just default to student
         const response = await apiClient.get('/courses/student');
-        return response.data;
+        return unwrapList(response.data);
     },
 
     getTeacherCourses: async () => {
         const response = await apiClient.get('/courses/teacher');
-        return response.data;
+        return unwrapList(response.data);
     },
 
     getStudentCourses: async () => {
         const response = await apiClient.get('/courses/student');
-        return response.data;
+        return unwrapList(response.data);
     },
 
     getCourse: async (id) => {
         const response = await apiClient.get(`/courses/${id}`);
-        return response.data;
+        return unwrapData(response.data);
     },
 
     createCourse: async (data) => {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ClipboardList, Edit2, Calendar, CheckCircle2 } from 'lucide-react'
 import { Button } from '../../ui/button'
 import apiClient from '../../shared/api/client'
+import { unwrapList } from '../../shared/api/unwrap'
 import Loading from '../../ui/loading'
 
 export default function TeacherTasksCreatedPage() {
@@ -16,7 +17,7 @@ export default function TeacherTasksCreatedPage() {
         // Fetch tasks created by the current user (teacher)
         const response = await apiClient.get('/tasks')
         // Filter or sort if necessary, assuming /tasks returns all user's tasks
-        setTasks(response.data.data || response.data)
+        setTasks(unwrapList(response.data))
       } catch (error) {
         console.error('Error fetching tasks:', error)
       } finally {

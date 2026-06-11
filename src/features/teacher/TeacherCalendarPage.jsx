@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Calendar as CalendarIcon, Clock, MapPin } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 import apiClient from '../../shared/api/client'
+import { unwrapList } from '../../shared/api/unwrap'
 import Loading from '../../ui/loading'
 
 export default function TeacherCalendarPage() {
@@ -12,7 +13,7 @@ export default function TeacherCalendarPage() {
     const fetchEvents = async () => {
       try {
         const response = await apiClient.get('/events')
-        setEvents(response.data.data || [])
+        setEvents(unwrapList(response.data))
       } catch (error) {
         console.error('Error fetching events:', error)
       } finally {
@@ -53,7 +54,7 @@ export default function TeacherCalendarPage() {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <CalendarIcon className="w-3 h-3" />
-                    {new Date(e.date).toLocaleDateString()}
+                    {new Date(e.start_date || e.date).toLocaleDateString()}
                   </span>
                   {e.time && (
                     <span className="flex items-center gap-1">

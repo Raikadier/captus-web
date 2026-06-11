@@ -1,4 +1,5 @@
 import apiClient from '../shared/api/client';
+import { unwrapList } from '../shared/api/unwrap';
 
 export const submissionService = {
     submitAssignment: async (data) => {
@@ -8,7 +9,7 @@ export const submissionService = {
 
     getSubmissions: async (assignmentId) => {
         const response = await apiClient.get(`/submissions/assignment/${assignmentId}`);
-        return response.data;
+        return unwrapList(response.data);
     },
 
     gradeSubmission: async (submissionId, grade, feedback) => {
@@ -18,6 +19,6 @@ export const submissionService = {
 
     getPendingReviews: async () => {
         const response = await apiClient.get('/submissions/pending');
-        return response.data;
+        return unwrapList(response.data);
     }
 };

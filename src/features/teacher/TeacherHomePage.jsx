@@ -120,7 +120,7 @@ export default function TeacherHomePage() {
                   <div key={course.id} className="p-4 border border-border rounded-xl hover:shadow-md transition-all">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-foreground">{course.name}</h3>
+                        <h3 className="text-lg font-semibold text-foreground">{course.title || course.name}</h3>
                         <p className="text-sm text-muted-foreground">{course.students} estudiantes</p>
                       </div>
                       <Button variant="ghost" size="sm" onClick={() => navigate(`/teacher/courses/${course.id}`)}>
