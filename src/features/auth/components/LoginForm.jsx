@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Eye, EyeOff, GraduationCap, User } from 'lucide-react';
+import { Eye, EyeOff, GraduationCap, User } from 'lucide-react';
 import { supabase } from '../../../shared/api/supabase';
 import { Button } from '../../../ui/button';
 import { Input } from '../../../ui/input';
@@ -71,9 +71,11 @@ const LoginForm = () => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="bg-primary p-3 rounded-xl">
-              <BookOpen className="h-8 w-8 text-white" />
-            </div>
+            <img
+              src="/captus-logo.png"
+              alt="Captus"
+              className="h-16 w-16 rounded-xl object-cover"
+            />
           </div>
           <h2 className="text-3xl font-bold text-foreground">
             {isRegistering ? 'Crear cuenta' : 'Iniciar sesión'}

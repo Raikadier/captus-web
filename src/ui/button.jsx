@@ -34,7 +34,7 @@ const buttonVariants = cva(
         // Primary: brand gradient + brand shadow on hover
         default: [
           'bg-gradient-to-br from-brand-500 to-brand-600',
-          'text-white',
+          'text-primary-foreground',
           'hover:brightness-105',
           'hover:shadow-brand-sm',
           'active:brightness-95',

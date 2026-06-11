@@ -98,8 +98,10 @@ export const ThemeProvider = ({ children }) => {
     const root = document.documentElement;
 
     root.style.setProperty('--primary', `oklch(${primary})`);
+    root.style.setProperty('--primary-foreground', 'oklch(1 0 0)');
     root.style.setProperty('--ring', `oklch(${ring})`);
     root.style.setProperty('--sidebar-primary', `oklch(${primary})`);
+    root.style.setProperty('--sidebar-primary-foreground', 'oklch(1 0 0)');
     root.style.setProperty('--sidebar-ring', `oklch(${ring})`);
 
     // Also update accent backgrounds
