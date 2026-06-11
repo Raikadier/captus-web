@@ -60,3 +60,62 @@ export function calcularTasaCumplimientoSemanal(productivityChart, fallbackRate 
   const rate = Number(fallbackRate) || 0;
   return Math.min(100, Math.max(0, rate));
 }
+
+/**
+ * Convierte segmentos con valores absolutos en porcentajes que suman 100.
+ *
+ * @param {Array<{ name: string, value: number, color: string }>} segments
+ * @returns {Array<{ name: string, value: number, color: string, percentage: number }>}
+ */
+export function calcularDistribucionPorcentual(segments) {
+  const items = (segments || []).filter((segment) => (segment.value || 0) > 0);
+  const total = items.reduce((sum, segment) => sum + segment.value, 0);
+
+  if (total <= 0) return [];
+
+  const withPercentage = items.map((segment) => ({
+    ...segment,
+    percentage: Math.round((segment.value / total) * 100),
+  }));
+
+  const percentageSum = withPercentage.reduce((sum, segment) => sum + segment.percentage, 0);
+  if (percentageSum !== 100 && withPercentage.length > 0) {
+    const largestIndex = withPercentage.reduce(
+      (maxIndex, segment, index, list) => (
+        segment.value > list[maxIndex].value ? index : maxIndex
+      ),
+      0
+    );
+    withPercentage[largestIndex].percentage += 100 - percentageSum;
+  }
+
+  return withPercentage;
+}
+
+/**
+ * Arma los datos del gráfico "Estado General de Tareas".
+ *
+ * @param {object} params
+ * @param {number} params.completedTasks - Tareas completadas.
+ * @param {number} params.totalTasks - Tareas activas (normalmente pendientes + expiradas).
+ * @param {number} [params.expiredTasks] - Tareas vencidas no completadas.
+ * @param {number} [params.pendingTasks] - Tareas pendientes vigentes.
+ */
+export function calcularEstadoGeneralTareas({
+  completedTasks = 0,
+  totalTasks = 0,
+  expiredTasks = 0,
+  pendingTasks = 0,
+} = {}) {
+  const completed = Math.max(0, completedTasks);
+  const expired = Math.max(0, expiredTasks);
+  const pending = pendingTasks > 0
+    ? pendingTasks
+    : Math.max(0, totalTasks - expired);
+
+  return calcularDistribucionPorcentual([
+    { name: 'Completadas', value: completed, color: '#22c55e' },
+    { name: 'Pendientes', value: pending, color: '#f59e0b' },
+    { name: 'Expiradas', value: expired, color: '#ef4444' },
+  ]);
+}

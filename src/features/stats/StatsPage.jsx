@@ -9,7 +9,7 @@ import { ManageSubjectsDialog } from '../subjects/components/ManageSubjectsDialo
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area, ComposedChart } from 'recharts'
 import StreakWidget, { FavoriteCategoryWidget, EventsOverviewWidget, ProjectsOverviewWidget, NotesStatsWidget, CategoriesStatsWidget, AverageTimeWidget, RecentAchievementsWidget, BestStreakWidget } from '../../shared/components/StreakWidget'
 import { StatsProvider, useStreakData, useAdditionalStats } from '../../hooks/useConsolidatedStats'
-import { calcularTasaCumplimientoSemanal } from '../../lib/progressCalculator'
+import { calcularEstadoGeneralTareas, calcularTasaCumplimientoSemanal } from '../../lib/progressCalculator'
 
 function getCurrentDate() {
   const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
@@ -102,7 +102,9 @@ function StatsPageContent() {
     totalSubTasksCompleted: 0,
     productivityChart: [],
     totalCompleted: 0,
-    weeklyCompletionRate: 0
+    weeklyCompletionRate: 0,
+    expiredTasks: 0,
+    pendingTasks: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -136,7 +138,9 @@ function StatsPageContent() {
           totalSubTasksCompleted: tData.totalSubTasksCompleted || 0,
           productivityChart: tData.productivityChart || [],
           totalCompleted: tData.totalCompleted || 0,
-          weeklyCompletionRate: tData.weeklyCompletionRate || 0
+          weeklyCompletionRate: tData.weeklyCompletionRate || 0,
+          expiredTasks: tData.expiredTasks ?? tData.overdueTasks ?? 0,
+          pendingTasks: tData.pendingTasks ?? 0,
         });
       }
     } catch (error) {
@@ -154,13 +158,12 @@ function StatsPageContent() {
     taskStats.productivityChart,
     taskStats.weeklyCompletionRate
   );
-  const totalCompleted = taskStats.totalCompleted || 0;
-  const totalCreated = totalCompleted + (taskStats.tasksCreatedToday || 0);
-  const pendingTasks = Math.max(0, totalCreated - totalCompleted);
-
-  const expiredTasks = taskStats.productivityChart?.reduce((sum, day) => {
-    return sum + Math.max(0, day.created - day.completed);
-  }, 0) || 0;
+  const completionRateData = calcularEstadoGeneralTareas({
+    completedTasks: stats.completedTasks || taskStats.totalCompleted || 0,
+    totalTasks: stats.totalTasks || 0,
+    expiredTasks: taskStats.expiredTasks,
+    pendingTasks: taskStats.pendingTasks,
+  });
 
   const priorityDistribution = additionalStats?.priorityStats ? [
     { name: 'Alta', value: additionalStats.priorityStats.high, color: '#ef4444' },
@@ -171,13 +174,6 @@ function StatsPageContent() {
   if (loading) {
     return <Loading message="Cargando estadísticas..." />;
   }
-
-  const completionRateData = [
-    { name: 'Completadas', value: totalCompleted, color: '#22c55e', percentage: totalCreated > 0 ? Math.round((totalCompleted / totalCreated) * 100) : 0 },
-    { name: 'Pendientes', value: Math.max(0, pendingTasks - expiredTasks), color: '#f59e0b', percentage: totalCreated > 0 ? Math.round(((pendingTasks - expiredTasks) / totalCreated) * 100) : 0 },
-    { name: 'Expiradas', value: expiredTasks, color: '#ef4444', percentage: totalCreated > 0 ? Math.round((expiredTasks / totalCreated) * 100) : 0 }
-  ].filter(item => item.value > 0);
-
 
   // Weekly performance by day
   // const weeklyPerformanceData = taskStats.productivityChart?.map(day => ({
@@ -200,7 +196,7 @@ function StatsPageContent() {
   //   return acc;
   // }, []) || [];
 
-  const circumference = 2 * Math.PI * 88;
+  const circumference = 2 * Math.PI * 82;
   const visualCompletionPercent = Math.min(100, Math.max(0, completionPercent));
   const strokeDasharray = `${(visualCompletionPercent / 100) * circumference} ${circumference}`;
 
@@ -319,20 +315,20 @@ function StatsPageContent() {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Overall Completion Rate Pie Chart */}
-          <Card className="p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
+          <Card className="overflow-visible p-6 border border-border rounded-xl hover:shadow-md transition-shadow">
             <h2 className="text-xl font-semibold text-foreground mb-4">Estado General de Tareas</h2>
-            <div className="h-64 w-full">
+            <div className="h-64 w-full overflow-visible px-2">
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
+                <PieChart margin={{ top: 12, right: 12, bottom: 12, left: 12 }}>
                   <Pie
                     data={completionRateData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={5}
+                    innerRadius="52%"
+                    outerRadius="78%"
+                    paddingAngle={3}
                     dataKey="value"
-                    label={({ percentage }) => `${percentage}%`}
+                    stroke="none"
                   >
                     {completionRateData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -380,17 +376,22 @@ function StatsPageContent() {
           {/* Completion Circle */}
           <Card className="p-6 bg-card rounded-xl shadow-sm border border-border">
             <h2 className="text-xl font-semibold text-foreground mb-4">Tasa de Cumplimiento Semanal</h2>
-            <div className="flex items-center justify-center h-64">
-              <div className="relative w-48 h-48">
-                <svg className="transform -rotate-90 w-48 h-48">
-                  <circle cx="96" cy="96" r="88" stroke="#E5E7EB" strokeWidth="16" fill="none" className="opacity-30" />
+            <div className="flex items-center justify-center h-64 px-4 py-2">
+              <div className="relative w-44 h-44 shrink-0">
+                <svg
+                  viewBox="0 0 200 200"
+                  className="h-full w-full -rotate-90"
+                  aria-hidden="true"
+                >
+                  <circle cx="100" cy="100" r="82" stroke="#E5E7EB" strokeWidth="16" fill="none" className="opacity-30" />
                   <circle
-                    cx="96"
-                    cy="96"
-                    r="88"
+                    cx="100"
+                    cy="100"
+                    r="82"
                     stroke="#10b981"
                     strokeWidth="16"
                     fill="none"
+                    strokeLinecap="round"
                     strokeDasharray={strokeDasharray}
                     className="transition-all duration-1000"
                   />

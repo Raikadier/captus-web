@@ -21,7 +21,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { calcularProgreso, calcularProgresoSubtareas, calcularTasaCumplimientoSemanal } from '../progressCalculator';
+import { calcularProgreso, calcularProgresoSubtareas, calcularTasaCumplimientoSemanal, calcularDistribucionPorcentual, calcularEstadoGeneralTareas } from '../progressCalculator';
 
 describe('PU02 – Calculador de Progreso (progressCalculator)', () => {
   // ─── Clases Válidas ────────────────────────────────────────────────────────
@@ -163,6 +163,37 @@ describe('PU02 – Calculador de Progreso (progressCalculator)', () => {
     it('PU02-WS03 | Sin gráfico limita el fallback del backend a 100 %', () => {
       expect(calcularTasaCumplimientoSemanal([], 220)).toBe(100);
       expect(calcularTasaCumplimientoSemanal(null, 75)).toBe(75);
+    });
+  });
+
+  describe('calcularDistribucionPorcentual – porcentajes de gráficos', () => {
+    it('PU02-DP01 | Los porcentajes siempre suman 100', () => {
+      const result = calcularDistribucionPorcentual([
+        { name: 'Completadas', value: 100, color: '#22c55e' },
+        { name: 'Expiradas', value: 23, color: '#ef4444' },
+      ]);
+
+      expect(result).toHaveLength(2);
+      expect(result[0].percentage).toBe(81);
+      expect(result[1].percentage).toBe(19);
+      expect(result.reduce((sum, item) => sum + item.percentage, 0)).toBe(100);
+    });
+  });
+
+  describe('calcularEstadoGeneralTareas – estado general de tareas', () => {
+    it('PU02-EG01 | Usa totalTasks y expiredTasks del API', () => {
+      const result = calcularEstadoGeneralTareas({
+        completedTasks: 100,
+        totalTasks: 40,
+        expiredTasks: 23,
+      });
+
+      const pending = result.find((item) => item.name === 'Pendientes');
+      const expired = result.find((item) => item.name === 'Expiradas');
+
+      expect(pending?.value).toBe(17);
+      expect(expired?.value).toBe(23);
+      expect(result.reduce((sum, item) => sum + item.percentage, 0)).toBe(100);
     });
   });
 });
