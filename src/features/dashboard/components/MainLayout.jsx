@@ -82,7 +82,7 @@ const MainLayout = ({ children }) => {
             >
               <Menu size={20} />
             </Button>
-            <img src="/captus-icon.png" alt="" className="h-6 w-6 object-contain" aria-hidden />
+            <img src="/captus-icon.png" alt="" className="h-9 w-9 object-contain" aria-hidden />
             <span className="font-semibold text-primary">Captus</span>
           </header>
         )}

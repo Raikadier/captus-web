@@ -70,12 +70,12 @@ const Sidebar = memo(({ onCollapseChange, isMobile = false, mobileOpen = false, 
       <div className="flex items-center justify-between h-16 border-b border-sidebar-border px-4">
         {showLabels ? (
           <div className="flex items-center space-x-2 transition-opacity duration-200">
-            <img src="/captus-icon.png" alt="" className="h-6 w-6 object-contain" aria-hidden />
+            <img src="/captus-icon.png" alt="" className="h-9 w-9 object-contain" aria-hidden />
             <h1 className="text-xl font-semibold text-primary">Captus</h1>
           </div>
         ) : (
           <div className="transition-opacity duration-200">
-            <img src="/captus-icon.png" alt="Captus" className="h-6 w-6 object-contain" />
+            <img src="/captus-icon.png" alt="Captus" className="h-9 w-9 object-contain" />
           </div>
         )}
         {isMobile ? (
