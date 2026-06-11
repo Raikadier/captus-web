@@ -540,3 +540,30 @@
 html[data-font-size='small']  { font-size: 14px; }
 html[data-font-size='medium'] { font-size: 16px; }
 html[data-font-size='large']  { font-size: 18px; }
+
+/* Markdown + KaTeX (chat IA, notas) */
+.markdown-content .katex {
+  font-size: 1.05em;
+  color: var(--foreground);
+}
+
+.markdown-content .katex-display {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.markdown-content code.language-math {
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.markdown-content pre:has(> code.language-math) {
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+}

@@ -9,6 +9,7 @@ import {
   Send, Sparkles, User, Plus, Menu, CheckCircle,
   MessageSquare, ChevronLeft,
 } from 'lucide-react';
+import MarkdownContent from '../../components/MarkdownContent';
 
 const ChatBotPage = () => {
   const { user } = useAuth();
@@ -346,9 +347,13 @@ const ChatBotPage = () => {
                             : 'bg-card border border-border'
                         }`}
                       >
-                        <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
-                          {message.content}
-                        </p>
+                        {message.type === 'bot' ? (
+                          <MarkdownContent content={message.content} />
+                        ) : (
+                          <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                            {message.content}
+                          </p>
+                        )}
 
                         {message.action && (
                           <div className="mt-2.5 flex items-center gap-1.5 text-xs font-medium text-brand-700 bg-brand-50 px-2.5 py-1 rounded-lg w-fit border border-brand-200">
